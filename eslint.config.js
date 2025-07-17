@@ -1,23 +1,44 @@
-import js from '@eslint/js'
-import globals from 'globals'
-import reactHooks from 'eslint-plugin-react-hooks'
-import reactRefresh from 'eslint-plugin-react-refresh'
-import tseslint from 'typescript-eslint'
-import { globalIgnores } from 'eslint/config'
+import js from '@eslint/js';
+import globals from 'globals';
+import tseslint from 'typescript-eslint';
+import pluginReact from 'eslint-plugin-react';
+import prettier from 'eslint-config-prettier';
+import { defineConfig } from 'eslint/config';
 
-export default tseslint.config([
-  globalIgnores(['dist']),
+export default defineConfig([
   {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      js.configs.recommended,
-      tseslint.configs.recommended,
-      reactHooks.configs['recommended-latest'],
-      reactRefresh.configs.vite,
-    ],
+    files: ['**/*.{js,cjs,mjs,ts,cts,mts,jsx,tsx}'],
     languageOptions: {
-      ecmaVersion: 2020,
+      parser: tseslint.parser,
+      parserOptions: {
+        ecmaVersion: 'latest',
+        sourceType: 'module',
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
       globals: globals.browser,
     },
+    plugins: {
+      js,
+      '@typescript-eslint': tseslint.plugin,
+      react: pluginReact,
+    },
+    rules: {
+      ...js.configs.recommended.rules,
+      ...tseslint.configs.recommended.rules,
+      ...pluginReact.configs.recommended.rules,
+
+      // отключаем правила, конфликтующие с Prettier
+      ...prettier.rules,
+
+      // дополнительные правила под себя:
+      'react/react-in-jsx-scope': 'off', // не нужен React в импорте с 17+
+      'react/prop-types': 'off', // если используешь TypeScript
+    },
   },
-])
+  {
+    ignores: ['node_modules', 'dist', 'build', '.turbo', '.next'],
+  },
+]);
+
