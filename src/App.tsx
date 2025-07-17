@@ -4,9 +4,8 @@ import { TodolistItem } from './TodolistItem.tsx';
 export const App = () => {
   return (
     <div className="app">
-      <TodolistItem />
-      <TodolistItem />
-      <TodolistItem />
+      <TodolistItem title={'What to learn'} />
+      <TodolistItem title={'Song'} />
     </div>
   );
 };
