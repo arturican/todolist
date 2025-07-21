@@ -9,7 +9,6 @@ export default defineConfig([
   {
     ignores: ['node_modules', 'dist', 'build', '.turbo', '.next'],
   },
-  // JS/TS files
   {
     files: ['**/*.{js,jsx,ts,tsx}'],
     languageOptions: {
@@ -31,15 +30,15 @@ export default defineConfig([
       '@typescript-eslint': tseslint.plugin,
       react: pluginReact,
     },
-    extends: [
-      'plugin:react/recommended',
-      'plugin:@typescript-eslint/recommended',
-      'prettier', // всегда последним!
-    ],
+    // используем spread, а не extends
     rules: {
-      'react/react-in-jsx-scope': 'off', // React 17+
-      'react/prop-types': 'off', // TS
-      'no-unused-vars': 'off', // заменяем на TS
+      ...js.configs.recommended.rules,
+      ...tseslint.configs.recommended.rules,
+      ...pluginReact.configs.recommended.rules,
+      ...(prettier.rules ?? {}),
+      'react/react-in-jsx-scope': 'off',
+      'react/prop-types': 'off',
+      'no-unused-vars': 'off',
       '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
     },
   },
