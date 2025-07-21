@@ -10,7 +10,6 @@ export const App = () => {
     { id: 1, title: 'HTML&CSS', isDone: true },
     { id: 2, title: 'JS', isDone: true },
     { id: 3, title: 'ReactJS', isDone: false },
-    { id: 33, title: 'TS', isDone: false },
   ]);
 
   const deleteTask = (taskId: number) => {
