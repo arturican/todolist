@@ -24,6 +24,7 @@ export default defineConfig([
       '@typescript-eslint': tseslint.plugin,
       react: pluginReact,
     },
+
     rules: {
       ...js.configs.recommended.rules,
       ...tseslint.configs.recommended.rules,
@@ -35,6 +36,8 @@ export default defineConfig([
       // дополнительные правила под себя:
       'react/react-in-jsx-scope': 'off', // не нужен React в импорте с 17+
       'react/prop-types': 'off', // если используешь TypeScript
+      'no-unused-vars': 'off',
+      '@typescript-eslint/no-unused-vars': ['error'],
     },
   },
   {

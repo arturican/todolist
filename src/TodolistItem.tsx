@@ -3,7 +3,8 @@ import { Button } from './Button.tsx';
 type Props = {
   title: string;
   tasks: Task[];
-  date?: any;
+  date?: number;
+  deleteTask: (id: number) => void;
 };
 export type Task = {
   id: number;
@@ -11,7 +12,7 @@ export type Task = {
   isDone: boolean;
 };
 
-export const TodolistItem = ({ title, tasks, date }: Props) => {
+export const TodolistItem = ({ title, tasks, date, deleteTask }: Props) => {
   return (
     <div>
       <h3>{title}</h3>
@@ -28,6 +29,12 @@ export const TodolistItem = ({ title, tasks, date }: Props) => {
               <li key={task.id}>
                 <input type={'checkbox'} checked={task.isDone} />
                 <span>{task.title}</span>
+                <Button
+                  title={'X'}
+                  onClick={() => {
+                    deleteTask(task.id);
+                  }}
+                />
               </li>
             );
           })

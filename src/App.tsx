@@ -1,23 +1,26 @@
 import './App.css';
-import { TodolistItem } from './TodolistItem.tsx';
+import type { Task } from './TodolistItem';
+import { TodolistItem } from './TodolistItem';
+import { useState } from 'react';
 
 export const App = () => {
-  var date = new Date().getMilliseconds();
-  const tasks1 = [
+  const date = new Date().getMilliseconds();
+
+  const [tasks, setTasks] = useState<Task[]>([
     { id: 1, title: 'HTML&CSS', isDone: true },
     { id: 2, title: 'JS', isDone: true },
     { id: 3, title: 'ReactJS', isDone: false },
-  ];
+  ]);
 
-  const tasks2 = [
-    { id: 1, title: 'Hello world', isDone: false },
-    { id: 2, title: 'I am Happy', isDone: false },
-    { id: 3, title: 'Yo', isDone: false },
-  ];
+  const deleteTask = (taskId: number) => {
+    const filtered = tasks.filter(task => task.id !== taskId);
+    setTasks(filtered);
+    console.log(filtered);
+  };
+
   return (
     <div className="app">
-      <TodolistItem title={'What to learn'} tasks={tasks1} date={date} />
-      <TodolistItem title={'Song'} tasks={tasks2} />
+      <TodolistItem title={'What to learn'} tasks={tasks} date={date} deleteTask={deleteTask} />
     </div>
   );
 };
