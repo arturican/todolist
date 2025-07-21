@@ -7,41 +7,40 @@ import { defineConfig } from 'eslint/config';
 
 export default defineConfig([
   {
-    files: ['**/*.{js,cjs,mjs,ts,cts,mts,jsx,tsx}'],
+    ignores: ['node_modules', 'dist', 'build', '.turbo', '.next'],
+  },
+  // JS/TS files
+  {
+    files: ['**/*.{js,jsx,ts,tsx}'],
     languageOptions: {
       parser: tseslint.parser,
       parserOptions: {
         ecmaVersion: 'latest',
         sourceType: 'module',
-        ecmaFeatures: {
-          jsx: true,
-        },
+        ecmaFeatures: { jsx: true },
       },
       globals: globals.browser,
+    },
+    settings: {
+      react: {
+        version: 'detect',
+      },
     },
     plugins: {
       js,
       '@typescript-eslint': tseslint.plugin,
       react: pluginReact,
     },
-
+    extends: [
+      'plugin:react/recommended',
+      'plugin:@typescript-eslint/recommended',
+      'prettier', // всегда последним!
+    ],
     rules: {
-      ...js.configs.recommended.rules,
-      ...tseslint.configs.recommended.rules,
-      ...pluginReact.configs.recommended.rules,
-
-      // отключаем правила, конфликтующие с Prettier
-      ...prettier.rules,
-
-      // дополнительные правила под себя:
-      'react/react-in-jsx-scope': 'off', // не нужен React в импорте с 17+
-      'react/prop-types': 'off', // если используешь TypeScript
-      'no-unused-vars': 'off',
-      '@typescript-eslint/no-unused-vars': ['error'],
+      'react/react-in-jsx-scope': 'off', // React 17+
+      'react/prop-types': 'off', // TS
+      'no-unused-vars': 'off', // заменяем на TS
+      '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
     },
   },
-  {
-    ignores: ['node_modules', 'dist', 'build', '.turbo', '.next'],
-  },
 ]);
-
