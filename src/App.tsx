@@ -3,6 +3,7 @@ import type { Task } from './TodolistItem';
 import { TodolistItem } from './TodolistItem';
 import { useState } from 'react';
 import { v1 } from 'uuid';
+import { CreateItemForm } from './CreateItemForm.tsx';
 
 export type FilterValue = 'all' | 'active' | 'completed';
 export type Todolist = {
@@ -10,7 +11,7 @@ export type Todolist = {
   title: string;
   filter: FilterValue;
 };
-export type Tasks = {
+export type TasksState = {
   [key: string]: Task[];
 };
 export const App = () => {
@@ -30,7 +31,7 @@ export const App = () => {
   ]);
   const date = new Date().getMilliseconds();
 
-  const [tasks, setTasks] = useState<Tasks>({
+  const [tasks, setTasks] = useState<TasksState>({
     [todolistId1]: [
       { id: v1(), title: 'HTML&CSS', isDone: true },
       { id: v1(), title: 'JS', isDone: true },
@@ -72,8 +73,16 @@ export const App = () => {
     setTasks({ ...tasks });
   };
 
+  const createTodolist = (title: string) => {
+    const todolistId = v1();
+    const newTodolist: Todolist = { id: todolistId, title, filter: 'all' };
+    setTodolists([...todolists, newTodolist]);
+    setTasks({ ...tasks, [todolistId]: [] });
+  };
+
   return (
     <div className="app">
+      <CreateItemForm onCreateItem={createTodolist} />
       {todolists.map(todolist => {
         let filteredTask = tasks[todolist.id];
         if (todolist.filter === 'active') {
