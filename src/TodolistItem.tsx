@@ -10,6 +10,7 @@ type Props = {
   changeFilter: (filter: FilterValue) => void;
   createTask: (titleTask: string) => void;
   changeTaskStatus: (taskId: string, isDone: boolean) => void;
+  filter?: FilterValue;
 };
 export type Task = {
   id: string;
@@ -25,6 +26,7 @@ export const TodolistItem = ({
   changeFilter,
   createTask,
   changeTaskStatus,
+  filter,
 }: Props) => {
   const [titleTask, setTitleTask] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
@@ -71,7 +73,7 @@ export const TodolistItem = ({
         ) : (
           tasks.map((task: Task) => {
             return (
-              <li key={task.id}>
+              <li key={task.id} className={task.isDone ? 'is-done' : ''}>
                 <input
                   type={'checkbox'}
                   checked={task.isDone}
@@ -85,9 +87,21 @@ export const TodolistItem = ({
         )}
       </ul>
       <div>
-        <Button title={'All'} onClick={() => changeFilter('all')} />
-        <Button title={'Active'} onClick={() => changeFilter('active')} />
-        <Button title={'Completed'} onClick={() => changeFilter('completed')} />
+        <Button
+          title={'All'}
+          onClick={() => changeFilter('all')}
+          className={filter === 'all' ? 'active-filter' : ''}
+        />
+        <Button
+          title={'Active'}
+          onClick={() => changeFilter('active')}
+          className={filter === 'active' ? 'active-filter' : ''}
+        />
+        <Button
+          title={'Completed'}
+          onClick={() => changeFilter('completed')}
+          className={filter === 'completed' ? 'active-filter' : ''}
+        />
       </div>
       <p>{date}</p>
     </div>
