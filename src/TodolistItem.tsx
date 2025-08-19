@@ -1,4 +1,4 @@
-import { Button } from './Button.tsx';
+import { Button } from './Button';
 import type { FilterValue, Todolist } from './App';
 import { KeyboardEvent, ChangeEvent, useState } from 'react';
 
