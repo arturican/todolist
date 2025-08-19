@@ -43,12 +43,7 @@ export const App = () => {
   });
 
   const deleteTask = (todolistsId: string, taskId: string) => {
-    const filtered = {
-      ...tasks,
-      [todolistsId]: tasks[todolistsId].filter(task => task.id !== taskId),
-    };
-    setTasks(filtered);
-    console.log(filtered);
+    setTasks({ ...tasks, [todolistsId]: tasks[todolistsId].filter(task => task.id !== taskId) });
   };
 
   const changeFilter = (todolistId: string, filter: FilterValue) => {
@@ -71,6 +66,12 @@ export const App = () => {
     });
   };
 
+  const deleteTodolist = (todolistId: string) => {
+    setTodolists(todolists.filter(todolist => todolist.id !== todolistId));
+    delete tasks[todolistId];
+    setTasks({ ...tasks });
+  };
+
   return (
     <div className="app">
       {todolists.map(todolist => {
@@ -91,6 +92,7 @@ export const App = () => {
             changeFilter={changeFilter}
             createTask={createTask}
             changeTaskStatus={changeTaskStatus}
+            deleteTodolist={deleteTodolist}
           />
         );
       })}

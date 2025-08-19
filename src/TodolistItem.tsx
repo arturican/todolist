@@ -1,6 +1,6 @@
 import { Button } from './Button';
 import type { FilterValue, Todolist } from './App';
-import { KeyboardEvent, ChangeEvent, useState } from 'react';
+import { type KeyboardEvent, type ChangeEvent, useState } from 'react';
 
 type Props = {
   todolist: Todolist;
@@ -10,6 +10,7 @@ type Props = {
   changeFilter: (todolistId: string, filter: FilterValue) => void;
   createTask: (todolistId: string, titleTask: string) => void;
   changeTaskStatus: (todolistId: string, taskId: string, isDone: boolean) => void;
+  deleteTodolist: (todolistId: string) => void;
 };
 export type Task = {
   id: string;
@@ -25,6 +26,7 @@ export const TodolistItem = ({
   changeFilter,
   createTask,
   changeTaskStatus,
+  deleteTodolist,
 }: Props) => {
   const [titleTask, setTitleTask] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
@@ -55,9 +57,15 @@ export const TodolistItem = ({
   const changeFilterHandler = (filter: FilterValue) => {
     changeFilter(id, filter);
   };
+  const deleteTodolistHandler = () => {
+    deleteTodolist(id);
+  };
   return (
     <div>
-      <h3>{title}</h3>
+      <div className={'container'}>
+        <h3>{title}</h3>
+        <Button title={'x'} onClick={deleteTodolistHandler} />
+      </div>
       <div>
         <input
           className={error ? 'error' : ''}
