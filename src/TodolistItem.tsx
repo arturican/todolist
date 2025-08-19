@@ -27,15 +27,19 @@ export const TodolistItem = ({
   changeTaskStatus,
 }: Props) => {
   const [titleTask, setTitleTask] = useState<string>('');
+  const [error, setError] = useState<string | null>(null);
   const createTaskHandler = () => {
     const trimmedTitle = titleTask.trim();
     if (titleTask.trim() !== '') {
       createTask(trimmedTitle);
       setTitleTask('');
+    } else {
+      setError('Title is required');
     }
   };
   const changeTaskTitleHandler = (event: ChangeEvent<HTMLInputElement>) => {
     setTitleTask(event.currentTarget.value);
+    setError(null);
   };
   const createTaskOnEnterHandler = (event: KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
@@ -53,11 +57,13 @@ export const TodolistItem = ({
       <h3>{title}</h3>
       <div>
         <input
+          className={error ? 'error' : ''}
           value={titleTask}
           onChange={changeTaskTitleHandler}
           onKeyDown={createTaskOnEnterHandler}
         />
         <Button title={'+'} onClick={createTaskHandler} />
+        <div className={'error-message'}>{error}</div>
       </div>
       <ul>
         {tasks.length === 0 ? (
