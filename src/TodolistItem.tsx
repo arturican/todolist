@@ -28,8 +28,11 @@ export const TodolistItem = ({
 }: Props) => {
   const [titleTask, setTitleTask] = useState<string>('');
   const createTaskHandler = () => {
-    createTask(titleTask);
-    setTitleTask('');
+    const trimmedTitle = titleTask.trim();
+    if (titleTask.trim() !== '') {
+      createTask(trimmedTitle);
+      setTitleTask('');
+    }
   };
   const changeTaskTitleHandler = (event: ChangeEvent<HTMLInputElement>) => {
     setTitleTask(event.currentTarget.value);
