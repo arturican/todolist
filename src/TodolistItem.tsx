@@ -6,10 +6,10 @@ type Props = {
   todolist: Todolist;
   tasks: Task[];
   date?: number;
-  deleteTask: (id: string) => void;
+  deleteTask: (todolistId: string, id: string) => void;
   changeFilter: (todolistId: string, filter: FilterValue) => void;
-  createTask: (titleTask: string) => void;
-  changeTaskStatus: (taskId: string, isDone: boolean) => void;
+  createTask: (todolistId: string, titleTask: string) => void;
+  changeTaskStatus: (todolistId: string, taskId: string, isDone: boolean) => void;
 };
 export type Task = {
   id: string;
@@ -31,7 +31,7 @@ export const TodolistItem = ({
   const createTaskHandler = () => {
     const trimmedTitle = titleTask.trim();
     if (titleTask.trim() !== '') {
-      createTask(trimmedTitle);
+      createTask(id, trimmedTitle);
       setTitleTask('');
     } else {
       setError('Title is required');
@@ -46,11 +46,11 @@ export const TodolistItem = ({
       createTaskHandler();
     }
   };
-  const deleteTaskHandler = (task: string) => {
-    deleteTask(task);
+  const deleteTaskHandler = (todolistId: string, task: string) => {
+    deleteTask(todolistId, task);
   };
-  const changeTaskStatusHandler = (taskId: string, isDone: boolean) => {
-    changeTaskStatus(taskId, isDone);
+  const changeTaskStatusHandler = (todolistId: string, taskId: string, isDone: boolean) => {
+    changeTaskStatus(todolistId, taskId, isDone);
   };
   const changeFilterHandler = (filter: FilterValue) => {
     changeFilter(id, filter);
@@ -78,10 +78,10 @@ export const TodolistItem = ({
                 <input
                   type={'checkbox'}
                   checked={task.isDone}
-                  onChange={() => changeTaskStatusHandler(task.id, !task.isDone)}
+                  onChange={() => changeTaskStatusHandler(id, task.id, !task.isDone)}
                 />
                 <span>{task.title}</span>
-                <Button title={'X'} onClick={() => deleteTaskHandler(task.id)} />
+                <Button title={'X'} onClick={() => deleteTaskHandler(id, task.id)} />
               </li>
             );
           })
