@@ -1,6 +1,7 @@
-import { Button } from './Button';
-import type { FilterValue, Todolist } from './App';
+import { Button } from './Button.tsx';
+import type { FilterValue, Todolist } from '../App.tsx';
 import { CreateItemForm } from './CreateItemForm.tsx';
+import { EditableSpan } from './EditableSpan.tsx';
 
 type Props = {
   todolist: Todolist;
@@ -11,6 +12,8 @@ type Props = {
   createTask: (todolistId: string, titleTask: string) => void;
   changeTaskStatus: (todolistId: string, taskId: string, isDone: boolean) => void;
   deleteTodolist: (todolistId: string) => void;
+  changeTaskTitle: (todolistId: string, taskId: string, title: string) => void;
+  changeTodolistTitle: (todolistId: string, title: string) => void;
 };
 export type Task = {
   id: string;
@@ -27,6 +30,8 @@ export const TodolistItem = ({
   createTask,
   changeTaskStatus,
   deleteTodolist,
+  changeTaskTitle,
+  changeTodolistTitle,
 }: Props) => {
   const deleteTaskHandler = (todolistId: string, task: string) => {
     deleteTask(todolistId, task);
@@ -43,10 +48,18 @@ export const TodolistItem = ({
   const createTaskHandler = (title: string) => {
     createTask(id, title);
   };
+
+  const changeTodolistTitleHandler = (title: string) => {
+    changeTodolistTitle(id, title);
+  };
+
   return (
     <div>
       <div className={'container'}>
-        <h3>{title}</h3>
+        <h3>
+          <EditableSpan value={title} onChange={changeTodolistTitleHandler} />
+        </h3>
+
         <Button title={'x'} onClick={deleteTodolistHandler} />
       </div>
       <CreateItemForm onCreateItem={createTaskHandler} />
@@ -55,6 +68,9 @@ export const TodolistItem = ({
           <span>{'Список задач пуст'}</span>
         ) : (
           tasks.map((task: Task) => {
+            const changeTaskTitleHandler = (title: string) => {
+              changeTaskTitle(id, task.id, title);
+            };
             return (
               <li key={task.id} className={task.isDone ? 'is-done' : ''}>
                 <input
@@ -62,7 +78,7 @@ export const TodolistItem = ({
                   checked={task.isDone}
                   onChange={() => changeTaskStatusHandler(id, task.id, !task.isDone)}
                 />
-                <span>{task.title}</span>
+                <EditableSpan value={task.title} onChange={changeTaskTitleHandler} />
                 <Button title={'X'} onClick={() => deleteTaskHandler(id, task.id)} />
               </li>
             );

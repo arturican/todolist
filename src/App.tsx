@@ -1,9 +1,9 @@
 import './App.css';
-import type { Task } from './TodolistItem';
-import { TodolistItem } from './TodolistItem';
+import type { Task } from './components/TodolistItem.tsx';
+import { TodolistItem } from './components/TodolistItem.tsx';
 import { useState } from 'react';
 import { v1 } from 'uuid';
-import { CreateItemForm } from './CreateItemForm.tsx';
+import { CreateItemForm } from './components/CreateItemForm.tsx';
 
 export type FilterValue = 'all' | 'active' | 'completed';
 export type Todolist = {
@@ -66,6 +66,12 @@ export const App = () => {
       ),
     });
   };
+  const changeTaskTitle = (todolistId: string, taskId: string, title: string) => {
+    setTasks({
+      ...tasks,
+      [todolistId]: tasks[todolistId].map(task => (task.id === taskId ? { ...task, title } : task)),
+    });
+  };
 
   const deleteTodolist = (todolistId: string) => {
     setTodolists(todolists.filter(todolist => todolist.id !== todolistId));
@@ -78,6 +84,12 @@ export const App = () => {
     const newTodolist: Todolist = { id: todolistId, title, filter: 'all' };
     setTodolists([...todolists, newTodolist]);
     setTasks({ ...tasks, [todolistId]: [] });
+  };
+
+  const changeTodolistTitle = (todolistsId: string, title: string) => {
+    setTodolists(
+      todolists.map(todolist => (todolist.id === todolistsId ? { ...todolist, title } : todolist)),
+    );
   };
 
   return (
@@ -102,6 +114,8 @@ export const App = () => {
             createTask={createTask}
             changeTaskStatus={changeTaskStatus}
             deleteTodolist={deleteTodolist}
+            changeTaskTitle={changeTaskTitle}
+            changeTodolistTitle={changeTodolistTitle}
           />
         );
       })}
