@@ -1,7 +1,12 @@
-import { Button } from './Button.tsx';
 import type { FilterValue, Todolist } from '../App.tsx';
 import { CreateItemForm } from './CreateItemForm.tsx';
 import { EditableSpan } from './EditableSpan.tsx';
+import IconButton from '@mui/material/IconButton';
+import DeleteIcon from '@mui/icons-material/Delete';
+import Button from '@mui/material/Button';
+import Checkbox from '@mui/material/Checkbox';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
 
 type Props = {
   todolist: Todolist;
@@ -59,11 +64,12 @@ export const TodolistItem = ({
         <h3>
           <EditableSpan value={title} onChange={changeTodolistTitleHandler} />
         </h3>
-
-        <Button title={'x'} onClick={deleteTodolistHandler} />
+        <IconButton onClick={deleteTodolistHandler}>
+          <DeleteIcon />
+        </IconButton>
       </div>
       <CreateItemForm onCreateItem={createTaskHandler} />
-      <ul>
+      <List>
         {tasks.length === 0 ? (
           <span>{'Список задач пуст'}</span>
         ) : (
@@ -72,35 +78,42 @@ export const TodolistItem = ({
               changeTaskTitle(id, task.id, title);
             };
             return (
-              <li key={task.id} className={task.isDone ? 'is-done' : ''}>
-                <input
-                  type={'checkbox'}
+              <ListItem key={task.id} className={task.isDone ? 'is-done' : ''}>
+                <Checkbox
                   checked={task.isDone}
                   onChange={() => changeTaskStatusHandler(id, task.id, !task.isDone)}
                 />
                 <EditableSpan value={task.title} onChange={changeTaskTitleHandler} />
-                <Button title={'X'} onClick={() => deleteTaskHandler(id, task.id)} />
-              </li>
+                <IconButton onClick={() => deleteTaskHandler(id, task.id)}>
+                  <DeleteIcon />
+                </IconButton>
+              </ListItem>
             );
           })
         )}
-      </ul>
+      </List>
       <div>
         <Button
-          title={'All'}
+          variant={filter === 'all' ? 'outlined' : 'text'}
+          color={'inherit'}
           onClick={() => changeFilterHandler('all')}
-          className={filter === 'all' ? 'active-filter' : ''}
-        />
+        >
+          ALL
+        </Button>
         <Button
-          title={'Active'}
+          variant={filter === 'active' ? 'outlined' : 'text'}
+          color={'primary'}
           onClick={() => changeFilterHandler('active')}
-          className={filter === 'active' ? 'active-filter' : ''}
-        />
+        >
+          ACTIVE
+        </Button>
         <Button
-          title={'Completed'}
+          variant={filter === 'completed' ? 'outlined' : 'text'}
+          color={'secondary'}
           onClick={() => changeFilterHandler('completed')}
-          className={filter === 'completed' ? 'active-filter' : ''}
-        />
+        >
+          COMPLETED
+        </Button>
       </div>
       <p>{date}</p>
     </div>

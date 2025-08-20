@@ -1,21 +1,7 @@
 .app {
-  padding: 30px;
   display: flex;
-}
-
-.app > div {
-  margin-right: 50px;
-}
-
-.error {
-  border: 1px solid red;
-}
-.error-message {
-  color: red;
-}
-
-.active-filter {
-  background-color: lightgreen;
+  flex-direction: column;
+  width: 100vw;
 }
 
 .is-done {
@@ -25,5 +11,4 @@
 .container {
   display: flex;
   align-items: center;
-  justify-content: space-evenly;
 }
