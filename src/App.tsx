@@ -6,12 +6,13 @@ import { v1 } from 'uuid';
 import { CreateItemForm } from './components/CreateItemForm.tsx';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
-import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
+import { containerSX } from './styles/TodolistItem.styles.ts';
+import { NavButton } from './styles/NavButton.ts';
 
 export type FilterValue = 'all' | 'active' | 'completed';
 export type Todolist = {
@@ -104,11 +105,15 @@ export const App = () => {
     <div className="app">
       <AppBar position="static" sx={{ mb: '30px' }}>
         <Toolbar>
-          <Container maxWidth="lg">
+          <Container maxWidth="lg" sx={containerSX}>
             <IconButton color="inherit">
               <MenuIcon />
             </IconButton>
-            <Button color="inherit">Sign in</Button>
+            <div>
+              <NavButton>Sign in</NavButton>
+              <NavButton>Sign up</NavButton>
+              <NavButton background={'dodgerblue'}>Faq</NavButton>
+            </div>
           </Container>
         </Toolbar>
       </AppBar>
