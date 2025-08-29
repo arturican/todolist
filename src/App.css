@@ -3,3 +3,7 @@
   flex-direction: column;
   width: 100vw;
 }
+.container {
+  display: flex;
+  justify-content: space-between;
+}

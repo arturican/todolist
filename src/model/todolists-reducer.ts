@@ -1,11 +1,6 @@
 import type { Todolist } from '../App.tsx';
 
-export type DeleteTodolistAction = {
-  type: 'delete_todolist';
-  payload: {
-    id: string;
-  };
-};
+export type DeleteTodolistAction = ReturnType<typeof deleteTodlistAC>;
 type Actions = DeleteTodolistAction;
 const initialState: Todolist[] = [];
 export const todolistsReducer = (state: Todolist[] = initialState, action: Actions): Todolist[] => {
@@ -16,4 +11,8 @@ export const todolistsReducer = (state: Todolist[] = initialState, action: Actio
     default:
       return state;
   }
+};
+
+export const deleteTodlistAC = (id: string) => {
+  return { type: 'delete_todolist', payload: { id } } as const;
 };
