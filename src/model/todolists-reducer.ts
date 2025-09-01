@@ -1,7 +1,7 @@
 import type { FilterValue, Todolist } from '../App.tsx';
 import { v1 } from 'uuid';
 
-export type DeleteTodolistAction = ReturnType<typeof deleteTodlistAC>;
+export type DeleteTodolistAction = ReturnType<typeof deleteTodolistAC>;
 export type CreateTodolistAction = ReturnType<typeof createTodolistAC>;
 export type ChangeTodolistTitleAction = ReturnType<typeof changeTodolistTitleAC>;
 export type ChangeTodolistFilterAction = ReturnType<typeof changeTodolistFilterAC>;
@@ -41,7 +41,7 @@ export const todolistsReducer = (state: Todolist[] = initialState, action: Actio
   }
 };
 
-export const deleteTodlistAC = (id: string) => {
+export const deleteTodolistAC = (id: string) => {
   return { type: 'delete_todolist', payload: { id } } as const;
 };
 export const createTodolistAC = (title: string) => {
@@ -50,9 +50,9 @@ export const createTodolistAC = (title: string) => {
 };
 
 export const changeTodolistTitleAC = (payload: { id: string; title: string }) => {
-  return { type: 'change_todolist_title', payload: payload } as const;
+  return { type: 'change_todolist_title', payload } as const;
 };
 
 export const changeTodolistFilterAC = (payload: { id: string; filter: FilterValue }) => {
-  return { type: 'change_todolist_filter', payload: payload } as const;
+  return { type: 'change_todolist_filter', payload } as const;
 };

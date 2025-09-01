@@ -5,7 +5,7 @@ import {
   changeTodolistFilterAC,
   changeTodolistTitleAC,
   createTodolistAC,
-  deleteTodlistAC,
+  deleteTodolistAC,
   todolistsReducer,
 } from './todolists-reducer';
 
@@ -23,7 +23,7 @@ beforeEach(() => {
 });
 
 test('correct todolist should be deleted', () => {
-  const endState = todolistsReducer(startState, deleteTodlistAC(todolistId1));
+  const endState = todolistsReducer(startState, deleteTodolistAC(todolistId1));
   expect(endState.length).toBe(1);
   expect(endState[0].id).toBe(todolistId2);
 });
