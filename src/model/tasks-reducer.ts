@@ -1,21 +1,24 @@
 import type { TasksState } from '../App';
-import type { CreateTodolistAction, DeleteTodolistAction } from './todolists-reducer.ts';
+import {
+  type CreateTodolistAction,
+  type DeleteTodolistAction,
+  todolistId1,
+  todolistId2,
+} from './todolists-reducer.ts';
 import { v1 } from 'uuid';
 
-const initialState: TasksState = {
-  todolistId1: [
-    { id: '1', title: 'CSS', isDone: false },
-    { id: '2', title: 'JS', isDone: true },
-    { id: '3', title: 'React', isDone: false },
+export const initialTaskState: TasksState = {
+  [todolistId1]: [
+    { id: v1(), title: 'HTML & CSS', isDone: true },
+    { id: v1(), title: 'JavaScript', isDone: false },
   ],
-  todolistId2: [
-    { id: '1', title: 'bread', isDone: false },
-    { id: '2', title: 'milk', isDone: true },
-    { id: '3', title: 'tea', isDone: false },
+  [todolistId2]: [
+    { id: v1(), title: 'Milk', isDone: true },
+    { id: v1(), title: 'Bread', isDone: false },
   ],
 };
 
-export const tasksReducer = (state: TasksState = initialState, action: Actions): TasksState => {
+export const tasksReducer = (state: TasksState = initialTaskState, action: Actions): TasksState => {
   switch (action.type) {
     case 'create_todolist': {
       return { ...state, [action.payload.id]: [] };
@@ -110,4 +113,4 @@ export type CreateTaskAction = ReturnType<typeof createTaskAC>;
 export type ChangeTaskStatusAction = ReturnType<typeof changeTaskStatusAC>;
 export type ChangeTaskTitleAction = ReturnType<typeof changeTaskTitleAC>;
 
-console.log(initialState);
+console.log(initialTaskState);
