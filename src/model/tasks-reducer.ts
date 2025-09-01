@@ -2,7 +2,18 @@ import type { TasksState } from '../App';
 import type { CreateTodolistAction, DeleteTodolistAction } from './todolists-reducer.ts';
 import { v1 } from 'uuid';
 
-const initialState: TasksState = {};
+const initialState: TasksState = {
+  todolistId1: [
+    { id: '1', title: 'CSS', isDone: false },
+    { id: '2', title: 'JS', isDone: true },
+    { id: '3', title: 'React', isDone: false },
+  ],
+  todolistId2: [
+    { id: '1', title: 'bread', isDone: false },
+    { id: '2', title: 'milk', isDone: true },
+    { id: '3', title: 'tea', isDone: false },
+  ],
+};
 
 export const tasksReducer = (state: TasksState = initialState, action: Actions): TasksState => {
   switch (action.type) {
@@ -52,3 +63,5 @@ export const createTaskAC = (payload: { todolistId: string; title: string }) => 
 
 export type DeleteTaskAction = ReturnType<typeof deleteTaskAC>;
 export type CreateTaskAction = ReturnType<typeof createTaskAC>;
+
+console.log(initialState);

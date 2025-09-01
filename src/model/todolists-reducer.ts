@@ -10,7 +10,12 @@ type Actions =
   | CreateTodolistAction
   | ChangeTodolistTitleAction
   | ChangeTodolistFilterAction;
-const initialState: Todolist[] = [];
+let todolistId1 = v1();
+let todolistId2 = v1();
+const initialState: Todolist[] = [
+  { id: todolistId1, title: 'What to learn', filter: 'all' },
+  { id: todolistId2, title: 'What to buy', filter: 'all' },
+];
 export const todolistsReducer = (state: Todolist[] = initialState, action: Actions): Todolist[] => {
   switch (action.type) {
     case 'delete_todolist': {
@@ -56,3 +61,5 @@ export const changeTodolistTitleAC = (payload: { id: string; title: string }) =>
 export const changeTodolistFilterAC = (payload: { id: string; filter: FilterValue }) => {
   return { type: 'change_todolist_filter', payload } as const;
 };
+
+console.log(initialState);
