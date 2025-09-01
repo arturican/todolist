@@ -40,12 +40,34 @@ export const tasksReducer = (state: TasksState = initialState, action: Actions):
         [action.payload.todolistId]: [newTask, ...state[action.payload.todolistId]],
       };
     }
+    case 'change_task': {
+      return {
+        ...state,
+        [action.payload.todolistId]: state[action.payload.todolistId].map(task =>
+          task.id === action.payload.taskId ? { ...task, isDone: action.payload.isDone } : task,
+        ),
+      };
+    }
+    case 'change_task_title': {
+      return {
+        ...state,
+        [action.payload.todolistId]: state[action.payload.todolistId].map(task =>
+          task.id === action.payload.taskId ? { ...task, title: action.payload.title } : task,
+        ),
+      };
+    }
     default:
       return state;
   }
 };
 
-type Actions = CreateTodolistAction | DeleteTodolistAction | DeleteTaskAction | CreateTaskAction;
+type Actions =
+  | CreateTodolistAction
+  | DeleteTodolistAction
+  | DeleteTaskAction
+  | CreateTaskAction
+  | ChangeTaskStatusAction
+  | ChangeTaskTitleAction;
 
 export const deleteTaskAC = (payload: { todolistId: string; taskId: string }) => {
   return {
@@ -61,7 +83,31 @@ export const createTaskAC = (payload: { todolistId: string; title: string }) => 
   } as const;
 };
 
+export const changeTaskStatusAC = (payload: {
+  todolistId: string;
+  taskId: string;
+  isDone: boolean;
+}) => {
+  return {
+    type: 'change_task',
+    payload,
+  } as const;
+};
+
+export const changeTaskTitleAC = (payload: {
+  todolistId: string;
+  taskId: string;
+  title: string;
+}) => {
+  return {
+    type: 'change_task_title',
+    payload,
+  } as const;
+};
+
 export type DeleteTaskAction = ReturnType<typeof deleteTaskAC>;
 export type CreateTaskAction = ReturnType<typeof createTaskAC>;
+export type ChangeTaskStatusAction = ReturnType<typeof changeTaskStatusAC>;
+export type ChangeTaskTitleAction = ReturnType<typeof changeTaskTitleAC>;
 
 console.log(initialState);

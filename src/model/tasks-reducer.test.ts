@@ -1,6 +1,12 @@
 import { beforeEach, expect, test } from 'vitest';
 import type { TasksState } from '../App';
-import { createTaskAC, deleteTaskAC, tasksReducer } from './tasks-reducer.ts';
+import {
+  changeTaskStatusAC,
+  changeTaskTitleAC,
+  createTaskAC,
+  deleteTaskAC,
+  tasksReducer,
+} from './tasks-reducer.ts';
 import { createTodolistAC, deleteTodolistAC } from './todolists-reducer.ts';
 
 let startState: TasksState = {};
@@ -77,4 +83,24 @@ test('correct task should be created at correct array', () => {
   expect(endState.todolistId2[0].id).toBeDefined();
   expect(endState.todolistId2[0].title).toBe('juice');
   expect(endState.todolistId2[0].isDone).toBe(false);
+});
+
+test('correct task should change its status', () => {
+  const endState = tasksReducer(
+    startState,
+    changeTaskStatusAC({ todolistId: 'todolistId2', taskId: '2', isDone: false }),
+  );
+
+  expect(endState.todolistId2[1].isDone).toBe(false);
+  expect(endState.todolistId2[0].isDone).toBe(false);
+});
+
+test('correct task should change its title', () => {
+  const title = 'New title';
+  const endState = tasksReducer(
+    startState,
+    changeTaskTitleAC({ todolistId: 'todolistId2', taskId: '2', title }),
+  );
+
+  expect(endState.todolistId2[1].title).toBe('New title');
 });
