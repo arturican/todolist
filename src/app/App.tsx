@@ -1,8 +1,8 @@
 import './App.css';
-import type { Task } from './components/TodolistItem.tsx';
-import { TodolistItem } from './components/TodolistItem.tsx';
-import { useReducer, useState } from 'react';
-import { CreateItemForm } from './components/CreateItemForm.tsx';
+import type { Task } from '../components/TodolistItem.tsx';
+import { TodolistItem } from '../components/TodolistItem.tsx';
+import { useState } from 'react';
+import { CreateItemForm } from '../components/CreateItemForm.tsx';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
@@ -10,8 +10,8 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
-import { containerSX } from './styles/TodolistItem.styles.ts';
-import { NavButton } from './styles/NavButton.ts';
+import { containerSX } from '../styles/TodolistItem.styles.ts';
+import { NavButton } from '../styles/NavButton.ts';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { CssBaseline, Switch } from '@mui/material';
 import {
@@ -19,17 +19,17 @@ import {
   changeTodolistTitleAC,
   createTodolistAC,
   deleteTodolistAC,
-  initialState,
-  todolistsReducer,
-} from './model/todolists-reducer.ts';
+} from '../model/todolists-reducer.ts';
 import {
   changeTaskStatusAC,
   changeTaskTitleAC,
   createTaskAC,
   deleteTaskAC,
-  initialTaskState,
-  tasksReducer,
-} from './model/tasks-reducer.ts';
+} from '../model/tasks-reducer.ts';
+import { useAppDispatch } from '../common/hooks/useAppDispatch.ts';
+import { useAppSelector } from '../common/hooks/useAppSelector.ts';
+import { selectTodolists } from '../model/todolists-selectors.ts';
+import { selectTasks } from '../model/tasks-selectors.ts';
 
 export type FilterValue = 'all' | 'active' | 'completed';
 export type Todolist = {
@@ -55,44 +55,40 @@ export const App = () => {
     setThemeMode(themeMode === 'light' ? 'dark' : 'light');
   };
 
-  const [todolists, dispatchToTodolists] = useReducer(todolistsReducer, initialState);
+  const todolists = useAppSelector(selectTodolists);
   const date = new Date().getMilliseconds();
 
-  const [tasks, dispatchToTask] = useReducer(tasksReducer, initialTaskState);
-
+  const tasks = useAppSelector(selectTasks);
+  const dispatch = useAppDispatch();
   const deleteTask = (todolistId: string, taskId: string) => {
-    dispatchToTask(deleteTaskAC({ todolistId, taskId }));
+    dispatch(deleteTaskAC({ todolistId, taskId }));
   };
 
   const changeFilter = (id: string, filter: FilterValue) => {
-    dispatchToTodolists(changeTodolistFilterAC({ id, filter }));
+    dispatch(changeTodolistFilterAC({ id, filter }));
   };
 
   const createTask = (todolistId: string, title: string) => {
-    dispatchToTask(createTaskAC({ todolistId, title }));
+    dispatch(createTaskAC({ todolistId, title }));
   };
 
   const changeTaskStatus = (todolistId: string, taskId: string, isDone: boolean) => {
-    dispatchToTask(changeTaskStatusAC({ todolistId, taskId, isDone }));
+    dispatch(changeTaskStatusAC({ todolistId, taskId, isDone }));
   };
   const changeTaskTitle = (todolistId: string, taskId: string, title: string) => {
-    dispatchToTask(changeTaskTitleAC({ todolistId, taskId, title }));
+    dispatch(changeTaskTitleAC({ todolistId, taskId, title }));
   };
 
   const deleteTodolist = (id: string) => {
-    const action = deleteTodolistAC(id);
-    dispatchToTodolists(action);
-    dispatchToTask(action);
+    dispatch(deleteTodolistAC(id));
   };
 
   const createTodolist = (title: string) => {
-    const action = createTodolistAC(title);
-    dispatchToTodolists(action);
-    dispatchToTask(action);
+    dispatch(createTodolistAC(title));
   };
 
   const changeTodolistTitle = (id: string, title: string) => {
-    dispatchToTodolists(changeTodolistTitleAC({ id, title }));
+    dispatch(changeTodolistTitleAC({ id, title }));
   };
 
   return (

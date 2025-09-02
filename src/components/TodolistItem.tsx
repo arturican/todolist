@@ -1,4 +1,4 @@
-import type { FilterValue, Todolist } from '../App.tsx';
+import type { FilterValue, Todolist } from '../app/App.tsx';
 import { CreateItemForm } from './CreateItemForm.tsx';
 import { EditableSpan } from './EditableSpan.tsx';
 import IconButton from '@mui/material/IconButton';

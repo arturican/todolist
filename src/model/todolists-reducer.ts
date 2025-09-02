@@ -1,4 +1,4 @@
-import type { FilterValue, Todolist } from '../App.tsx';
+import type { FilterValue, Todolist } from '../app/App.tsx';
 import { v1 } from 'uuid';
 
 export type DeleteTodolistAction = ReturnType<typeof deleteTodolistAC>;

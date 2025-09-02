@@ -1,4 +1,4 @@
-import type { TasksState } from '../App';
+import type { TasksState } from '../app/App.tsx';
 import {
   type CreateTodolistAction,
   type DeleteTodolistAction,
