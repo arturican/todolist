@@ -1,11 +1,12 @@
 import type { TasksState } from '../app/App.tsx';
 import {
-  type CreateTodolistAction,
-  type DeleteTodolistAction,
+  createTodolistAC,
+  deleteTodolistAC,
   todolistId1,
   todolistId2,
 } from './todolists-reducer.ts';
 import { v1 } from 'uuid';
+import { createReducer } from '@reduxjs/toolkit';
 
 export const initialTaskState: TasksState = {
   [todolistId1]: [
@@ -18,7 +19,7 @@ export const initialTaskState: TasksState = {
   ],
 };
 
-export const tasksReducer = (state: TasksState = initialTaskState, action: Actions): TasksState => {
+/*export const _tasksReducer = (state: TasksState = initialTaskState, action: Actions): TasksState => {
   switch (action.type) {
     case 'create_todolist': {
       return { ...state, [action.payload.id]: [] };
@@ -62,15 +63,17 @@ export const tasksReducer = (state: TasksState = initialTaskState, action: Actio
     default:
       return state;
   }
-};
+};*/
 
-type Actions =
-  | CreateTodolistAction
-  | DeleteTodolistAction
-  | DeleteTaskAction
-  | CreateTaskAction
-  | ChangeTaskStatusAction
-  | ChangeTaskTitleAction;
+export const tasksReducer = createReducer(initialTaskState, builder => {
+  builder
+    .addCase(createTodolistAC, (state, action) => {
+      state[action.payload.id] = [];
+    })
+    .addCase(deleteTodolistAC, (state, action) => {
+      delete state[action.payload.id];
+    });
+});
 
 export const deleteTaskAC = (payload: { todolistId: string; taskId: string }) => {
   return {

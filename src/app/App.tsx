@@ -79,8 +79,8 @@ export const App = () => {
     dispatch(changeTaskTitleAC({ todolistId, taskId, title }));
   };
 
-  const deleteTodolist = (id: string) => {
-    dispatch(deleteTodolistAC(id));
+  const deleteTodolist = (todolistId: string) => {
+    dispatch(deleteTodolistAC({ id: todolistId }));
   };
 
   const createTodolist = (title: string) => {
