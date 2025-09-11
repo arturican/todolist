@@ -1,6 +1,6 @@
-import type { FilterValue, Todolist } from '../app/App.tsx';
-import { CreateItemForm } from './CreateItemForm.tsx';
-import { EditableSpan } from './EditableSpan.tsx';
+import type { FilterValue, Todolist } from '../../app/App.tsx';
+import { CreateItemForm } from './CreateItemForm/CreateItemForm.tsx';
+import { EditableSpan } from './EditableSpan/EditableSpan.tsx';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Button from '@mui/material/Button';
@@ -8,7 +8,7 @@ import Checkbox from '@mui/material/Checkbox';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import { Box } from '@mui/material';
-import { containerSX, getListItemSx } from '../styles/TodolistItem.styles.ts';
+import { containerSX, getListItemSx } from '@/styles/TodolistItem.styles.ts';
 
 type Props = {
   todolist: Todolist;

@@ -1,19 +1,15 @@
 import './App.css';
-import type { Task } from '../components/TodolistItem.tsx';
-import { TodolistItem } from '../components/TodolistItem.tsx';
+import type { Task } from '@/common/components/TodolistItem.tsx';
+import { TodolistItem } from '@/common/components/TodolistItem.tsx';
 
-import { CreateItemForm } from '../components/CreateItemForm.tsx';
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
+import { CreateItemForm } from '@/common/components/CreateItemForm/CreateItemForm.tsx';
+
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
-import { containerSX } from '../styles/TodolistItem.styles.ts';
-import { NavButton } from '../styles/NavButton.ts';
+
 import { ThemeProvider } from '@mui/material/styles';
-import { CssBaseline, Switch } from '@mui/material';
+import { CssBaseline } from '@mui/material';
 import {
   changeTodolistFilterAC,
   changeTodolistTitleAC,
@@ -30,9 +26,9 @@ import { useAppDispatch } from '../common/hooks/useAppDispatch.ts';
 import { useAppSelector } from '../common/hooks/useAppSelector.ts';
 import { selectTodolists } from '../model/todolists-selectors.ts';
 import { selectTasks } from '../model/tasks-selectors.ts';
-import { selectThemeMode } from './app-selectors.ts';
-import { changeThemeModeAC } from './app-reducer.ts';
-import { getTheme } from '../common/theme/theme.ts';
+import { Header } from '@/common/components/Header/Header.tsx';
+import { getTheme } from '@/common/theme/theme.ts';
+import { selectThemeMode } from '@/app/app-selectors.ts';
 
 export type FilterValue = 'all' | 'active' | 'completed';
 export type Todolist = {
@@ -46,11 +42,7 @@ export type TasksState = {
 
 export const App = () => {
   const themeMode = useAppSelector(selectThemeMode);
-
   const theme = getTheme(themeMode);
-  const changeMode = () => {
-    dispatch(changeThemeModeAC({ themeMode: themeMode === 'light' ? 'dark' : 'light' }));
-  };
 
   const todolists = useAppSelector(selectTodolists);
   const date = new Date().getMilliseconds();
@@ -92,21 +84,7 @@ export const App = () => {
     <div className="app">
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <AppBar position="static" sx={{ mb: '30px' }}>
-          <Toolbar>
-            <Container maxWidth="lg" sx={containerSX}>
-              <IconButton color="inherit">
-                <MenuIcon />
-              </IconButton>
-              <div>
-                <NavButton>Sign in</NavButton>
-                <NavButton>Sign up</NavButton>
-                <NavButton background={theme.palette.primary.dark}>Faq</NavButton>
-                <Switch color={'default'} onChange={changeMode} />
-              </div>
-            </Container>
-          </Toolbar>
-        </AppBar>
+        <Header />
         <Container maxWidth="lg">
           <Grid container sx={{ mb: '30px' }}>
             <CreateItemForm onCreateItem={createTodolist} />
