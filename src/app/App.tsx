@@ -1,7 +1,7 @@
 import './App.css';
 import type { Task } from '../components/TodolistItem.tsx';
 import { TodolistItem } from '../components/TodolistItem.tsx';
-import { useState } from 'react';
+
 import { CreateItemForm } from '../components/CreateItemForm.tsx';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
@@ -12,7 +12,7 @@ import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import { containerSX } from '../styles/TodolistItem.styles.ts';
 import { NavButton } from '../styles/NavButton.ts';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { ThemeProvider } from '@mui/material/styles';
 import { CssBaseline, Switch } from '@mui/material';
 import {
   changeTodolistFilterAC,
@@ -30,6 +30,9 @@ import { useAppDispatch } from '../common/hooks/useAppDispatch.ts';
 import { useAppSelector } from '../common/hooks/useAppSelector.ts';
 import { selectTodolists } from '../model/todolists-selectors.ts';
 import { selectTasks } from '../model/tasks-selectors.ts';
+import { selectThemeMode } from './app-selectors.ts';
+import { changeThemeModeAC } from './app-reducer.ts';
+import { getTheme } from '../common/theme/theme.ts';
 
 export type FilterValue = 'all' | 'active' | 'completed';
 export type Todolist = {
@@ -40,19 +43,13 @@ export type Todolist = {
 export type TasksState = {
   [key: string]: Task[];
 };
-type ThemeMode = 'light' | 'dark';
+
 export const App = () => {
-  const [themeMode, setThemeMode] = useState<ThemeMode>('light');
-  const theme = createTheme({
-    palette: {
-      mode: themeMode,
-      primary: {
-        main: '#087EA4',
-      },
-    },
-  });
+  const themeMode = useAppSelector(selectThemeMode);
+
+  const theme = getTheme(themeMode);
   const changeMode = () => {
-    setThemeMode(themeMode === 'light' ? 'dark' : 'light');
+    dispatch(changeThemeModeAC({ themeMode: themeMode === 'light' ? 'dark' : 'light' }));
   };
 
   const todolists = useAppSelector(selectTodolists);
