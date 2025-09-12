@@ -42,7 +42,7 @@ export const tasksReducer = createReducer(initialTaskState, builder => {
       state[action.payload.id] = [];
     })
     .addCase(deleteTodolistAC, (state, action) => {
-      delete state[action.payload.id];
+      delete state[action.payload.todolistId];
     })
     .addCase(deleteTaskAC, (state, action) => {
       const task = state[action.payload.todolistId];
