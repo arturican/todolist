@@ -1,4 +1,3 @@
-import type { FilterValue, Todolist } from '../../app/App.tsx';
 import { CreateItemForm } from './CreateItemForm/CreateItemForm.tsx';
 import { EditableSpan } from './EditableSpan/EditableSpan.tsx';
 import IconButton from '@mui/material/IconButton';
@@ -9,6 +8,7 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import { Box } from '@mui/material';
 import { containerSX, getListItemSx } from '@/styles/TodolistItem.styles.ts';
+import type { FilterValue, Todolist } from '@/model/todolists-reducer.ts';
 
 type Props = {
   todolist: Todolist;
