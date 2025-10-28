@@ -5,7 +5,7 @@ import {
   todolistId2,
 } from './todolists-reducer.ts';
 import { createAction, createReducer, nanoid } from '@reduxjs/toolkit';
-import type { Task } from '@/common/components/TodolistItem/TodolistItem.tsx';
+import type { Task } from '@/Tasks.tsx';
 
 export const initialTaskState: TasksState = {
   [todolistId1]: [
@@ -21,7 +21,9 @@ export type TasksState = {
   [key: string]: Task[];
 };
 
-export const deleteTaskAC = createAction<{ id: string; taskId: string }>('tasks/deleteTask');
+export const deleteTaskAC = createAction<{ todolistId: string; taskId: string }>(
+  'tasks/deleteTask',
+);
 export const createTaskAC = createAction<{ id: string; title: string }>('tasks/createTask');
 export const changeTaskStatusAC = createAction<{
   todolistId: string;
@@ -43,7 +45,7 @@ export const tasksReducer = createReducer(initialTaskState, builder => {
       delete state[action.payload.id];
     })
     .addCase(deleteTaskAC, (state, action) => {
-      const task = state[action.payload.id];
+      const task = state[action.payload.todolistId];
       const index = task.findIndex(task => task.id === action.payload.taskId);
       if (index !== -1) {
         task.splice(index, 1);
