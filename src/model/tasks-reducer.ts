@@ -5,7 +5,7 @@ import {
   todolistId2,
 } from './todolists-reducer.ts';
 import { createAction, createReducer, nanoid } from '@reduxjs/toolkit';
-import type { Task } from '@/Tasks.tsx';
+import type { Task } from '@/Task.tsx';
 
 export const initialTaskState: TasksState = {
   [todolistId1]: [

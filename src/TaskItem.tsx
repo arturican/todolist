@@ -2,19 +2,19 @@ import { useAppDispatch } from '@/common/hooks/useAppDispatch.ts';
 import { changeTaskStatusAC, changeTaskTitleAC, deleteTaskAC } from '@/model/tasks-reducer.ts';
 import ListItem from '@mui/material/ListItem';
 import { getListItemSx } from '@/styles/TodolistItem.styles.ts';
-import type { Task } from '@/Tasks.tsx';
+import type { Task } from '@/Task.tsx';
 import { Checkbox } from '@mui/material';
 import { EditableSpan } from '@/common/components/EditableSpan/EditableSpan.tsx';
-import IconButton from 'node_modules/@mui/material/IconButton/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import type { ChangeEvent } from 'react';
+import IconButton from '@mui/material/IconButton';
 
 type Props = {
   task: Task;
   todolistId: string;
 };
 
-export const TasksItem = ({ task, todolistId }: Props) => {
+export const TaskItem = ({ task, todolistId }: Props) => {
   const dispatch = useAppDispatch();
   const deleteTask = () => {
     dispatch(deleteTaskAC({ todolistId, taskId: task.id }));
