@@ -8,13 +8,16 @@ import { useAppDispatch } from '@/common/hooks/useAppDispatch.ts';
 import { changeTaskStatusAC, changeTaskTitleAC, deleteTaskAC } from '@/model/tasks-reducer.ts';
 import { useAppSelector } from '@/common/hooks/useAppSelector.ts';
 import { selectTasks } from '@/model/tasks-selectors.ts';
-import type { Props } from '@/common/components/TodolistItem/TodolistItem.tsx';
 import { EditableSpan } from '@/common/components/EditableSpan/EditableSpan.tsx';
+import type { Todolist } from '@/model/todolists-reducer.ts';
 
 export type Task = {
   id: string;
   title: string;
   isDone: boolean;
+};
+type Props = {
+  todolist: Todolist;
 };
 
 export const Tasks = ({ todolist }: Props) => {
