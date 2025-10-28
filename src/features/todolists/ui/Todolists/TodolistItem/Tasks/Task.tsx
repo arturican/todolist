@@ -1,7 +1,7 @@
 import { useAppSelector } from '@/common/hooks/useAppSelector.ts';
-import { selectTasks } from '@/model/tasks-selectors.ts';
-import type { Todolist } from '@/model/todolists-reducer.ts';
-import { TaskItem } from '@/TaskItem.tsx';
+import { selectTasks } from '@/features/todolists/model/tasks-selectors.ts';
+import type { Todolist } from '@/features/todolists/model/todolists-reducer.ts';
+import { TaskItem } from '@/features/todolists/ui/Todolists/TodolistItem/Tasks/TaskItem/TaskItem.tsx';
 import List from '@mui/material/List';
 
 export type TaskType = {

@@ -8,7 +8,7 @@ import { Toolbar } from '@mui/material';
 import Container from '@mui/material/Container';
 import IconButton from '@mui/material/IconButton';
 import { containerSX } from '@/styles/TodolistItem.styles';
-import { NavButton } from '@/styles/NavButton.ts';
+import { NavButton } from '@/common/components/NavButton/NavButton.ts';
 import Switch from '@mui/material/Switch';
 import MenuIcon from '@mui/icons-material/Menu';
 

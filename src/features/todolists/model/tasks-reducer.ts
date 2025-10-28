@@ -5,7 +5,7 @@ import {
   todolistId2,
 } from './todolists-reducer.ts';
 import { createAction, createReducer, nanoid } from '@reduxjs/toolkit';
-import type { Task } from '@/Task.tsx';
+import type { TaskType } from '@/features/todolists/ui/Todolists/TodolistItem/Tasks/Task.tsx';
 
 export const initialTaskState: TasksState = {
   [todolistId1]: [
@@ -18,7 +18,7 @@ export const initialTaskState: TasksState = {
   ],
 };
 export type TasksState = {
-  [key: string]: Task[];
+  [key: string]: TaskType[];
 };
 
 export const deleteTaskAC = createAction<{ todolistId: string; taskId: string }>(
