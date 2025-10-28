@@ -1,5 +1,5 @@
-import { CreateItemForm } from './CreateItemForm/CreateItemForm.tsx';
-import { EditableSpan } from './EditableSpan/EditableSpan.tsx';
+import { CreateItemForm } from '../CreateItemForm/CreateItemForm.tsx';
+import { EditableSpan } from '../EditableSpan/EditableSpan.tsx';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Button from '@mui/material/Button';
@@ -10,8 +10,6 @@ import { Box } from '@mui/material';
 import { containerSX, getListItemSx } from '@/styles/TodolistItem.styles.ts';
 import {
   changeTodolistFilterAC,
-  changeTodolistTitleAC,
-  deleteTodolistAC,
   type FilterValue,
   type Todolist,
 } from '@/model/todolists-reducer.ts';
@@ -24,6 +22,7 @@ import {
   createTaskAC,
   deleteTaskAC,
 } from '@/model/tasks-reducer.ts';
+import { TodolistTitle } from '@/TodolistTitle.tsx';
 
 type Props = {
   todolist: Todolist;
@@ -34,15 +33,15 @@ export type Task = {
   isDone: boolean;
 };
 
-export const TodolistItem = ({ todolist: { id, title, filter } }: Props) => {
-  const todolistId = id;
+export const TodolistItem = ({ todolist }: Props) => {
   const tasks = useAppSelector(selectTasks);
+  const { id, filter } = todolist;
   const dispatch = useAppDispatch();
-  const deleteTask = (todolistId: string, taskId: string) => {
-    dispatch(deleteTaskAC({ todolistId, taskId }));
+  const deleteTask = (id: string, taskId: string) => {
+    dispatch(deleteTaskAC({ id, taskId }));
   };
   const createTask = (title: string) => {
-    dispatch(createTaskAC({ todolistId, title }));
+    dispatch(createTaskAC({ id, title }));
   };
 
   const changeTaskStatus = (todolistId: string, taskId: string, isDone: boolean) => {
@@ -50,19 +49,11 @@ export const TodolistItem = ({ todolist: { id, title, filter } }: Props) => {
   };
 
   const changeFilter = (filter: FilterValue) => {
-    dispatch(changeTodolistFilterAC({ todolistId, filter }));
+    dispatch(changeTodolistFilterAC({ id, filter }));
   };
 
   const changeTaskTitle = (todolistId: string, taskId: string, title: string) => {
     dispatch(changeTaskTitleAC({ todolistId, taskId, title }));
-  };
-
-  const deleteTodolist = () => {
-    dispatch(deleteTodolistAC({ todolistId: todolistId }));
-  };
-
-  const changeTodolistTitle = (title: string) => {
-    dispatch(changeTodolistTitleAC({ todolistId, title }));
   };
 
   const todolistTasks = tasks[id];
@@ -76,14 +67,7 @@ export const TodolistItem = ({ todolist: { id, title, filter } }: Props) => {
 
   return (
     <div>
-      <div className={'container'}>
-        <h3>
-          <EditableSpan value={title} onChange={changeTodolistTitle} />
-        </h3>
-        <IconButton onClick={deleteTodolist}>
-          <DeleteIcon />
-        </IconButton>
-      </div>
+      <TodolistTitle todolist={todolist} />
       <CreateItemForm onCreateItem={createTask} />
       <List>
         {filteredTask.length === 0 ? (
