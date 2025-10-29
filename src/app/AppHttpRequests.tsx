@@ -42,7 +42,7 @@ export const AppHttpRequests = () => {
 
   const deleteTodolist = (id: string) => {
     axios
-      .delete<BaseResponse<{}>>(`${baseUrl}/todo-lists/${id}`, {
+      .delete<BaseResponse>(`${baseUrl}/todo-lists/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
           'API-KEY': apiKey,
@@ -59,7 +59,7 @@ export const AppHttpRequests = () => {
 
   const changeTodolistTitle = (id: string, title: string) => {
     axios
-      .put<BaseResponse<{}>>(
+      .put<BaseResponse>(
         `${baseUrl}/todo-lists/${id}`,
         { title },
         {
