@@ -3,6 +3,7 @@ import Checkbox from '@mui/material/Checkbox';
 import { CreateItemForm } from '@/common/components/CreateItemForm/CreateItemForm';
 import { EditableSpan } from '@/common/components/EditableSpan/EditableSpan';
 import axios from 'axios';
+import type { BaseResponse } from '@/common/types.ts';
 
 export const AppHttpRequests = () => {
   const [todolists, setTodolists] = useState<Todolist[]>([]);
@@ -23,7 +24,7 @@ export const AppHttpRequests = () => {
   /* eslint-disable @typescript-eslint/no-unused-vars */
   const createTodolist = (title: string) => {
     axios
-      .post<CreateTodolistResponse>(
+      .post<BaseResponse<{ item: Todolist }>>(
         `${baseUrl}/todo-lists`,
         { title },
         {
@@ -41,7 +42,7 @@ export const AppHttpRequests = () => {
 
   const deleteTodolist = (id: string) => {
     axios
-      .delete<DeleteTodolistResponse>(`${baseUrl}/todo-lists/${id}`, {
+      .delete<BaseResponse<{}>>(`${baseUrl}/todo-lists/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
           'API-KEY': apiKey,
@@ -58,7 +59,7 @@ export const AppHttpRequests = () => {
 
   const changeTodolistTitle = (id: string, title: string) => {
     axios
-      .put<UpdateTodolistResponse>(
+      .put<BaseResponse<{}>>(
         `${baseUrl}/todo-lists/${id}`,
         { title },
         {
@@ -130,30 +131,4 @@ export type Todolist = {
   title: string;
   addedDate: string;
   order: number;
-};
-
-export type FieldError = {
-  error: string;
-  field: string;
-};
-
-type CreateTodolistResponse = {
-  data: { item: Todolist };
-  resultCode: number;
-  messages: string[];
-  fieldsErrors: FieldError[];
-};
-
-type DeleteTodolistResponse = {
-  data: {};
-  resultCode: number;
-  messages: string[];
-  fieldsErrors: FieldError[];
-};
-
-type UpdateTodolistResponse = {
-  data: {};
-  resultCode: number;
-  messages: string[];
-  fieldsErrors: FieldError[];
 };
