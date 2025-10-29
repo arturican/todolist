@@ -9,10 +9,11 @@ export const AppHttpRequests = () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [tasks, setTasks] = useState<any>({});
   const token = import.meta.env.VITE_API_TOKEN;
-
+  const baseUrl = import.meta.env.VITE_BASE_URL;
+  const apiKey = import.meta.env.VITE_API_KEY;
   useEffect(() => {
     axios
-      .get<Todolist[]>('https://social-network.samuraijs.com/api/1.1/todo-lists', {
+      .get<Todolist[]>(`${baseUrl}/todo-lists`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -20,11 +21,64 @@ export const AppHttpRequests = () => {
       .then(res => setTodolists(res.data));
   }, []);
   /* eslint-disable @typescript-eslint/no-unused-vars */
-  const createTodolist = (title: string) => {};
+  const createTodolist = (title: string) => {
+    axios
+      .post<CreateTodolistResponse>(
+        `${baseUrl}/todo-lists`,
+        { title },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'API-KEY': apiKey,
+          },
+        },
+      )
+      .then(res => {
+        const newTodolist = res.data.data.item;
+        setTodolists([newTodolist, ...todolists]);
+      });
+  };
 
-  const deleteTodolist = (id: string) => {};
+  const deleteTodolist = (id: string) => {
+    axios
+      .delete<DeleteTodolistResponse>(`${baseUrl}/todo-lists/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'API-KEY': apiKey,
+        },
+      })
+      .then(res => {
+        if (res.data.resultCode === 0) {
+          setTodolists(prev => prev.filter(tl => tl.id !== id));
+        } else {
+          console.error('Ошибка при удалении:', res.data.messages);
+        }
+      });
+  };
 
-  const changeTodolistTitle = (id: string, title: string) => {};
+  const changeTodolistTitle = (id: string, title: string) => {
+    axios
+      .put<UpdateTodolistResponse>(
+        `${baseUrl}/todo-lists/${id}`,
+        { title },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'API-KEY': apiKey,
+          },
+        },
+      )
+      .then(res => {
+        if (res.data.resultCode === 0) {
+          setTodolists(prev => prev.map(tl => (tl.id === id ? { ...tl, title } : tl)));
+        } else {
+          console.error('Ошибка при изменения тудулиста:', res.data.messages);
+        }
+      })
+      .catch(e => {
+        console.error('Ошибка при запросе изменения тудулиста:', e);
+      });
+  };
 
   const createTask = (todolistId: string, title: string) => {};
 
@@ -76,4 +130,30 @@ export type Todolist = {
   title: string;
   addedDate: string;
   order: number;
+};
+
+export type FieldError = {
+  error: string;
+  field: string;
+};
+
+type CreateTodolistResponse = {
+  data: { item: Todolist };
+  resultCode: number;
+  messages: string[];
+  fieldsErrors: FieldError[];
+};
+
+type DeleteTodolistResponse = {
+  data: {};
+  resultCode: number;
+  messages: string[];
+  fieldsErrors: FieldError[];
+};
+
+type UpdateTodolistResponse = {
+  data: {};
+  resultCode: number;
+  messages: string[];
+  fieldsErrors: FieldError[];
 };
