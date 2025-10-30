@@ -6,12 +6,12 @@ import {
 } from '@/features/todolists/model/tasks-reducer.ts';
 import ListItem from '@mui/material/ListItem';
 import { Checkbox } from '@mui/material';
-import { EditableSpan } from '@/common/components/EditableSpan/EditableSpan.tsx';
 import DeleteIcon from '@mui/icons-material/Delete';
 import type { ChangeEvent } from 'react';
 import IconButton from '@mui/material/IconButton';
 import type { TaskType } from '@/features/todolists/ui/Todolists/TodolistItem/Tasks/Task.tsx';
 import { getListItemSx } from '@/features/todolists/ui/Todolists/TodolistItem/Tasks/TaskItem/TaskItem.styles.ts';
+import { EditableSpan } from '@/common/components';
 
 type Props = {
   task: TaskType;

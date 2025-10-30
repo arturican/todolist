@@ -1,73 +1,37 @@
 import { type ChangeEvent, type CSSProperties, useEffect, useState } from 'react';
 import Checkbox from '@mui/material/Checkbox';
-import axios from 'axios';
-import type { BaseResponse } from '@/common/types.ts';
+import type { BaseResponse } from '@/common/types/types.ts';
 import { CreateItemForm, EditableSpan } from '@/common/components';
+import { instance } from '@/common/instance/instance.ts';
 
 export const AppHttpRequests = () => {
   const [todolists, setTodolists] = useState<Todolist[]>([]);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [tasks, setTasks] = useState<any>({});
-  const token = import.meta.env.VITE_API_TOKEN;
-  const baseUrl = import.meta.env.VITE_BASE_URL;
-  const apiKey = import.meta.env.VITE_API_KEY;
   useEffect(() => {
-    axios
-      .get<Todolist[]>(`${baseUrl}/todo-lists`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then(res => setTodolists(res.data));
+    instance.get<Todolist[]>(`/todo-lists`).then(res => setTodolists(res.data));
   }, []);
   /* eslint-disable @typescript-eslint/no-unused-vars */
   const createTodolist = (title: string) => {
-    axios
-      .post<BaseResponse<{ item: Todolist }>>(
-        `${baseUrl}/todo-lists`,
-        { title },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'API-KEY': apiKey,
-          },
-        },
-      )
-      .then(res => {
-        const newTodolist = res.data.data.item;
-        setTodolists([newTodolist, ...todolists]);
-      });
+    instance.post<BaseResponse<{ item: Todolist }>>(`/todo-lists`, { title }).then(res => {
+      const newTodolist = res.data.data.item;
+      setTodolists([newTodolist, ...todolists]);
+    });
   };
 
   const deleteTodolist = (id: string) => {
-    axios
-      .delete<BaseResponse>(`${baseUrl}/todo-lists/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'API-KEY': apiKey,
-        },
-      })
-      .then(res => {
-        if (res.data.resultCode === 0) {
-          setTodolists(prev => prev.filter(tl => tl.id !== id));
-        } else {
-          console.error('Ошибка при удалении:', res.data.messages);
-        }
-      });
+    instance.delete<BaseResponse>(`/todo-lists/${id}`).then(res => {
+      if (res.data.resultCode === 0) {
+        setTodolists(prev => prev.filter(tl => tl.id !== id));
+      } else {
+        console.error('Ошибка при удалении:', res.data.messages);
+      }
+    });
   };
 
   const changeTodolistTitle = (id: string, title: string) => {
-    axios
-      .put<BaseResponse>(
-        `${baseUrl}/todo-lists/${id}`,
-        { title },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'API-KEY': apiKey,
-          },
-        },
-      )
+    instance
+      .put<BaseResponse>(`/todo-lists/${id}`, { title })
       .then(res => {
         if (res.data.resultCode === 0) {
           setTodolists(prev => prev.map(tl => (tl.id === id ? { ...tl, title } : tl)));
