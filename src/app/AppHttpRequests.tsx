@@ -1,10 +1,18 @@
-import { type ChangeEvent, type CSSProperties, useEffect, useState } from 'react';
+import {
+  type ChangeEvent,
+  type CSSProperties,
+  useEffect,
+  useState,
+} from 'react';
 import Checkbox from '@mui/material/Checkbox';
 import { CreateItemForm, EditableSpan } from '@/common/components';
 import type { Todolist } from '@/features/todolists/api/todolistsApi.types.ts';
 import { todolistsApi } from '@/features/todolists/api/todolistsApi.ts';
 import { tasksApi } from '@/features/todolists/api/tasksApi.ts';
-import type { DomainTask, UpdateTaskModel } from '@/features/todolists/api/tasksApi.types.ts';
+import type {
+  DomainTask,
+  UpdateTaskModel,
+} from '@/features/todolists/api/tasksApi.types.ts';
 import { TaskStatus } from '@/common/enums/enums.ts';
 
 export const AppHttpRequests = () => {
@@ -19,7 +27,9 @@ export const AppHttpRequests = () => {
       todolists.forEach(todolist => {
         tasksApi
           .getTasks(todolist.id)
-          .then(res => setTasks(prev => ({ ...prev, [todolist.id]: res.data.items })));
+          .then(res =>
+            setTasks(prev => ({ ...prev, [todolist.id]: res.data.items })),
+          );
       });
     });
   }, []);
@@ -47,7 +57,9 @@ export const AppHttpRequests = () => {
       .changeTodolistTitle({ id, title })
       .then(res => {
         if (res.data.resultCode === 0) {
-          setTodolists(prev => prev.map(tl => (tl.id === id ? { ...tl, title } : tl)));
+          setTodolists(prev =>
+            prev.map(tl => (tl.id === id ? { ...tl, title } : tl)),
+          );
         } else {
           console.error('Ошибка при изменения тудулиста:', res.data.messages);
         }
@@ -72,7 +84,10 @@ export const AppHttpRequests = () => {
 
   const deleteTask = (todolistId: string, taskId: string) => {};
 
-  const changeTaskStatus = (e: ChangeEvent<HTMLInputElement>, task: DomainTask) => {
+  const changeTaskStatus = (
+    e: ChangeEvent<HTMLInputElement>,
+    task: DomainTask,
+  ) => {
     const todolistId = task.todoListId;
     const model: UpdateTaskModel = {
       description: task.description,
@@ -85,7 +100,9 @@ export const AppHttpRequests = () => {
     tasksApi.updateTask({ todolistId, taskId: task.id, model }).then(() => {
       setTasks(prevTasks => ({
         ...prevTasks,
-        [todolistId]: prevTasks[todolistId].map(t => (t.id === task.id ? { ...t, ...model } : t)),
+        [todolistId]: prevTasks[todolistId].map(t =>
+          t.id === task.id ? { ...t, ...model } : t,
+        ),
       }));
     });
   };
@@ -105,15 +122,22 @@ export const AppHttpRequests = () => {
             />
             <button onClick={() => deleteTodolist(todolist.id)}>x</button>
           </div>
-          <CreateItemForm onCreateItem={title => createTask(todolist.id, title)} />
+          <CreateItemForm
+            onCreateItem={title => createTask(todolist.id, title)}
+          />
           {tasks[todolist.id]?.map(task => (
             <div key={task.id}>
               <Checkbox
                 checked={task.status === TaskStatus.Completed}
                 onChange={e => changeTaskStatus(e, task)}
               />
-              <EditableSpan value={task.title} onChange={title => changeTaskTitle(task, title)} />
-              <button onClick={() => deleteTask(todolist.id, task.id)}>x</button>
+              <EditableSpan
+                value={task.title}
+                onChange={title => changeTaskTitle(task, title)}
+              />
+              <button onClick={() => deleteTask(todolist.id, task.id)}>
+                x
+              </button>
             </div>
           ))}
         </div>
