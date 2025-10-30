@@ -3,6 +3,7 @@ import Checkbox from '@mui/material/Checkbox';
 import type { BaseResponse } from '@/common/types/types.ts';
 import { CreateItemForm, EditableSpan } from '@/common/components';
 import { instance } from '@/common/instance/instance.ts';
+import type { Todolist } from '@/features/todolists/api/todolistsApi.types.ts';
 
 export const AppHttpRequests = () => {
   const [todolists, setTodolists] = useState<Todolist[]>([]);
@@ -87,11 +88,4 @@ const container: CSSProperties = {
   display: 'flex',
   justifyContent: 'space-between',
   flexDirection: 'column',
-};
-
-export type Todolist = {
-  id: string;
-  title: string;
-  addedDate: string;
-  order: number;
 };
