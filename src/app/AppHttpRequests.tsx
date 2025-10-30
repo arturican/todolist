@@ -1,27 +1,26 @@
 import { type ChangeEvent, type CSSProperties, useEffect, useState } from 'react';
 import Checkbox from '@mui/material/Checkbox';
-import type { BaseResponse } from '@/common/types/types.ts';
 import { CreateItemForm, EditableSpan } from '@/common/components';
-import { instance } from '@/common/instance/instance.ts';
 import type { Todolist } from '@/features/todolists/api/todolistsApi.types.ts';
+import { todolistsApi } from '@/features/todolists/api/todolistsApi.ts';
 
 export const AppHttpRequests = () => {
   const [todolists, setTodolists] = useState<Todolist[]>([]);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [tasks, setTasks] = useState<any>({});
   useEffect(() => {
-    instance.get<Todolist[]>(`/todo-lists`).then(res => setTodolists(res.data));
+    todolistsApi.getTodolists().then(res => setTodolists(res.data));
   }, []);
   /* eslint-disable @typescript-eslint/no-unused-vars */
   const createTodolist = (title: string) => {
-    instance.post<BaseResponse<{ item: Todolist }>>(`/todo-lists`, { title }).then(res => {
+    todolistsApi.createTodolist({ title }).then(res => {
       const newTodolist = res.data.data.item;
       setTodolists([newTodolist, ...todolists]);
     });
   };
 
   const deleteTodolist = (id: string) => {
-    instance.delete<BaseResponse>(`/todo-lists/${id}`).then(res => {
+    todolistsApi.deleteTodolist({ id }).then(res => {
       if (res.data.resultCode === 0) {
         setTodolists(prev => prev.filter(tl => tl.id !== id));
       } else {
@@ -31,8 +30,8 @@ export const AppHttpRequests = () => {
   };
 
   const changeTodolistTitle = (id: string, title: string) => {
-    instance
-      .put<BaseResponse>(`/todo-lists/${id}`, { title })
+    todolistsApi
+      .changeTodolistTitle({ id, title })
       .then(res => {
         if (res.data.resultCode === 0) {
           setTodolists(prev => prev.map(tl => (tl.id === id ? { ...tl, title } : tl)));
