@@ -3,19 +3,31 @@ import Checkbox from '@mui/material/Checkbox';
 import { CreateItemForm, EditableSpan } from '@/common/components';
 import type { Todolist } from '@/features/todolists/api/todolistsApi.types.ts';
 import { todolistsApi } from '@/features/todolists/api/todolistsApi.ts';
+import { tasksApi } from '@/features/todolists/api/tasksApi.ts';
+import type { DomainTask } from '@/features/todolists/api/tasksApi.types.ts';
 
 export const AppHttpRequests = () => {
   const [todolists, setTodolists] = useState<Todolist[]>([]);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [tasks, setTasks] = useState<any>({});
+   
+  const [tasks, setTasks] = useState<Record<string, DomainTask[]>>({});
+  console.log(tasks);
   useEffect(() => {
-    todolistsApi.getTodolists().then(res => setTodolists(res.data));
+    todolistsApi.getTodolists().then(res => {
+      const todolists = res.data;
+      setTodolists(todolists);
+      todolists.forEach(todolist => {
+        tasksApi
+          .getTasks(todolist.id)
+          .then(res => setTasks(prev => ({ ...prev, [todolist.id]: res.data.items })));
+      });
+    });
   }, []);
   /* eslint-disable @typescript-eslint/no-unused-vars */
   const createTodolist = (title: string) => {
     todolistsApi.createTodolist({ title }).then(res => {
       const newTodolist = res.data.data.item;
       setTodolists([newTodolist, ...todolists]);
+      setTasks({ ...tasks, [newTodolist.id]: [] });
     });
   };
 
@@ -44,7 +56,18 @@ export const AppHttpRequests = () => {
       });
   };
 
-  const createTask = (todolistId: string, title: string) => {};
+  const createTask = (todolistId: string, title: string) => {
+    tasksApi.createTask({ todolistId, title }).then(res => {
+      if (res.data.resultCode === 0) {
+        const newTask = res.data.data.item;
+        console.log(newTask);
+        setTasks(prev => ({
+          ...prev,
+          [todolistId]: [newTask, ...(prev[todolistId] || [])],
+        }));
+      }
+    });
+  };
 
   const deleteTask = (todolistId: string, taskId: string) => {};
 

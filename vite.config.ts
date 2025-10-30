@@ -17,4 +17,8 @@ export default defineConfig({
     port: 3000,      // <-- укажи нужный порт
     open: true,      // (опционально) автоматически открывать браузер
   },
+  preview: {
+    port: 3001,
+    open: true,
+  }
 });
