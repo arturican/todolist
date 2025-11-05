@@ -19,7 +19,6 @@ export const AppHttpRequests = () => {
   const [todolists, setTodolists] = useState<Todolist[]>([]);
 
   const [tasks, setTasks] = useState<Record<string, DomainTask[]>>({});
-  console.log(tasks);
   useEffect(() => {
     todolistsApi.getTodolists().then(res => {
       const todolists = res.data;
@@ -33,7 +32,7 @@ export const AppHttpRequests = () => {
       });
     });
   }, []);
-  /* eslint-disable @typescript-eslint/no-unused-vars */
+
   const createTodolist = (title: string) => {
     todolistsApi.createTodolist({ title }).then(res => {
       const newTodolist = res.data.data.item;
@@ -73,16 +72,26 @@ export const AppHttpRequests = () => {
     tasksApi.createTask({ todolistId, title }).then(res => {
       if (res.data.resultCode === 0) {
         const newTask = res.data.data.item;
-        console.log(newTask);
         setTasks(prev => ({
           ...prev,
-          [todolistId]: [newTask, ...(prev[todolistId] || [])],
+          [todolistId]: [newTask, ...prev[todolistId]],
         }));
       }
     });
   };
 
-  const deleteTask = (todolistId: string, taskId: string) => {};
+  const deleteTask = (todolistId: string, taskId: string) => {
+    tasksApi.deleteTask({ todolistId, taskId }).then(res => {
+      if (res.data.resultCode === 0) {
+        setTasks(prev => ({
+          ...prev,
+          [todolistId]: [
+            ...prev[todolistId].filter(task => task.id !== taskId),
+          ],
+        }));
+      }
+    });
+  };
 
   const changeTaskStatus = (
     e: ChangeEvent<HTMLInputElement>,
@@ -107,8 +116,25 @@ export const AppHttpRequests = () => {
     });
   };
 
-  const changeTaskTitle = (task: any, title: string) => {};
-  /* eslint-enable @typescript-eslint/no-unused-vars */
+  const changeTaskTitle = (task: DomainTask, title: string) => {
+    const todolistId = task.todoListId;
+    const model: UpdateTaskModel = {
+      description: task.description,
+      title: title,
+      priority: task.priority,
+      startDate: task.startDate,
+      deadline: task.deadline,
+      status: task.status,
+    };
+    tasksApi.updateTask({ todolistId, taskId: task.id, model }).then(() => {
+      setTasks(prevTasks => ({
+        ...prevTasks,
+        [todolistId]: prevTasks[todolistId].map(t =>
+          t.id === task.id ? { ...t, ...model } : t,
+        ),
+      }));
+    });
+  };
 
   return (
     <div style={{ margin: '20px' }}>
