@@ -1,7 +1,7 @@
 import { useAppSelector } from '@/common/hooks/useAppSelector.ts';
 import { selectThemeMode } from '@/app/app-selectors.ts';
 import { getTheme } from '@/common/theme/theme.ts';
-import { changeThemeModeAC } from '@/app/app-reducer.ts';
+import { changeThemeModeAC } from '@/app/app-slice.ts';
 import { useAppDispatch } from '@/common/hooks/useAppDispatch.ts';
 import AppBar from '@mui/material/AppBar';
 import { Toolbar } from '@mui/material';
@@ -18,7 +18,11 @@ export const Header = () => {
 
   const theme = getTheme(themeMode);
   const changeMode = () => {
-    dispatch(changeThemeModeAC({ themeMode: themeMode === 'light' ? 'dark' : 'light' }));
+    dispatch(
+      changeThemeModeAC({
+        themeMode: themeMode === 'light' ? 'dark' : 'light',
+      }),
+    );
   };
   return (
     <AppBar position="static" sx={{ mb: '30px' }}>
