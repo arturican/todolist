@@ -3,7 +3,7 @@ import {
   deleteTodolistAC,
   todolistId1,
   todolistId2,
-} from './todolists-reducer.ts';
+} from './todolists-slice.ts';
 import { createAction, createReducer, nanoid } from '@reduxjs/toolkit';
 import type { TaskType } from '@/features/todolists/ui/Todolists/TodolistItem/Tasks/Task.tsx';
 
@@ -21,10 +21,13 @@ export type TasksState = {
   [key: string]: TaskType[];
 };
 
-export const deleteTaskAC = createAction<{ todolistId: string; taskId: string }>(
-  'tasks/deleteTask',
+export const deleteTaskAC = createAction<{
+  todolistId: string;
+  taskId: string;
+}>('tasks/deleteTask');
+export const createTaskAC = createAction<{ id: string; title: string }>(
+  'tasks/createTask',
 );
-export const createTaskAC = createAction<{ id: string; title: string }>('tasks/createTask');
 export const changeTaskStatusAC = createAction<{
   todolistId: string;
   taskId: string;
@@ -59,13 +62,17 @@ export const tasksReducer = createReducer(initialTaskState, builder => {
       });
     })
     .addCase(changeTaskStatusAC, (state, action) => {
-      const task = state[action.payload.todolistId].find(task => task.id === action.payload.taskId);
+      const task = state[action.payload.todolistId].find(
+        task => task.id === action.payload.taskId,
+      );
       if (task) {
         task.isDone = action.payload.isDone;
       }
     })
     .addCase(changeTaskTitleAC, (state, action) => {
-      const task = state[action.payload.todolistId].find(task => task.id === action.payload.taskId);
+      const task = state[action.payload.todolistId].find(
+        task => task.id === action.payload.taskId,
+      );
       if (task) {
         task.title = action.payload.title;
       }

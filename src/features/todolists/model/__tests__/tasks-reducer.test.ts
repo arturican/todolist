@@ -8,7 +8,7 @@ import {
   tasksReducer,
   type TasksState,
 } from '../tasks-reducer.ts';
-import { createTodolistAC, deleteTodolistAC } from '../todolists-reducer.ts';
+import { createTodolistAC, deleteTodolistAC } from '../todolists-slice.ts';
 
 let startState: TasksState = {};
 
@@ -41,7 +41,10 @@ test('array should be created for new todolist', () => {
 });
 
 test('property with todolistId should be deleted', () => {
-  const endState = tasksReducer(startState, deleteTodolistAC({ id: 'todolistId2' }));
+  const endState = tasksReducer(
+    startState,
+    deleteTodolistAC({ id: 'todolistId2' }),
+  );
 
   const keys = Object.keys(endState);
 
@@ -89,7 +92,11 @@ test('correct task should be created at correct array', () => {
 test('correct task should change its status', () => {
   const endState = tasksReducer(
     startState,
-    changeTaskStatusAC({ todolistId: 'todolistId2', taskId: '2', isDone: false }),
+    changeTaskStatusAC({
+      todolistId: 'todolistId2',
+      taskId: '2',
+      isDone: false,
+    }),
   );
 
   expect(endState.todolistId2[1].isDone).toBe(false);

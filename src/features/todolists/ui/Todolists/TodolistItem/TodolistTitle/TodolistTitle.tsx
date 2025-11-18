@@ -2,7 +2,7 @@ import {
   changeTodolistTitleAC,
   deleteTodolistAC,
   type Todolist,
-} from '@/features/todolists/model/todolists-reducer.ts';
+} from '@/features/todolists/model/todolists-slice.ts';
 import { useAppDispatch } from '@/common/hooks/useAppDispatch.ts';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';

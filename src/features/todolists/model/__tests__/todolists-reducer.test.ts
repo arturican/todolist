@@ -7,7 +7,7 @@ import {
   deleteTodolistAC,
   type Todolist,
   todolistsReducer,
-} from '../todolists-reducer.ts';
+} from '../todolists-slice.ts';
 import { nanoid } from '@reduxjs/toolkit';
 
 let todolistId1: string;
@@ -24,7 +24,10 @@ beforeEach(() => {
 });
 
 test('correct todolist should be deleted', () => {
-  const endState = todolistsReducer(startState, deleteTodolistAC({ id: todolistId1 }));
+  const endState = todolistsReducer(
+    startState,
+    deleteTodolistAC({ id: todolistId1 }),
+  );
   expect(endState.length).toBe(1);
   expect(endState[0].id).toBe(todolistId2);
 });
@@ -38,7 +41,10 @@ test('correct todolist should be created', () => {
 
 test('correct todolist should change its title', () => {
   const title = 'New title';
-  const endState = todolistsReducer(startState, changeTodolistTitleAC({ id: todolistId2, title }));
+  const endState = todolistsReducer(
+    startState,
+    changeTodolistTitleAC({ id: todolistId2, title }),
+  );
   expect(endState[0].title).toBe('What to learn');
   expect(endState[1].title).toBe(title);
 });

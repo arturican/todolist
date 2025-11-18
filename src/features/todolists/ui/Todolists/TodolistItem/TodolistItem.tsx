@@ -3,7 +3,7 @@ import { useAppDispatch } from '@/common/hooks/useAppDispatch.ts';
 import { createTaskAC } from '@/features/todolists/model/tasks-reducer.ts';
 import { TodolistTitle } from '@/features/todolists/ui/Todolists/TodolistItem/TodolistTitle/TodolistTitle.tsx';
 import { Task } from '@/features/todolists/ui/Todolists/TodolistItem/Tasks/Task.tsx';
-import type { Todolist } from '@/features/todolists/model/todolists-reducer.ts';
+import type { Todolist } from '@/features/todolists/model/todolists-slice.ts';
 import { FilterButtons } from '@/features/todolists/ui/Todolists/TodolistItem/FilterButtons/FilterButtons.tsx';
 
 type Props = {
