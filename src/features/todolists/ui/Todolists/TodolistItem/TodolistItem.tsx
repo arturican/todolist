@@ -1,4 +1,4 @@
-import { CreateItemForm } from '../../../../../common/components/CreateItemForm/CreateItemForm.tsx';
+import { CreateItemForm } from '@/common/components';
 import { useAppDispatch } from '@/common/hooks/useAppDispatch.ts';
 import { createTaskAC } from '@/features/todolists/model/tasks-slice.ts';
 import { TodolistTitle } from '@/features/todolists/ui/Todolists/TodolistItem/TodolistTitle/TodolistTitle.tsx';

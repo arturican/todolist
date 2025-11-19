@@ -13,7 +13,11 @@ export const appSlice = createSlice({
       },
     ),
   }),
+  selectors: {
+    selectThemeMode: state => state.themeMode,
+  },
 });
 
 export const { changeThemeModeAC } = appSlice.actions;
 export const appReducer = appSlice.reducer;
+export const { selectThemeMode } = appSlice.selectors;

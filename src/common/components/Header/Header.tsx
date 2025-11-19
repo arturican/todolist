@@ -1,7 +1,6 @@
 import { useAppSelector } from '@/common/hooks/useAppSelector.ts';
-import { selectThemeMode } from '@/app/app-selectors.ts';
 import { getTheme } from '@/common/theme/theme.ts';
-import { changeThemeModeAC } from '@/app/app-slice.ts';
+import { changeThemeModeAC, selectThemeMode } from '@/app/app-slice.ts';
 import { useAppDispatch } from '@/common/hooks/useAppDispatch.ts';
 import AppBar from '@mui/material/AppBar';
 import { Toolbar } from '@mui/material';
