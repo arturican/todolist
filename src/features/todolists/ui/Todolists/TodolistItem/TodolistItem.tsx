@@ -11,10 +11,10 @@ type Props = {
 };
 
 export const TodolistItem = ({ todolist }: Props) => {
-  const { id } = todolist;
+  const { id: todolistId } = todolist;
   const dispatch = useAppDispatch();
   const createTask = (title: string) => {
-    dispatch(createTaskAC({ id, title }));
+    dispatch(createTaskAC({ todolistId, title }));
   };
   return (
     <div>

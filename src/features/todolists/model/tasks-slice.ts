@@ -122,6 +122,7 @@ export const tasksSlice = createSlice({
           title: action.payload.title,
           isDone: false,
         });
+        console.log(state);
       },
     ),
     changeTaskStatusAC: create.reducer<{

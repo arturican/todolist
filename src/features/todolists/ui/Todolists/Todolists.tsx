@@ -5,7 +5,7 @@ import { useAppSelector } from '@/common/hooks/useAppSelector.ts';
 import { selectTodolists } from '@/features/todolists/model/todolists-selectors.ts';
 export const Todolists = () => {
   const todolists = useAppSelector(selectTodolists);
-
+  console.log(todolists);
   return (
     <>
       {todolists.map(todolist => {
