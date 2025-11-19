@@ -1,6 +1,6 @@
 import { CreateItemForm } from '../../../../../common/components/CreateItemForm/CreateItemForm.tsx';
 import { useAppDispatch } from '@/common/hooks/useAppDispatch.ts';
-import { createTaskAC } from '@/features/todolists/model/tasks-reducer.ts';
+import { createTaskAC } from '@/features/todolists/model/tasks-slice.ts';
 import { TodolistTitle } from '@/features/todolists/ui/Todolists/TodolistItem/TodolistTitle/TodolistTitle.tsx';
 import { Task } from '@/features/todolists/ui/Todolists/TodolistItem/Tasks/Task.tsx';
 import type { Todolist } from '@/features/todolists/model/todolists-slice.ts';
