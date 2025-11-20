@@ -48,11 +48,18 @@ export const todolistsSlice = createSlice({
     ),
   }),
   extraReducers: builder => {
-    builder.addCase(fetchTodolistsTC.fulfilled, (_state, action) => {
-      return action.payload.todolists.map(tl => {
-        return { ...tl, filter: 'all' };
+    builder
+      .addCase(fetchTodolistsTC.fulfilled, (_state, action) => {
+        return action.payload.todolists.map(tl => {
+          return { ...tl, filter: 'all' };
+        });
+      })
+      .addCase(fetchTodolistsTC.rejected, (_state, action) => {
+        if (action.payload) {
+          // @ts-ignore
+          console.log(action.payload.message);
+        }
       });
-    });
   },
   selectors: {
     selectTodolists: state => state,
