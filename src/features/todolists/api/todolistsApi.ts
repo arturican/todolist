@@ -9,12 +9,12 @@ export const todolistsApi = {
   getTodolists() {
     return instance.get<DomainTodolist[]>(`/todo-lists`);
   },
-  createTodolist({ title }: { title: string }) {
+  createTodolist(title: string) {
     return instance.post<BaseResponse<{ item: Todolist }>>(`/todo-lists`, {
       title,
     });
   },
-  deleteTodolist({ id }: { id: string }) {
+  deleteTodolist(id: string) {
     return instance.delete<BaseResponse>(`/todo-lists/${id}`);
   },
   changeTodolistTitle({ id, title }: { id: string; title: string }) {

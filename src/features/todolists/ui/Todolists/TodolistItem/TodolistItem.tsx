@@ -3,11 +3,11 @@ import { useAppDispatch } from '@/common/hooks/useAppDispatch.ts';
 import { createTaskAC } from '@/features/todolists/model/tasks-slice.ts';
 import { TodolistTitle } from '@/features/todolists/ui/Todolists/TodolistItem/TodolistTitle/TodolistTitle.tsx';
 import { Task } from '@/features/todolists/ui/Todolists/TodolistItem/Tasks/Task.tsx';
-import type { Todolist } from '@/features/todolists/model/todolists-slice.ts';
 import { FilterButtons } from '@/features/todolists/ui/Todolists/TodolistItem/FilterButtons/FilterButtons.tsx';
+import type { DomainTodolist } from '@/features/todolists/api/todolistsApi.types.ts';
 
 type Props = {
-  todolist: Todolist;
+  todolist: DomainTodolist;
 };
 
 export const TodolistItem = ({ todolist }: Props) => {

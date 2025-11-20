@@ -1,27 +1,27 @@
 import {
-  changeTodolistTitleAC,
-  deleteTodolistAC,
-  type Todolist,
+  changeTodolistTitleTC,
+  deleteTodolistTC,
 } from '@/features/todolists/model/todolists-slice.ts';
 import { useAppDispatch } from '@/common/hooks/useAppDispatch.ts';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { EditableSpan } from '@/common/components/EditableSpan/EditableSpan.tsx';
 import styles from './TodolistTitle.module.css';
+import type { DomainTodolist } from '@/features/todolists/api/todolistsApi.types.ts';
 
 type Props = {
-  todolist: Todolist;
+  todolist: DomainTodolist;
 };
 
 export const TodolistTitle = ({ todolist }: Props) => {
   const { id, title } = todolist;
   const dispatch = useAppDispatch();
   const deleteTodolist = () => {
-    dispatch(deleteTodolistAC({ id }));
+    dispatch(deleteTodolistTC(id));
   };
 
   const changeTodolistTitle = (title: string) => {
-    dispatch(changeTodolistTitleAC({ id, title }));
+    dispatch(changeTodolistTitleTC({ id, title }));
   };
   return (
     <>
