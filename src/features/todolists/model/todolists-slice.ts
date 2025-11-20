@@ -1,14 +1,10 @@
 import { createSlice, nanoid } from '@reduxjs/toolkit';
 import type { DomainTodolist } from '@/features/todolists/api/todolistsApi.types.ts';
 export type FilterValue = 'all' | 'active' | 'completed';
-export let todolistId1 = nanoid();
-export let todolistId2 = nanoid();
+
 export const todolistsSlice = createSlice({
   name: 'todolists',
-  initialState: [
-    { id: todolistId1, title: 'What to learn', filter: 'all' },
-    { id: todolistId2, title: 'What to buy', filter: 'all' },
-  ] as DomainTodolist[],
+  initialState: [] as DomainTodolist[],
   reducers: create => ({
     deleteTodolistAC: create.reducer<{ id: string }>((state, action) => {
       const index = state.findIndex(

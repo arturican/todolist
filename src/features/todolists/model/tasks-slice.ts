@@ -1,8 +1,6 @@
 import {
   createTodolistAC,
   deleteTodolistAC,
-  todolistId1,
-  todolistId2,
 } from '@/features/todolists/model/todolists-slice.ts';
 import { createSlice, nanoid } from '@reduxjs/toolkit';
 import type { TaskType } from '@/features/todolists/ui/Todolists/TodolistItem/Tasks/Task.tsx';
@@ -13,16 +11,7 @@ export type TasksState = {
 
 export const tasksSlice = createSlice({
   name: 'tasks',
-  initialState: {
-    [todolistId1]: [
-      { id: nanoid(), title: 'HTML & CSS', isDone: true },
-      { id: nanoid(), title: 'JavaScript', isDone: false },
-    ],
-    [todolistId2]: [
-      { id: nanoid(), title: 'Milk', isDone: true },
-      { id: nanoid(), title: 'Bread', isDone: false },
-    ],
-  },
+  initialState: {} as TasksState,
   reducers: create => ({
     deleteTaskAC: create.reducer<{ todolistId: string; taskId: string }>(
       (state, action) => {
