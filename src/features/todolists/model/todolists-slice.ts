@@ -1,9 +1,10 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk } from '@reduxjs/toolkit';
 import type { DomainTodolist } from '@/features/todolists/api/todolistsApi.types.ts';
 import { todolistsApi } from '@/features/todolists/api/todolistsApi.ts';
+import { createAppSlice } from '@/common/utils';
 export type FilterValue = 'all' | 'active' | 'completed';
 
-export const todolistsSlice = createSlice({
+export const todolistsSlice = createAppSlice({
   name: 'todolists',
   initialState: [] as DomainTodolist[],
   reducers: create => ({
@@ -15,6 +16,23 @@ export const todolistsSlice = createSlice({
         if (todolist) {
           todolist.filter = action.payload.filter;
         }
+      },
+    ),
+    fetchTodolistsTC: create.asyncThunk(
+      async (_, thunkAPI) => {
+        try {
+          const res = await todolistsApi.getTodolists();
+          return { todolists: res.data };
+        } catch (error) {
+          return thunkAPI.rejectWithValue(error);
+        }
+      },
+      {
+        fulfilled: (state, action) => {
+          action.payload?.todolists.map(tl => {
+            state.push({ ...tl, filter: 'all' });
+          });
+        },
       },
     ),
   }),
@@ -56,18 +74,6 @@ export const todolistsSlice = createSlice({
   },
 });
 
-export const fetchTodolistsTC = createAsyncThunk(
-  `${todolistsSlice.name}/fetchTodolistsTC`,
-  async (_, thunkAPI) => {
-    try {
-      const res = await todolistsApi.getTodolists();
-      return { todolists: res.data };
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error);
-    }
-  },
-);
-
 export const changeTodolistTitleTC = createAsyncThunk(
   `${todolistsSlice.name}/changeTodolistTitleTC`,
   async (payload: { id: string; title: string }, thunkAPI) => {
@@ -104,6 +110,7 @@ export const deleteTodolistTC = createAsyncThunk(
   },
 );
 
-export const { changeTodolistFilterAC } = todolistsSlice.actions;
+export const { fetchTodolistsTC, changeTodolistFilterAC } =
+  todolistsSlice.actions;
 export const todolistsReducer = todolistsSlice.reducer;
 export const { selectTodolists } = todolistsSlice.selectors;
