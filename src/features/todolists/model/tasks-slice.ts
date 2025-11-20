@@ -1,18 +1,51 @@
-import { createSlice, nanoid } from '@reduxjs/toolkit';
-import type { TaskType } from '@/features/todolists/ui/Todolists/TodolistItem/Tasks/Task.tsx';
 import {
   createTodolistTC,
   deleteTodolistTC,
 } from '@/features/todolists/model/todolists-slice.ts';
+import { createAppSlice } from '@/common/utils';
+import { tasksApi } from '@/features/todolists/api/tasksApi.ts';
+import type { DomainTask } from '@/features/todolists/api/tasksApi.types.ts';
+import { TaskStatus } from '@/common/enums/enums.ts';
 
 export type TasksState = {
-  [key: string]: TaskType[];
+  [key: string]: DomainTask[];
 };
 
-export const tasksSlice = createSlice({
+export const tasksSlice = createAppSlice({
   name: 'tasks',
   initialState: {} as TasksState,
   reducers: create => ({
+    fetchTasksTC: create.asyncThunk(
+      async (todolistId: string, thunkAPI) => {
+        try {
+          const res = await tasksApi.getTasks(todolistId);
+          return { todolistId, tasks: res.data.items };
+        } catch (error) {
+          return thunkAPI.rejectWithValue(error);
+        }
+      },
+      {
+        fulfilled: (state, action) => {
+          state[action.payload.todolistId] = action.payload.tasks;
+        },
+      },
+    ),
+    createTaskTC: create.asyncThunk(
+      async (payload: { todolistId: string; title: string }, thunkAPI) => {
+        try {
+          const res = await tasksApi.createTask(payload);
+          return { task: res.data.data.item };
+        } catch (error) {
+          return thunkAPI.rejectWithValue(error);
+        }
+      },
+      {
+        fulfilled: (state, action) => {
+          state[action.payload.task.todoListId].unshift(action.payload.task);
+        },
+      },
+    ),
+
     deleteTaskAC: create.reducer<{ todolistId: string; taskId: string }>(
       (state, action) => {
         const task = state[action.payload.todolistId];
@@ -20,16 +53,6 @@ export const tasksSlice = createSlice({
         if (index !== -1) {
           task.splice(index, 1);
         }
-      },
-    ),
-    createTaskAC: create.reducer<{ todolistId: string; title: string }>(
-      (state, action) => {
-        state[action.payload.todolistId].unshift({
-          id: nanoid(),
-          title: action.payload.title,
-          isDone: false,
-        });
-        console.log(state);
       },
     ),
     changeTaskStatusAC: create.reducer<{
@@ -41,7 +64,9 @@ export const tasksSlice = createSlice({
         task => task.id === action.payload.taskId,
       );
       if (task) {
-        task.isDone = action.payload.isDone;
+        task.status = action.payload.isDone
+          ? TaskStatus.Completed
+          : TaskStatus.New;
       }
     }),
     changeTaskTitleAC: create.reducer<{
@@ -60,7 +85,8 @@ export const tasksSlice = createSlice({
   extraReducers: builder => {
     builder
       .addCase(createTodolistTC.fulfilled, (state, action) => {
-        state[action.payload.id] = [];
+        console.log(action.payload.todolist.id);
+        state[action.payload.todolist.id] = [];
       })
       .addCase(deleteTodolistTC.fulfilled, (state, action) => {
         delete state[action.payload.id];
@@ -74,7 +100,8 @@ export const {
   deleteTaskAC,
   changeTaskStatusAC,
   changeTaskTitleAC,
-  createTaskAC,
+  createTaskTC,
+  fetchTasksTC,
 } = tasksSlice.actions;
 export const tasksReducer = tasksSlice.reducer;
 export const { selectTasks } = tasksSlice.selectors;

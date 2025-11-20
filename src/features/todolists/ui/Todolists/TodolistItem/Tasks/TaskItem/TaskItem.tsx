@@ -9,12 +9,13 @@ import { Checkbox } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import type { ChangeEvent } from 'react';
 import IconButton from '@mui/material/IconButton';
-import type { TaskType } from '@/features/todolists/ui/Todolists/TodolistItem/Tasks/Task.tsx';
 import { getListItemSx } from '@/features/todolists/ui/Todolists/TodolistItem/Tasks/TaskItem/TaskItem.styles.ts';
 import { EditableSpan } from '@/common/components';
+import type { DomainTask } from '@/features/todolists/api/tasksApi.types.ts';
+import { TaskStatus } from '@/common/enums/enums.ts';
 
 type Props = {
-  task: TaskType;
+  task: DomainTask;
   todolistId: string;
 };
 
@@ -36,11 +37,12 @@ export const TaskItem = ({ task, todolistId }: Props) => {
   const changeTaskTitle = (title: string) => {
     dispatch(changeTaskTitleAC({ todolistId, taskId: task.id, title }));
   };
+  const isTaskCompleted = task.status === TaskStatus.Completed;
 
   return (
-    <ListItem sx={getListItemSx(task.isDone)}>
+    <ListItem sx={getListItemSx(isTaskCompleted)}>
       <div>
-        <Checkbox checked={task.isDone} onChange={changeTaskStatus} />
+        <Checkbox checked={isTaskCompleted} onChange={changeTaskStatus} />
         <EditableSpan value={task.title} onChange={changeTaskTitle} />
       </div>
       <IconButton onClick={deleteTask}>

@@ -1,31 +1,38 @@
 import { useAppSelector } from '@/common/hooks/useAppSelector.ts';
 import { TaskItem } from '@/features/todolists/ui/Todolists/TodolistItem/Tasks/TaskItem/TaskItem.tsx';
 import List from '@mui/material/List';
-import { selectTasks } from '@/features/todolists/model/tasks-slice.ts';
+import {
+  fetchTasksTC,
+  selectTasks,
+} from '@/features/todolists/model/tasks-slice.ts';
 import type { DomainTodolist } from '@/features/todolists/api/todolistsApi.types.ts';
+import type { DomainTask } from '@/features/todolists/api/tasksApi.types.ts';
+import { TaskStatus } from '@/common/enums/enums.ts';
+import { useAppDispatch } from '@/common/hooks/useAppDispatch.ts';
+import { useEffect } from 'react';
 
-export type TaskType = {
-  id: string;
-  title: string;
-  isDone: boolean;
-};
 type Props = {
   todolist: DomainTodolist;
 };
 
-export const Task = ({ todolist }: Props) => {
+export const Tasks = ({ todolist }: Props) => {
   const { id, filter } = todolist;
   const tasks = useAppSelector(selectTasks);
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    dispatch(fetchTasksTC(id));
+  }, []);
+
   const todolistTasks = tasks[id];
   let filteredTasks = todolistTasks;
   if (filter === 'active') {
     filteredTasks = todolistTasks.filter(
-      (tasks: { isDone: boolean }) => !tasks.isDone,
+      task => task.status === TaskStatus.New,
     );
   }
   if (filter === 'completed') {
     filteredTasks = todolistTasks.filter(
-      (tasks: { isDone: boolean }) => tasks.isDone,
+      task => task.status === TaskStatus.Completed,
     );
   }
 
@@ -35,7 +42,7 @@ export const Task = ({ todolist }: Props) => {
         <span>{'Список задач пуст'}</span>
       ) : (
         <List>
-          {filteredTasks?.map((task: TaskType) => (
+          {filteredTasks?.map((task: DomainTask) => (
             <TaskItem key={task.id} task={task} todolistId={id} />
           ))}
         </List>

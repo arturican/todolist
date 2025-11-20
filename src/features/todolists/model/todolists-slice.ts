@@ -38,17 +38,6 @@ export const todolistsSlice = createAppSlice({
   }),
   extraReducers: builder => {
     builder
-      .addCase(fetchTodolistsTC.fulfilled, (_state, action) => {
-        return action.payload.todolists.map(tl => {
-          return { ...tl, filter: 'all' };
-        });
-      })
-      .addCase(fetchTodolistsTC.rejected, (_state, action) => {
-        if (action.payload) {
-          // @ts-ignore
-          console.log(action.payload.message);
-        }
-      })
       .addCase(changeTodolistTitleTC.fulfilled, (state, action) => {
         const index = state.findIndex(
           todolist => todolist.id === action.payload.id,
