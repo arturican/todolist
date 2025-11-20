@@ -1,5 +1,6 @@
-import { createSlice, nanoid } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, nanoid } from '@reduxjs/toolkit';
 import type { DomainTodolist } from '@/features/todolists/api/todolistsApi.types.ts';
+import { todolistsApi } from '@/features/todolists/api/todolistsApi.ts';
 export type FilterValue = 'all' | 'active' | 'completed';
 
 export const todolistsSlice = createSlice({
@@ -45,23 +46,36 @@ export const todolistsSlice = createSlice({
         });
       },
     ),
-    setTodolistsAC: create.reducer<{ todolists: DomainTodolist[] }>(
-      (_state, action) => {
-        return action.payload.todolists;
-      },
-    ),
   }),
+  extraReducers: builder => {
+    builder.addCase(fetchTodolistsTC.fulfilled, (_state, action) => {
+      return action.payload.todolists.map(tl => {
+        return { ...tl, filter: 'all' };
+      });
+    });
+  },
   selectors: {
     selectTodolists: state => state,
   },
 });
+
+export const fetchTodolistsTC = createAsyncThunk(
+  `${todolistsSlice.name}/fetchTodolistsTC`,
+  async (_, thunkAPI) => {
+    try {
+      const res = await todolistsApi.getTodolists();
+      return { todolists: res.data };
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  },
+);
 
 export const {
   deleteTodolistAC,
   createTodolistAC,
   changeTodolistTitleAC,
   changeTodolistFilterAC,
-  setTodolistsAC,
 } = todolistsSlice.actions;
 export const todolistsReducer = todolistsSlice.reducer;
 export const { selectTodolists } = todolistsSlice.selectors;
