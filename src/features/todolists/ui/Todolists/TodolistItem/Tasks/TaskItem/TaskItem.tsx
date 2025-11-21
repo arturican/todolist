@@ -1,8 +1,8 @@
 import { useAppDispatch } from '@/common/hooks/useAppDispatch.ts';
 import {
-  changeTaskStatusTC,
   changeTaskTitleAC,
   deleteTaskTC,
+  updateTaskTC,
 } from '@/features/todolists/model/tasks-slice.ts';
 import ListItem from '@mui/material/ListItem';
 import { Checkbox } from '@mui/material';
@@ -27,7 +27,7 @@ export const TaskItem = ({ task, todolistId }: Props) => {
   const changeTaskStatus = (e: ChangeEvent<HTMLInputElement>) => {
     const newStatusValue = e.target.checked;
     dispatch(
-      changeTaskStatusTC({
+      updateTaskTC({
         todolistId,
         taskId: task.id,
         status: newStatusValue ? TaskStatus.Completed : TaskStatus.New,
