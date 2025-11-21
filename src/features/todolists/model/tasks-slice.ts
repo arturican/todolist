@@ -6,10 +6,10 @@ import { createAppSlice } from '@/common/utils';
 import { tasksApi } from '@/features/todolists/api/tasksApi.ts';
 import type {
   DomainTask,
-  UpdateTaskModel,
+  /*  UpdateTaskModel,*/
 } from '@/features/todolists/api/tasksApi.types.ts';
-import { TaskStatus } from '@/common/enums/enums.ts';
-import type { RootState } from '@/app/store.ts';
+
+/*import type { RootState } from '@/app/store.ts';*/
 import { setAppStatusAC } from '@/app/app-slice.ts';
 
 export type TasksState = {
@@ -81,32 +81,25 @@ export const tasksSlice = createAppSlice({
         },
       },
     ),
-    updateTaskTC: create.asyncThunk(
+    /*    updateTaskTC: create.asyncThunk(
       async (
-        payload: { todolistId: string; taskId: string; status: TaskStatus },
+        payload: { todolistId: string; taskId: string; domainModel: Partial<UpdateTaskModel> },
         { dispatch, rejectWithValue, getState },
       ) => {
-        const { todolistId, taskId, status } = payload;
 
-        const allTodolistTasks = (getState() as RootState).tasks[todolistId];
-        const task = allTodolistTasks.find(task => task.id === taskId);
+
+        const allTodolistTasks = (getState() as RootState).tasks[payload.todolistId];
+        const task = allTodolistTasks.find(task => task.id === payload.taskId);
 
         if (!task) {
           return rejectWithValue(null);
         }
 
-        const model: UpdateTaskModel = {
-          description: task.description,
-          title: task.title,
-          priority: task.priority,
-          startDate: task.startDate,
-          deadline: task.deadline,
-          status,
-        };
+
 
         try {
           dispatch(setAppStatusAC({ status: 'loading' }));
-          const res = await tasksApi.updateTask({ todolistId, taskId, model });
+          const res = await tasksApi.updateTask({  todolistId, taskId,  });
           dispatch(setAppStatusAC({ status: 'succeeded' }));
           return { task: res.data.data.item };
         } catch (error) {
@@ -124,7 +117,7 @@ export const tasksSlice = createAppSlice({
           }
         },
       },
-    ),
+    ),*/
     changeTaskTitleAC: create.reducer<{
       todolistId: string;
       taskId: string;
