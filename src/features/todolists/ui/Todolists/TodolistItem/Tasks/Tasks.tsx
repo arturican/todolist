@@ -17,6 +17,7 @@ type Props = {
 
 export const Tasks = ({ todolist }: Props) => {
   const { id, filter } = todolist;
+  console.log(todolist);
   const tasks = useAppSelector(selectTasks);
   const dispatch = useAppDispatch();
   useEffect(() => {
@@ -43,7 +44,7 @@ export const Tasks = ({ todolist }: Props) => {
       ) : (
         <List>
           {filteredTasks?.map((task: DomainTask) => (
-            <TaskItem key={task.id} task={task} todolistId={id} />
+            <TaskItem key={task.id} task={task} todolist={todolist} />
           ))}
         </List>
       )}
