@@ -1,6 +1,5 @@
 import { useAppDispatch } from '@/common/hooks/useAppDispatch.ts';
 import {
-  changeTaskTitleAC,
   deleteTaskTC,
   updateTaskTC,
 } from '@/features/todolists/model/tasks-slice.ts';
@@ -30,12 +29,16 @@ export const TaskItem = ({ task, todolistId }: Props) => {
       updateTaskTC({
         todolistId,
         taskId: task.id,
-        status: newStatusValue ? TaskStatus.Completed : TaskStatus.New,
+        domainModel: {
+          status: newStatusValue ? TaskStatus.Completed : TaskStatus.New,
+        },
       }),
     );
   };
   const changeTaskTitle = (title: string) => {
-    dispatch(changeTaskTitleAC({ todolistId, taskId: task.id, title }));
+    dispatch(
+      updateTaskTC({ todolistId, taskId: task.id, domainModel: { title } }),
+    );
   };
   const isTaskCompleted = task.status === TaskStatus.Completed;
 
