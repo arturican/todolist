@@ -2,7 +2,11 @@ import {
   createTodolistTC,
   deleteTodolistTC,
 } from '@/features/todolists/model/todolists-slice.ts';
-import { createAppSlice } from '@/common/utils';
+import {
+  createAppSlice,
+  handleServerAppError,
+  handleServerNetworkError,
+} from '@/common/utils';
 import { tasksApi } from '@/features/todolists/api/tasksApi.ts';
 import type {
   DomainTask,
@@ -10,7 +14,7 @@ import type {
 } from '@/features/todolists/api/tasksApi.types.ts';
 
 import type { RootState } from '@/app/store.ts';
-import { setAppErrorAC, setAppStatusAC } from '@/app/app-slice.ts';
+import { setAppStatusAC } from '@/app/app-slice.ts';
 import { ResultCode } from '@/common/enums/enums.ts';
 
 export const tasksSlice = createAppSlice({
@@ -47,17 +51,11 @@ export const tasksSlice = createAppSlice({
             dispatch(setAppStatusAC({ status: 'succeeded' }));
             return { task: res.data.data.item };
           } else {
-            if (res.data.messages.length) {
-              dispatch(setAppErrorAC({ error: res.data.messages[0] }));
-            } else {
-              dispatch(setAppErrorAC({ error: 'Some error occurred' }));
-            }
-            dispatch(setAppStatusAC({ status: 'failed' }));
+            handleServerAppError(res.data, dispatch);
             return rejectWithValue(null);
           }
         } catch (error: any) {
-          dispatch(setAppErrorAC({ error: error.message }));
-          dispatch(setAppStatusAC({ status: 'failed' }));
+          handleServerNetworkError(error, dispatch);
           return rejectWithValue(error);
         }
       },
@@ -122,11 +120,16 @@ export const tasksSlice = createAppSlice({
         try {
           dispatch(setAppStatusAC({ status: 'loading' }));
           const res = await tasksApi.updateTask({ todolistId, taskId, model });
-          dispatch(setAppStatusAC({ status: 'succeeded' }));
-          return { task: res.data.data.item };
-        } catch (error) {
-          dispatch(setAppStatusAC({ status: 'failed' }));
-          return rejectWithValue(error);
+          if (res.data.resultCode === ResultCode.Success) {
+            dispatch(setAppStatusAC({ status: 'succeeded' }));
+            return { task: res.data.data.item };
+          } else {
+            handleServerAppError(res.data, dispatch);
+            return rejectWithValue(null);
+          }
+        } catch (error: any) {
+          handleServerNetworkError(error, dispatch);
+          return rejectWithValue(null);
         }
       },
       {
