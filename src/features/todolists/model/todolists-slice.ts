@@ -1,4 +1,3 @@
-/*import { createAsyncThunk } from '@reduxjs/toolkit';*/
 import type { DomainTodolist } from '@/features/todolists/api/todolistsApi.types.ts';
 import { todolistsApi } from '@/features/todolists/api/todolistsApi.ts';
 import { createAppSlice } from '@/common/utils';

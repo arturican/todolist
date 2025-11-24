@@ -12,10 +12,6 @@ import type {
 import type { RootState } from '@/app/store.ts';
 import { setAppStatusAC } from '@/app/app-slice.ts';
 
-export type TasksState = {
-  [key: string]: DomainTask[];
-};
-
 export const tasksSlice = createAppSlice({
   name: 'tasks',
   initialState: {} as TasksState,
@@ -137,7 +133,6 @@ export const tasksSlice = createAppSlice({
   extraReducers: builder => {
     builder
       .addCase(createTodolistTC.fulfilled, (state, action) => {
-        console.log(action.payload.todolist.id);
         state[action.payload.todolist.id] = [];
       })
       .addCase(deleteTodolistTC.fulfilled, (state, action) => {
@@ -152,3 +147,4 @@ export const { deleteTaskTC, updateTaskTC, createTaskTC, fetchTasksTC } =
   tasksSlice.actions;
 export const tasksReducer = tasksSlice.reducer;
 export const { selectTasks } = tasksSlice.selectors;
+export type TasksState = Record<string, DomainTask[]>;
