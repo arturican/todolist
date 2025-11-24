@@ -10,8 +10,9 @@ type Props = {
 export const EditableSpan = ({ value, onChange, entityStatus }: Props) => {
   const [isEditMode, setIsEditMode] = useState(false);
   const [title, setTitle] = useState(value);
+  const disabled = entityStatus === 'loading';
   const turnOnEditMode = () => {
-    if (entityStatus === 'loading') return;
+    if (disabled) return;
     setIsEditMode(true);
   };
   const turnOffEditMode = () => {

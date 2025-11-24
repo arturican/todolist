@@ -21,6 +21,7 @@ type Props = {
 
 export const TaskItem = ({ task, todolist }: Props) => {
   const dispatch = useAppDispatch();
+  const disabled = todolist.entityStatus === 'loading';
   const deleteTask = () => {
     dispatch(deleteTaskTC({ todolistId: todolist.id, taskId: task.id }));
   };
@@ -53,7 +54,7 @@ export const TaskItem = ({ task, todolist }: Props) => {
         <Checkbox
           checked={isTaskCompleted}
           onChange={changeTaskStatus}
-          disabled={todolist.entityStatus === 'loading'}
+          disabled={disabled}
         />
         <EditableSpan
           value={task.title}
@@ -61,10 +62,7 @@ export const TaskItem = ({ task, todolist }: Props) => {
           entityStatus={todolist.entityStatus}
         />
       </div>
-      <IconButton
-        onClick={deleteTask}
-        disabled={todolist.entityStatus === 'loading'}
-      >
+      <IconButton onClick={deleteTask} disabled={disabled}>
         <DeleteIcon />
       </IconButton>
     </ListItem>
