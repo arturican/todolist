@@ -7,7 +7,7 @@ export const appSlice = createSlice({
   initialState: {
     themeMode: 'light' as ThemeMode,
     status: 'idle' as RequestStatus,
-    error: 'testasdasdasdasdasdasdasdasdasdasdasd' as string | null,
+    error: null as string | null,
   },
   reducers: create => ({
     changeThemeModeAC: create.reducer<{ themeMode: ThemeMode }>(
