@@ -11,6 +11,7 @@ export const EditableSpan = ({ value, onChange, entityStatus }: Props) => {
   const [isEditMode, setIsEditMode] = useState(false);
   const [title, setTitle] = useState(value);
   const turnOnEditMode = () => {
+    if (entityStatus === 'loading') return;
     setIsEditMode(true);
   };
   const turnOffEditMode = () => {
@@ -23,7 +24,7 @@ export const EditableSpan = ({ value, onChange, entityStatus }: Props) => {
 
   return (
     <>
-      {isEditMode && !(entityStatus === 'loading') ? (
+      {isEditMode ? (
         <TextField
           variant={'outlined'}
           value={title}
