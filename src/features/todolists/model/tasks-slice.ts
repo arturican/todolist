@@ -61,7 +61,7 @@ export const tasksSlice = createAppSlice({
           }
         } catch (error: any) {
           handleServerNetworkError(error, dispatch);
-          return rejectWithValue(error);
+          return rejectWithValue(null);
         }
       },
       {
