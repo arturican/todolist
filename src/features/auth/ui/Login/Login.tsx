@@ -32,7 +32,8 @@ export const Login = () => {
   } = useForm<LoginInputs>({
     defaultValues: { email: '', password: '', rememberMe: false },
   });
-
+  const field = { ...register('password') };
+  console.log(field);
   const onSubmit: SubmitHandler<LoginInputs> = data => {
     console.log(data);
     reset();
