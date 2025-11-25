@@ -17,7 +17,6 @@ type Props = {
 
 export const Tasks = ({ todolist }: Props) => {
   const { id, filter } = todolist;
-  console.log(todolist);
   const tasks = useAppSelector(selectTasks);
   const dispatch = useAppDispatch();
   useEffect(() => {
