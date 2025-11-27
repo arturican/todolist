@@ -12,12 +12,8 @@ import { getTheme } from '@/common/theme/theme';
 import Grid from '@mui/material/Grid';
 import { Controller, type SubmitHandler, useForm } from 'react-hook-form';
 import styles from './Login.module.css';
-
-type LoginInputs = {
-  email: string;
-  password: string;
-  rememberMe: boolean;
-};
+import { zodResolver } from '@hookform/resolvers/zod';
+import { type LoginInputs, loginSchema } from '@/features/auth/lib';
 
 export const Login = () => {
   const themeMode = useAppSelector(selectThemeMode);
@@ -30,6 +26,7 @@ export const Login = () => {
     control,
     formState: { errors },
   } = useForm<LoginInputs>({
+    resolver: zodResolver(loginSchema),
     defaultValues: { email: '', password: '', rememberMe: false },
   });
   const field = { ...register('password') };
@@ -68,13 +65,7 @@ export const Login = () => {
               label="Email"
               margin="normal"
               error={!!errors.email}
-              {...register('email', {
-                required: 'Email is required',
-                pattern: {
-                  value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
-                  message: 'Incorrect email address',
-                },
-              })}
+              {...register('email')}
             />
             {errors.email && (
               <span className={styles.errorMessage}>

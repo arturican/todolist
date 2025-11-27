@@ -8,9 +8,10 @@ import {
   handleServerNetworkError,
 } from '@/common/utils';
 import { tasksApi } from '@/features/todolists/api/tasksApi.ts';
-import type {
-  DomainTask,
-  UpdateTaskModel,
+import {
+  type DomainTask,
+  domainTaskSchema,
+  type UpdateTaskModel,
 } from '@/features/todolists/api/tasksApi.types.ts';
 
 import type { RootState } from '@/app/store.ts';
@@ -26,6 +27,7 @@ export const tasksSlice = createAppSlice({
         try {
           dispatch(setAppStatusAC({ status: 'loading' }));
           const res = await tasksApi.getTasks(todolistId);
+          domainTaskSchema.array().parse(res.data.items);
           if (res.data) {
             dispatch(setAppStatusAC({ status: 'succeeded' }));
             return { todolistId, tasks: res.data.items };
