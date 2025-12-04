@@ -1,0 +1,15 @@
+# Copy this file to doppler.yaml and adjust the slugs to match your Doppler project
+setup:
+  # Project slug from Doppler (https://dashboard.doppler.com/workplace/projects)
+  project: todolist
+  # Default environment and config to use when running doppler run
+  env: dev
+  config: dev
+
+environments:
+  dev:
+    env: dev
+    config: dev
+  prod:
+    env: prod
+    config: prod

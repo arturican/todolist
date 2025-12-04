@@ -6,13 +6,19 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "deploy": "doppler run --project todolist --config prod -- pnpm build",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
     "format": "prettier --write .",
     "preview": "vite preview",
     "prepare": "husky install",
     "test": "vitest",
-    "test:run": "vitest run"
+    "test:run": "vitest run",
+    "doppler:dev": "doppler run --project todolist --config dev -- pnpm dev",
+    "doppler:test": "doppler run --project todolist --config dev -- pnpm test",
+    "doppler:build": "doppler run --project todolist --config prod -- pnpm build",
+    "doppler:env:dev": "doppler secrets download --project todolist --config dev --format env --no-file > .env",
+    "doppler:env:prod": "doppler secrets download --project todolist --config prod --format env --no-file > .env"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
