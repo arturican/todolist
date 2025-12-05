@@ -98,5 +98,12 @@ jobs:
 
       - name: Deploy to server
         run: |
-          ssh "$DEPLOY_USER@$DEPLOY_HOST" "mkdir -p '$DEPLOY_PATH/dist'"
-          rsync -az --delete build-output/dist/ "$DEPLOY_USER@$DEPLOY_HOST:$DEPLOY_PATH/dist/"
+          # создаём директорию проекта на сервере
+          ssh "$DEPLOY_USER@$DEPLOY_HOST" "mkdir -p '$DEPLOY_PATH'"
+
+          # просто на всякий случай покажем, что вообще скачалось
+          echo "Local build-output content:"
+          ls -R build-output
+
+          # деплоим всё содержимое билда в /var/www/todolist/dist
+          rsync -az --delete build-output/ "$DEPLOY_USER@$DEPLOY_HOST:$DEPLOY_PATH/dist/"
