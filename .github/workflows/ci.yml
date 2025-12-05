@@ -101,9 +101,10 @@ jobs:
           # создаём директорию проекта на сервере
           ssh "$DEPLOY_USER@$DEPLOY_HOST" "mkdir -p '$DEPLOY_PATH'"
 
-          # просто на всякий случай покажем, что вообще скачалось
+          # посмотреть что в артефакте (разово пригодится для дебага)
           echo "Local build-output content:"
           ls -R build-output
 
-          # деплоим всё содержимое билда в /var/www/todolist/dist
-          rsync -az --delete build-output/ "$DEPLOY_USER@$DEPLOY_HOST:$DEPLOY_PATH/dist/"
+          # деплоим всё содержимое билда прямо в /var/www/todolist
+          rsync -az --delete build-output/ "$DEPLOY_USER@$DEPLOY_HOST:$DEPLOY_PATH/"
+
