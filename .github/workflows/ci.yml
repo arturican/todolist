@@ -7,6 +7,7 @@ on:
       - master
       - aicodex
   pull_request:
+  workflow_dispatch:
 
 jobs:
   build:
@@ -61,7 +62,6 @@ jobs:
           if-no-files-found: error
           path: |
             dist
-            .env
 
   deploy:
     runs-on: ubuntu-latest
@@ -88,19 +88,15 @@ jobs:
             exit 1
           fi
 
-          # создаём .ssh в раннере GitHub
           mkdir -p ~/.ssh
           chmod 700 ~/.ssh
 
-          # записываем приватный ключ
           install -m 600 /dev/null ~/.ssh/id_ed25519
           printf '%s\n' "$SSH_PRIVATE_KEY" > ~/.ssh/id_ed25519
 
-          # добавляем хост сервера в known_hosts
           ssh-keyscan -H "$DEPLOY_HOST" >> ~/.ssh/known_hosts
 
       - name: Deploy to server
         run: |
           ssh "$DEPLOY_USER@$DEPLOY_HOST" "mkdir -p '$DEPLOY_PATH/dist'"
           rsync -az --delete build-output/dist/ "$DEPLOY_USER@$DEPLOY_HOST:$DEPLOY_PATH/dist/"
-          scp build-output/.env "$DEPLOY_USER@$DEPLOY_HOST:$DEPLOY_PATH/.env"
