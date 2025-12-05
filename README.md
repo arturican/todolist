@@ -1,38 +1,64 @@
-Веб-приложение для управления задачами, разработанное на React
-с использованием функциональных компонентов и хуков.
-Подходит для изучения архитектуры фронтенд-приложений и работы с состоянием.
+# Todolist Frontend
 
-## Secrets via Doppler
+Фронтенд‑приложение для ведения списков дел. Пользователь может создавать тудулисты, добавлять задачи, менять статус и фильтровать их по состоянию. Интерфейс написан на React 19 с Material UI, использует Redux Toolkit для работы с данными и поддерживает светлую/тёмную темы.
 
-Фронтенд использует только переменные `VITE_API_TOKEN`, `VITE_API_KEY` и `VITE_BASE_URL`. Они хранятся в [Doppler](https://www.doppler.com/) и автоматически подмешиваются в dev/build при помощи CLI (`doppler run`).
+## Возможности
+- управление несколькими тудулистами: создание, переименование и удаление списков;
+- операции над задачами: добавление, обновление, смена статуса, удаление;
+- фильтрация задач по состоянию (`all`, `active`, `completed`);
+- централизованный показ ошибок через `ErrorSnackbar`;
+- отдельный экран авторизации (форма на базе React Hook Form и Zod);
+- адаптивная верстка на компонентах MUI и глобальное переключение темы.
 
-### Настройка
+## Технологический стек
+- **React 19 + Vite** — SPA с мгновенным дев-сервером;
+- **TypeScript** — строгая типизация и константные алиасы (`@/` → `src/`);
+- **Redux Toolkit** — слайсы `todolists`, `tasks`, `app`, типизированные хуки `useAppDispatch/useAppSelector`;
+- **Axios** — общий клиент `src/common/instance/instance.ts` с подключаемыми токенами;
+- **Material UI** — тема, компоненты, иконки;
+- **React Hook Form + Zod** — валидация форм логина;
+- **Vitest** — тесты слайсов и бизнес-логики.
 
-1. Установите Doppler CLI (например, `brew install dopplerhq/cli/doppler` или `curl -Ls https://cli.doppler.com/install.sh | sh`).
-2. Создайте проект `todolist` (или используйте своё имя) и configs `dev`/`prod`. Заведите в каждом значения для `VITE_API_TOKEN`, `VITE_API_KEY`, `VITE_BASE_URL`.
-3. Скопируйте `doppler.yaml.example` в `doppler.yaml` и при необходимости поменяйте slug проекта/конфигов. Либо выполните `doppler setup` внутри репозитория.
-4. Локальные оверрайды можно держать в `.env` (см. `.env.example`), но наоборот не коммитить реальные секреты.
+## Быстрый старт
+1. Установите зависимости: `pnpm install`.
+2. Запустите дев-сервер: `pnpm dev`. Проект откроется на `http://localhost:5173`.
+3. Соберите production-бандл: `pnpm build`.
+4. Просмотрите готовую сборку: `pnpm preview`.
 
-### Использование
+> Приложение считывает базовый URL и ключи API через стандартные переменные окружения Vite (`VITE_*`). Создайте файл `.env` в корне проекта и заполните нужные значения.
 
-- `pnpm doppler:dev` — запускает Vite dev server с секретами из конфигурации `dev`.
-- `pnpm doppler:test` — выполняет Vitest с теми же секретами.
-- `pnpm doppler:build` или `pnpm deploy` — собирают production-бандл, подставляя переменные из `prod`.
-- `pnpm doppler:env:dev` / `pnpm doppler:env:prod` — выгружают секреты в локальный `.env` (полезно для CI перед `pnpm build`).
+## Скрипты
+| Команда | Назначение |
+| --- | --- |
+| `pnpm dev` | Vite dev server с hot reload |
+| `pnpm build` | Компиляция TypeScript (`tsc -b`) и `vite build` |
+| `pnpm preview` | Локальный предпросмотр собранного бандла |
+| `pnpm lint` / `pnpm lint:fix` | ESLint проверка и автофиксы |
+| `pnpm format` | Применить Prettier ко всему проекту |
+| `pnpm test` | Vitest в интерактивном режиме |
+| `pnpm test:run` | Vitest в CI‑режиме без watcher |
 
-`pnpm dev`, `pnpm test` и `pnpm build` продолжают работать и читают `.env`, если Doppler недоступен. Перед деплоем проверяйте, что конфиги Doppler содержат только значения с префиксом `VITE_`, иначе секрет попадёт в бандл.
-
-### Пример CI шага
-
-```yaml
-- name: Install Doppler
-  run: curl -Ls https://cli.doppler.com/install.sh | sudo sh
-- name: Export secrets to .env
-  env:
-    DOPPLER_TOKEN: ${{ secrets.DOPPLER_TOKEN }}
-  run: doppler secrets download --token "$DOPPLER_TOKEN" --config prod --format env --no-file > .env
-- name: Build
-  run: pnpm install && pnpm build
+## Структура проекта
+```
+src/
+├─ app/             # корневой layout, Redux store и app-slice
+├─ common/          # общие компоненты, хуки, тема, роутинг, утилиты
+├─ features/
+│  ├─ todolists/    # API, модели и UI списков дел
+│  └─ auth/         # форма логина и вспомогательные схемы
+├─ main.tsx         # входная точка React + Router + Redux
+└─ index.css        # глобальные стили
 ```
 
-Если runner поддерживает прямой запуск команд из Doppler, можно заменить шаг экспорта на `doppler run --token "$DOPPLER_TOKEN" --config prod -- pnpm build`. В обоих случаях `.env` существует только во время job и деплоится вместе с артефактами.
+## Тестирование
+- Тесты располагаются рядом с модулями в `__tests__`. Пример: `src/features/todolists/model/__tests__/tasks-slice.test.ts`.
+- Покрывайте редьюсеры, санки и утилиты Vitest‑тестами, мокая API‑модули.
+- Для новых багфиксов добавляйте регрессионные сценарии, проверяющие корректные `ResultCode` и переходы статусов.
+
+## Стиль разработки
+- Используйте функциональные компоненты, MUI и типизированные хуки `useAppDispatch` / `useAppSelector`.
+- Асинхронные санки создавайте через `createAppSlice` и обрабатывайте `setAppStatusAC`, сетевые и серверные ошибки единообразными хелперами.
+- Импорты группируйте: внешние пакеты → алиасы `@/...` → относительные пути.
+- Добавляйте скриншоты в PR при изменении UI и придерживайтесь коротких императивных коммитов.
+
+Приятной разработки! 🎯
