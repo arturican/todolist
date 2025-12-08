@@ -1,4 +1,8 @@
-import type { DomainTodolist } from '@/features/todolists/api/todolistsApi.types.ts';
+import {
+  type DomainTodolist,
+  type FilterValue,
+  todolistSchema,
+} from '@/features/todolists/api/todolistsApi.types.ts';
 import { todolistsApi } from '@/features/todolists/api/todolistsApi.ts';
 import {
   createAppSlice,
@@ -8,11 +12,13 @@ import {
 import { setAppStatusAC } from '@/app/app-slice.ts';
 import type { RequestStatus } from '@/common/types/types.ts';
 import { ResultCode } from '@/common/enums/enums.ts';
-export type FilterValue = 'all' | 'active' | 'completed';
 
 export const todolistsSlice = createAppSlice({
   name: 'todolists',
   initialState: [] as DomainTodolist[],
+  selectors: {
+    selectTodolists: state => state,
+  },
   reducers: create => ({
     changeTodolistFilterAC: create.reducer<{ id: string; filter: FilterValue }>(
       (state, action) => {
@@ -40,22 +46,18 @@ export const todolistsSlice = createAppSlice({
         try {
           dispatch(setAppStatusAC({ status: 'loading' }));
           const res = await todolistsApi.getTodolists();
-          if (res.data) {
-            dispatch(setAppStatusAC({ status: 'succeeded' }));
-            return { todolists: res.data };
-          } else {
-            handleServerAppError(res.data, dispatch);
-            return rejectWithValue(null);
-          }
-        } catch (error: any) {
-          handleServerNetworkError(error, dispatch);
+          const todolists = todolistSchema.array().parse(res.data);
+          dispatch(setAppStatusAC({ status: 'succeeded' }));
+          return { todolists };
+        } catch (error) {
+          handleServerNetworkError(dispatch, error);
           return rejectWithValue(error);
         }
       },
       {
         fulfilled: (state, action) => {
           action.payload?.todolists.map(tl => {
-            state.push({ ...tl, filter: 'all' });
+            state.push({ ...tl, filter: 'all', entityStatus: 'idle' });
           });
         },
       },
@@ -72,8 +74,8 @@ export const todolistsSlice = createAppSlice({
             handleServerAppError(res.data, dispatch);
             return rejectWithValue(null);
           }
-        } catch (error: any) {
-          handleServerNetworkError(error, dispatch);
+        } catch (error) {
+          handleServerNetworkError(dispatch, error);
           return rejectWithValue(error);
         }
       },
@@ -100,8 +102,8 @@ export const todolistsSlice = createAppSlice({
             handleServerAppError(res.data, dispatch);
             return rejectWithValue(null);
           }
-        } catch (error: any) {
-          handleServerNetworkError(error, dispatch);
+        } catch (error) {
+          handleServerNetworkError(dispatch, error);
           return rejectWithValue(error);
         }
       },
@@ -131,8 +133,8 @@ export const todolistsSlice = createAppSlice({
             handleServerAppError(res.data, dispatch);
             return rejectWithValue(null);
           }
-        } catch (error: any) {
-          handleServerNetworkError(error, dispatch);
+        } catch (error) {
+          handleServerNetworkError(dispatch, error);
           return rejectWithValue(null);
         }
       },
@@ -148,10 +150,6 @@ export const todolistsSlice = createAppSlice({
       },
     ),
   }),
-
-  selectors: {
-    selectTodolists: state => state,
-  },
 });
 
 export const {

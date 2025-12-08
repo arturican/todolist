@@ -78,6 +78,11 @@ export const Login = () => {
               margin="normal"
               {...register('password')}
             />
+            {errors.password && (
+              <span className={styles.errorMessage}>
+                {errors.password.message}
+              </span>
+            )}
             <FormControlLabel
               label="Remember me"
               control={

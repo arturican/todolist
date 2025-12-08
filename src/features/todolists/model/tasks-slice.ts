@@ -27,16 +27,11 @@ export const tasksSlice = createAppSlice({
         try {
           dispatch(setAppStatusAC({ status: 'loading' }));
           const res = await tasksApi.getTasks(todolistId);
-          domainTaskSchema.array().parse(res.data.items);
-          if (res.data) {
-            dispatch(setAppStatusAC({ status: 'succeeded' }));
-            return { todolistId, tasks: res.data.items };
-          } else {
-            handleServerAppError(res.data, dispatch);
-            return rejectWithValue(null);
-          }
-        } catch (error: any) {
-          handleServerNetworkError(error, dispatch);
+          const tasks = domainTaskSchema.array().parse(res.data.items);
+          dispatch(setAppStatusAC({ status: 'succeeded' }));
+          return { todolistId, tasks };
+        } catch (error) {
+          handleServerNetworkError(dispatch, error);
           return rejectWithValue(error);
         }
       },
