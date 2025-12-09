@@ -23,7 +23,7 @@ export const Tasks = ({ todolist }: Props) => {
     dispatch(fetchTasksTC(id));
   }, []);
 
-  const todolistTasks = tasks[id];
+  const todolistTasks = tasks[id] ?? [];
   let filteredTasks = todolistTasks;
   if (filter === 'active') {
     filteredTasks = todolistTasks.filter(

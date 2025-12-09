@@ -34,11 +34,8 @@ export const Login = () => {
     resolver: zodResolver(loginSchema),
     defaultValues: { email: '', password: '', rememberMe: false },
   });
-  const field = { ...register('password') };
-  console.log(field);
   const onSubmit: SubmitHandler<LoginInputs> = data => {
     dispatch(loginTC(data));
-    //reset();
   };
 
   if (isLoggedIn) {
