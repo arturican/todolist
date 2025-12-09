@@ -14,10 +14,15 @@ import { NavButton } from '@/common/components/NavButton/NavButton.ts';
 import Switch from '@mui/material/Switch';
 import MenuIcon from '@mui/icons-material/Menu';
 import { containerSX } from '@/common/styles/container.styles.ts';
+import {
+  logoutTC,
+  selectIsLoggedIn,
+} from '@/features/auth/model/auth-slice.ts';
 
 export const Header = () => {
   const themeMode = useAppSelector(selectThemeMode);
   const status = useAppSelector(selectStatus);
+  const isLoggedIn = useAppSelector(selectIsLoggedIn);
   const dispatch = useAppDispatch();
 
   const theme = getTheme(themeMode);
@@ -28,6 +33,9 @@ export const Header = () => {
       }),
     );
   };
+  const signOutHandler = () => {
+    dispatch(logoutTC());
+  };
   return (
     <AppBar position="static" sx={{ mb: '30px' }}>
       <Toolbar>
@@ -36,8 +44,9 @@ export const Header = () => {
             <MenuIcon />
           </IconButton>
           <div>
-            <NavButton>Sign in</NavButton>
-            <NavButton>Sign up</NavButton>
+            {isLoggedIn && (
+              <NavButton onClick={signOutHandler}>Sign out</NavButton>
+            )}
             <NavButton background={theme.palette.primary.dark}>Faq</NavButton>
             <Switch color={'default'} onChange={changeMode} />
           </div>

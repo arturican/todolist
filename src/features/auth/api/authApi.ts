@@ -9,4 +9,7 @@ export const authApi = {
       payload,
     );
   },
+  logout() {
+    return instance.delete<BaseResponse>('/auth/login');
+  },
 };
