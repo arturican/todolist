@@ -12,10 +12,12 @@ import { clearDataAC } from '@/common/actions';
 export const authSlice = createAppSlice({
   name: 'auth',
   initialState: {
+    name: '',
     isLoggedIn: false,
   },
   selectors: {
     selectIsLoggedIn: state => state.isLoggedIn,
+    selectName: state => state.name,
   },
   reducers: create => ({
     initializeAppTC: create.asyncThunk(
@@ -25,8 +27,7 @@ export const authSlice = createAppSlice({
           const res = await authApi.me();
           if (res.data.resultCode === ResultCode.Success) {
             dispatch(setAppStatusAC({ status: 'succeeded' }));
-            console.log(res.data.data.email);
-            return { isLoggedIn: true };
+            return { isLoggedIn: true, name: res.data.data.email };
           } else {
             handleServerAppError(res.data, dispatch);
             return rejectWithValue(null);
@@ -39,6 +40,7 @@ export const authSlice = createAppSlice({
       {
         fulfilled: (state, action) => {
           state.isLoggedIn = action.payload.isLoggedIn;
+          state.name = action.payload.name;
         },
       },
     ),
@@ -94,6 +96,6 @@ export const authSlice = createAppSlice({
   }),
 });
 
-export const { selectIsLoggedIn } = authSlice.selectors;
+export const { selectIsLoggedIn, selectName } = authSlice.selectors;
 export const { loginTC, logoutTC, initializeAppTC } = authSlice.actions;
 export const authReducer = authSlice.reducer;

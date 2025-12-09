@@ -17,6 +17,7 @@ import { containerSX } from '@/common/styles/container.styles.ts';
 import {
   logoutTC,
   selectIsLoggedIn,
+  selectName,
 } from '@/features/auth/model/auth-slice.ts';
 
 export const Header = () => {
@@ -24,6 +25,7 @@ export const Header = () => {
   const status = useAppSelector(selectStatus);
   const isLoggedIn = useAppSelector(selectIsLoggedIn);
   const dispatch = useAppDispatch();
+  const name = useAppSelector(selectName).match(/^[^@]+/)![0];
 
   const theme = getTheme(themeMode);
   const changeMode = () => {
@@ -45,7 +47,10 @@ export const Header = () => {
           </IconButton>
           <div>
             {isLoggedIn && (
-              <NavButton onClick={signOutHandler}>Sign out</NavButton>
+              <>
+                <span>{name}</span>
+                <NavButton onClick={signOutHandler}>Sign out</NavButton>
+              </>
             )}
             <NavButton background={theme.palette.primary.dark}>Faq</NavButton>
             <Switch color={'default'} onChange={changeMode} />
