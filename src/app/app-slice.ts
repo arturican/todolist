@@ -1,8 +1,8 @@
-import { createSlice } from '@reduxjs/toolkit';
 import type { RequestStatus } from '@/common/types/types.ts';
+import { createAppSlice } from '@/common/utils';
 export type ThemeMode = 'dark' | 'light';
 
-export const appSlice = createSlice({
+export const appSlice = createAppSlice({
   name: 'app',
   initialState: {
     themeMode: 'light' as ThemeMode,
