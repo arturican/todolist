@@ -12,6 +12,7 @@ import {
 import { setAppStatusAC } from '@/app/app-slice.ts';
 import type { RequestStatus } from '@/common/types/types.ts';
 import { ResultCode } from '@/common/enums/enums.ts';
+import { clearDataAC } from '@/common/actions';
 
 export const todolistsSlice = createAppSlice({
   name: 'todolists',
@@ -152,6 +153,11 @@ export const todolistsSlice = createAppSlice({
       },
     ),
   }),
+  extraReducers: builder => {
+    builder.addCase(clearDataAC, () => {
+      return [];
+    });
+  },
 });
 
 export const {

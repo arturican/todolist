@@ -7,6 +7,7 @@ import { type LoginInputs } from '@/features/auth/lib';
 import { setAppStatusAC } from '@/app/app-slice.ts';
 import { authApi } from '@/features/auth/api/authApi.ts';
 import { ResultCode } from '@/common/enums/enums.ts';
+import { clearDataAC } from '@/common/actions';
 
 export const authSlice = createAppSlice({
   name: 'auth',
@@ -24,6 +25,7 @@ export const authSlice = createAppSlice({
           const res = await authApi.me();
           if (res.data.resultCode === ResultCode.Success) {
             dispatch(setAppStatusAC({ status: 'succeeded' }));
+            console.log(res.data.data.email);
             return { isLoggedIn: true };
           } else {
             handleServerAppError(res.data, dispatch);
@@ -72,6 +74,7 @@ export const authSlice = createAppSlice({
           if (res.data.resultCode === ResultCode.Success) {
             dispatch(setAppStatusAC({ status: 'succeeded' }));
             localStorage.removeItem('token');
+            dispatch(clearDataAC());
             return { isLoggedIn: false };
           } else {
             handleServerAppError(res.data, dispatch);
