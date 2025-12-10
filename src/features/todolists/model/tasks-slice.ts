@@ -31,9 +31,9 @@ export const tasksSlice = createAppSlice({
           const tasks = domainTaskSchema.array().parse(res.data.items);
           dispatch(setAppStatusAC({ status: 'succeeded' }));
           return { todolistId, tasks };
-        } catch (error) {
+        } catch (error: any) {
           handleServerNetworkError(dispatch, error);
-          return rejectWithValue(error);
+          return rejectWithValue(null);
         }
       },
       {
@@ -85,7 +85,7 @@ export const tasksSlice = createAppSlice({
           }
         } catch (error: any) {
           handleServerNetworkError(dispatch, error);
-          return rejectWithValue(error);
+          return rejectWithValue(null);
         }
       },
       {

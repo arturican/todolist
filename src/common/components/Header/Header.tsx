@@ -25,7 +25,7 @@ export const Header = () => {
   const status = useAppSelector(selectStatus);
   const isLoggedIn = useAppSelector(selectIsLoggedIn);
   const dispatch = useAppDispatch();
-  const name = useAppSelector(selectName).match(/^[^@]+/)![0];
+  const name = useAppSelector(selectName)?.match(/^[^@]+/)?.[0] ?? '';
 
   const theme = getTheme(themeMode);
   const changeMode = () => {
