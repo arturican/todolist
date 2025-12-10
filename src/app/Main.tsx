@@ -4,20 +4,13 @@ import { CreateItemForm } from '@/common/components/CreateItemForm/CreateItemFor
 import { useAppDispatch } from '@/common/hooks/useAppDispatch.ts';
 import { createTodolistTC } from '@/features/todolists/model/todolists-slice.ts';
 import { Todolists } from '@/features/todolists/ui/Todolists/Todolists.tsx';
-import { useAppSelector } from '@/common/hooks/useAppSelector.ts';
-import { selectIsLoggedIn } from '@/features/auth/model/auth-slice.ts';
-import { Navigate } from 'react-router';
-import { Path } from '@/common/routing';
 
 export const Main = () => {
   const dispatch = useAppDispatch();
   const createTodolist = (title: string) => {
     dispatch(createTodolistTC(title));
   };
-  const isLoggendIn = useAppSelector(selectIsLoggedIn);
-  if (!isLoggendIn) {
-    return <Navigate to={Path.Login} />;
-  }
+
   return (
     <Container maxWidth="lg">
       <Grid container sx={{ mb: '30px' }}>
