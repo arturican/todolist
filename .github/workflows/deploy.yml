@@ -41,7 +41,6 @@ jobs:
 
       - name: Build
         env:
-          VITE_API_KEY: ${{ secrets.VITE_API_KEY }}
           VITE_BASE_URL: /api
         run: pnpm run build
 
@@ -57,11 +56,13 @@ jobs:
             exit 1
           fi
 
-      - name: Verify bundle does not contain placeholder API key
+      - name: Verify bundle does not contain API key markers
         run: |
           BUILD_DIR="${{ steps.build_dir.outputs.dir }}"
-          if grep -R "your-api-key" -n "$BUILD_DIR"; then
-            echo "Found placeholder API key in build output."
+          PATTERNS="VITE_API_KEY|API-KEY|X-API-KEY|api-key|apikey|your-api-key"
+          if grep -R -n -E "$PATTERNS" "$BUILD_DIR" > /tmp/secret_scan.txt; then
+            echo "Found API key markers in build output."
+            cut -d: -f1,2 /tmp/secret_scan.txt | head -n 20
             exit 1
           fi
 
