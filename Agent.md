@@ -5,7 +5,7 @@
 - Users log in, view their todo lists, create/update/delete lists and tasks, filter tasks, and toggle light/dark theme.
 
 ## Architecture Overview
-- Frontend-only React/Vite app; API calls go to an external backend via Axios instance configured from Vite env vars (`VITE_BASE_URL`, `VITE_API_KEY`, `VITE_API_TOKEN` for bearer).
+- Frontend-only React/Vite app; API calls go to an external backend via Axios instance configured from Vite env vars (`VITE_BASE_URL`, `VITE_API_TOKEN` for bearer).
 - State management: Redux Toolkit with custom `createAppSlice` wrapper (adds `create.asyncThunk`).
 - Routing: `react-router` v7 (Routes/Route, BrowserRouter).
 - The app initializes by calling `authApi.me` (`initializeAppTC`); shows a spinner until init completes.
@@ -31,7 +31,7 @@
 
 ## API Layer
 - Axios instance: `src/common/instance/instance.ts`
-  - Base URL from `VITE_BASE_URL`, `API-KEY` header from `VITE_API_KEY`.
+  - Base URL from `VITE_BASE_URL`.
   - Request interceptor adds `Authorization: Bearer <localStorage token>`.
 - Auth endpoints (`src/features/auth/api/authApi.ts`):
   - `login(payload)` → `POST /auth/login` returns `{ userId, token }`; token stored in `localStorage`.
