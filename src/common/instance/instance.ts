@@ -1,8 +1,7 @@
 import axios from 'axios';
 
-export const token = import.meta.env.VITE_API_TOKEN;
 const apiKey = import.meta.env.VITE_API_KEY;
-const baseURL = import.meta.env.VITE_BASE_URL;
+const baseURL = import.meta.env.VITE_BASE_URL || '/api';
 
 export const instance = axios.create({
   baseURL: baseURL,
@@ -12,6 +11,15 @@ export const instance = axios.create({
 });
 
 instance.interceptors.request.use(function (config) {
-  config.headers.Authorization = `Bearer ${localStorage.getItem('token')}`;
+  const token = localStorage.getItem('token');
+  const headers = config.headers ?? {};
+
+  if (token) {
+    (headers as Record<string, string>).Authorization = `Bearer ${token}`;
+  } else {
+    delete (headers as Record<string, string>).Authorization;
+  }
+
+  config.headers = headers;
   return config;
 });

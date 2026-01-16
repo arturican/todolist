@@ -16,6 +16,14 @@ export default defineConfig({
   server: {
     port: 3000,      // <-- укажи нужный порт
     open: true,      // (опционально) автоматически открывать браузер
+    proxy: {
+      '/api': {
+        target: 'https://social-network.samuraijs.com',
+        changeOrigin: true,
+        secure: true,
+        rewrite: (path) => path.replace(/^\/api/, '/api/1.1'),
+      },
+    },
   },
   preview: {
     port: 3001,

@@ -27,3 +27,19 @@ cat ~/.ssh/todolist_deploy.pub | ssh -p 22 root@45.130.212.122 "mkdir -p ~/.ssh 
 
 ### Ручной запуск
 GitHub → Actions → `Deploy SPA to VPS` → Run workflow.
+
+## API routing (dev/prod)
+
+- Dev: запросы идут на `/api/*`, Vite proxy прокидывает на `https://social-network.samuraijs.com/api/1.1`.
+- Prod: запросы идут на `/api/*`, nginx проксирует на `https://social-network.samuraijs.com/api/1.1`.
+
+### Env
+Пример переменных окружения смотри в `.env.example`.
+- `VITE_BASE_URL=/api` (можно не задавать, в коде есть fallback на `/api`)
+- `VITE_API_KEY=...`
+
+### Локальный запуск
+```bash
+pnpm install
+pnpm run dev
+```
