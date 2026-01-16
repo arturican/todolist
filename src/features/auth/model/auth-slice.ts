@@ -50,6 +50,7 @@ export const authSlice = createAppSlice({
           dispatch(setAppStatusAC({ status: 'loading' }));
           const res = await authApi.login(data);
           if (res.data.resultCode === ResultCode.Success) {
+            dispatch(initializeAppTC());
             dispatch(setAppStatusAC({ status: 'succeeded' }));
             localStorage.setItem('token', res.data.data.token);
             return { isLoggedIn: true };
