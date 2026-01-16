@@ -40,7 +40,30 @@ jobs:
           fi
 
       - name: Build
+        env:
+          VITE_API_KEY: ${{ secrets.VITE_API_KEY }}
+          VITE_BASE_URL: /api
         run: pnpm run build
+
+      - name: Resolve build directory
+        id: build_dir
+        run: |
+          if [ -d dist ]; then
+            echo "dir=dist" >> "$GITHUB_OUTPUT"
+          elif [ -d build ]; then
+            echo "dir=build" >> "$GITHUB_OUTPUT"
+          else
+            echo "Build directory not found."
+            exit 1
+          fi
+
+      - name: Verify bundle does not contain placeholder API key
+        run: |
+          BUILD_DIR="${{ steps.build_dir.outputs.dir }}"
+          if grep -R "your-api-key" -n "$BUILD_DIR"; then
+            echo "Found placeholder API key in build output."
+            exit 1
+          fi
 
       - name: Setup SSH
         run: |
@@ -55,7 +78,7 @@ jobs:
           VPS_USER: ${{ secrets.VPS_USER }}
           VPS_PORT: ${{ secrets.VPS_PORT }}
           VPS_PATH: ${{ secrets.VPS_PATH }}
-          BUILD_DIR: dist
+          BUILD_DIR: ${{ steps.build_dir.outputs.dir }}
         run: |
           echo "Build folder: $BUILD_DIR"
           echo "Deploy path: $VPS_PATH"
@@ -63,3 +86,8 @@ jobs:
           rsync --archive --compress --delete --human-readable --itemize-changes \
             -e "ssh -p $VPS_PORT" \
             "$BUILD_DIR"/ "$VPS_USER@$VPS_HOST:$VPS_PATH"/
+
+      - name: Smoke check
+        run: |
+          curl -I https://arturican.ru
+          curl -I https://arturican.ru/api/auth/me || true
