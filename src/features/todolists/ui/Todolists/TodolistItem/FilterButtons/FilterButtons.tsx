@@ -1,12 +1,12 @@
 import Button from '@mui/material/Button';
 import { Box } from '@mui/material';
-import {
-  changeTodolistFilterAC,
-  type FilterValue,
-} from '@/features/todolists/model/todolists-slice.ts';
+import { changeTodolistFilterAC } from '@/features/todolists/model/todolists-slice.ts';
 import { useAppDispatch } from '@/common/hooks/useAppDispatch.ts';
 import { containerSX } from '@/common/styles/container.styles.ts';
-import type { DomainTodolist } from '@/features/todolists/api/todolistsApi.types.ts';
+import type {
+  DomainTodolist,
+  FilterValue,
+} from '@/features/todolists/api/todolistsApi.types.ts';
 
 type Props = {
   todolist: DomainTodolist;
