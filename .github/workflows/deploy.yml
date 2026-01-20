@@ -1,11 +1,6 @@
 name: Deploy SPA to VPS
 
-on:
-  push:
-    branches:
-      - dev
-      - main
-  workflow_dispatch:
+on: [push]
 
 jobs:
   deploy:
