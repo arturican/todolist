@@ -1,6 +1,6 @@
 name: Deploy SPA to VPS
 
-on: [push]
+on: workflow_dispatch
 
 jobs:
   deploy:
