@@ -19,6 +19,8 @@ import {
   selectIsLoggedIn,
   selectName,
 } from '@/features/auth/model/auth-slice.ts';
+import { Path } from '@/common/routing';
+import { NavLink } from 'react-router';
 
 export const Header = () => {
   const themeMode = useAppSelector(selectThemeMode);
@@ -52,7 +54,13 @@ export const Header = () => {
                 <NavButton onClick={signOutHandler}>Sign out</NavButton>
               </>
             )}
-            <NavButton background={theme.palette.primary.dark}>Faq</NavButton>
+            <NavButton
+              component={NavLink}
+              to={Path.Faq}
+              background={theme.palette.primary.dark}
+            >
+              Faq
+            </NavButton>
             <Switch color={'default'} onChange={changeMode} />
           </div>
         </Container>
