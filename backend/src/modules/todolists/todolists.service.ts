@@ -18,12 +18,17 @@ export const toApiTodolist = (todolist: TodolistRecord) => ({
 export const findUserTodolists = async (userId: number) => {
   return prisma.todolist.findMany({
     where: { userId },
-    orderBy: [{ order: 'asc' }, { addedDate: 'desc' }],
+    orderBy: [{ order: 'desc' }, { addedDate: 'desc' }],
   });
 };
 
 export const createUserTodolist = async (userId: number, title: string) => {
-  const order = await prisma.todolist.count({ where: { userId } });
+  const aggregate = await prisma.todolist.aggregate({
+    where: { userId },
+    _max: { order: true },
+  });
+  const order = (aggregate._max.order ?? -1) + 1;
+
   return prisma.todolist.create({
     data: {
       userId,

@@ -31,7 +31,7 @@ export const toApiTask = (task: TaskRecord) => ({
 export const findTasksByTodolist = async (todolistId: string) => {
   return prisma.task.findMany({
     where: { todoListId: todolistId },
-    orderBy: [{ order: 'asc' }, { addedDate: 'desc' }],
+    orderBy: [{ order: 'desc' }, { addedDate: 'desc' }],
   });
 };
 
@@ -39,7 +39,12 @@ export const createTaskForTodolist = async (
   todolistId: string,
   title: string,
 ) => {
-  const order = await prisma.task.count({ where: { todoListId: todolistId } });
+  const aggregate = await prisma.task.aggregate({
+    where: { todoListId: todolistId },
+    _max: { order: true },
+  });
+  const order = (aggregate._max.order ?? -1) + 1;
+
   return prisma.task.create({
     data: {
       title: title.trim(),
