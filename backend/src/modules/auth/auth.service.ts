@@ -1,5 +1,5 @@
 import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
+import jwt, { type SignOptions } from 'jsonwebtoken';
 import { prisma } from '../../db/prisma.js';
 import { env } from '../../config/env.js';
 
@@ -32,7 +32,10 @@ export const createAuthToken = (
   user: AuthUser,
   rememberMe: boolean = false,
 ): string => {
-  const expiresIn = rememberMe ? '30d' : env.JWT_EXPIRES_IN;
+  const expiresIn: SignOptions['expiresIn'] = rememberMe
+    ? '30d'
+    : (env.JWT_EXPIRES_IN as SignOptions['expiresIn']);
+
   return jwt.sign({ userId: user.id }, env.JWT_SECRET, { expiresIn });
 };
 
