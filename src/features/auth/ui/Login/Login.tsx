@@ -1,5 +1,3 @@
-import { selectThemeMode } from '@/app/app-slice';
-
 import Button from '@mui/material/Button';
 import Checkbox from '@mui/material/Checkbox';
 import FormControl from '@mui/material/FormControl';
@@ -7,8 +5,6 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormGroup from '@mui/material/FormGroup';
 import FormLabel from '@mui/material/FormLabel';
 import TextField from '@mui/material/TextField';
-import { useAppSelector } from '@/common/hooks/useAppSelector';
-import { getTheme } from '@/common/theme/theme';
 import Grid from '@mui/material/Grid';
 import { Controller, type SubmitHandler, useForm } from 'react-hook-form';
 import styles from './Login.module.css';
@@ -18,11 +14,7 @@ import { loginTC } from '@/features/auth/model/auth-slice.ts';
 import { useAppDispatch } from '@/common/hooks/useAppDispatch.ts';
 
 export const Login = () => {
-  const themeMode = useAppSelector(selectThemeMode);
-
   const dispatch = useAppDispatch();
-
-  const theme = getTheme(themeMode);
   const {
     register,
     handleSubmit,
@@ -41,28 +33,17 @@ export const Login = () => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <FormControl>
           <FormLabel>
+            <p>Use test account credentials:</p>
             <p>
-              To login get registered
-              <a
-                style={{ color: theme.palette.primary.main, marginLeft: '5px' }}
-                href="https://social-network.samuraijs.com"
-                target="_blank"
-                rel="noreferrer"
-              >
-                here
-              </a>
-            </p>
-            <p>or use common test account credentials:</p>
-            <p>
-              <b>Email:</b> free@samuraijs.com
+              <b>Login:</b> admin
             </p>
             <p>
-              <b>Password:</b> free
+              <b>Password:</b> admin
             </p>
           </FormLabel>
           <FormGroup>
             <TextField
-              label="Email"
+              label="Login"
               margin="normal"
               error={!!errors.email}
               {...register('email')}

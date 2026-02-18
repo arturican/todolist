@@ -1,0 +1,19 @@
+[Unit]
+Description=Todolist Backend API
+After=network.target
+
+[Service]
+Type=simple
+User=www-data
+Group=www-data
+WorkingDirectory=/opt/todolist-api/current
+EnvironmentFile=/etc/todolist/todolist-backend.env
+ExecStart=/usr/bin/node /opt/todolist-api/current/dist/src/server.js
+Restart=always
+RestartSec=5
+KillSignal=SIGINT
+TimeoutStopSec=30
+NoNewPrivileges=true
+
+[Install]
+WantedBy=multi-user.target

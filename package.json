@@ -5,6 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "backend:dev": "pnpm --dir backend dev",
+    "backend:migrate": "pnpm --dir backend prisma:migrate",
+    "backend:seed": "pnpm --dir backend prisma:seed",
+    "backend:test": "pnpm --dir backend test:run",
     "build": "tsc -b && vite build",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix",

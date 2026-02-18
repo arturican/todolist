@@ -5,8 +5,11 @@ import { store } from './app/store.ts';
 import { App } from '@/app/App.tsx';
 import { BrowserRouter } from 'react-router';
 
+const normalizedBase = import.meta.env.BASE_URL.replace(/\/+$/, '');
+const routerBasename = normalizedBase === '' ? undefined : normalizedBase;
+
 createRoot(document.getElementById('root')!).render(
-  <BrowserRouter basename="/todolist">
+  <BrowserRouter basename={routerBasename}>
     <Provider store={store}>
       <App />
     </Provider>

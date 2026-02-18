@@ -5,9 +5,10 @@ import { fileURLToPath } from 'node:url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+const appBase = process.env.VITE_PUBLIC_BASE || '/';
 
 export default defineConfig({
-  base: '/todolist/',
+  base: appBase,
   plugins: [react()],
   resolve: {
     alias: {
@@ -15,19 +16,18 @@ export default defineConfig({
     },
   },
   server: {
-    port: 3000,      // <-- укажи нужный порт
-    open: true,      // (опционально) автоматически открывать браузер
+    port: 3000,
+    open: true,
     proxy: {
       '/api': {
-        target: 'https://social-network.samuraijs.com',
+        target: 'http://localhost:3001',
         changeOrigin: true,
-        secure: true,
-        rewrite: (path) => path.replace(/^\/api/, '/api/1.1'),
+        secure: false,
       },
     },
   },
   preview: {
     port: 3001,
     open: true,
-  }
+  },
 });
