@@ -37,7 +37,7 @@ BASE='${REMOTE_BASE}'
 RELEASE='${REMOTE_RELEASE}'
 SERVICE='${BACKEND_SERVICE_NAME}'
 ENV_FILE='${BACKEND_ENV_FILE}'
-PORT='${BACKEND_PORT}'
+REQUESTED_PORT='${BACKEND_PORT}'
 TMP_LINK="\${BASE}/current_tmp"
 
 if [[ ! -f "\${ENV_FILE}" ]]; then
@@ -69,7 +69,21 @@ mv -Tf "\${TMP_LINK}" "\${BASE}/current"
 sudo systemctl restart "\${SERVICE}"
 sudo systemctl status "\${SERVICE}" --no-pager --lines=30
 
-curl -fsS "http://127.0.0.1:\${PORT}/api/health" > /dev/null
+HEALTH_PORT="\${PORT:-\${REQUESTED_PORT}}"
+HEALTH_URL="http://127.0.0.1:\${HEALTH_PORT}/api/health"
+
+for _ in {1..30}; do
+  if curl -fsS "\${HEALTH_URL}" > /dev/null; then
+    break
+  fi
+  sleep 1
+done
+
+if ! curl -fsS "\${HEALTH_URL}" > /dev/null; then
+  echo "Backend healthcheck failed: \${HEALTH_URL}" >&2
+  sudo journalctl -u "\${SERVICE}" -n 120 --no-pager || true
+  exit 1
+fi
 
 if ls -1d "\${BASE}/releases/"* >/dev/null 2>&1; then
   ls -1dt "\${BASE}"/releases/* | tail -n +$((KEEP_RELEASES + 1)) | xargs -r rm -rf --
