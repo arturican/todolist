@@ -22,6 +22,9 @@ import {
 import { Path } from '@/common/routing';
 import { NavLink } from 'react-router';
 
+const PORTFOLIO_URL =
+  import.meta.env.VITE_PORTFOLIO_URL || 'https://arturican.ru/';
+
 export const Header = () => {
   const themeMode = useAppSelector(selectThemeMode);
   const status = useAppSelector(selectStatus);
@@ -39,6 +42,9 @@ export const Header = () => {
   };
   const signOutHandler = () => {
     dispatch(logoutTC());
+  };
+  const backToPortfolioHandler = () => {
+    window.location.assign(PORTFOLIO_URL);
   };
   return (
     <AppBar position="static" sx={{ mb: '30px' }}>
@@ -60,6 +66,12 @@ export const Header = () => {
               background={theme.palette.primary.dark}
             >
               Faq
+            </NavButton>
+            <NavButton
+              onClick={backToPortfolioHandler}
+              background={theme.palette.primary.dark}
+            >
+              List Projects
             </NavButton>
             <Switch color={'default'} onChange={changeMode} />
           </div>
