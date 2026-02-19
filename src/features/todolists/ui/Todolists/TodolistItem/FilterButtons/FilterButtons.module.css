@@ -1,0 +1,25 @@
+.segmented {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space1);
+  padding: var(--space1);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--surfaceSoft);
+}
+
+.segmentButton {
+  min-height: 40px;
+  border-radius: 10px !important;
+  border: 0 !important;
+  color: var(--muted) !important;
+}
+
+.segmentButton:hover {
+  background: rgba(42, 171, 238, 0.1) !important;
+}
+
+.active {
+  color: var(--accent) !important;
+  background: rgba(42, 171, 238, 0.16) !important;
+}

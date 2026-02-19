@@ -1,5 +1,4 @@
 import { useAppSelector } from '@/common/hooks/useAppSelector.ts';
-import { getTheme } from '@/common/theme/theme.ts';
 import {
   changeThemeModeAC,
   selectStatus,
@@ -8,12 +7,10 @@ import {
 import { useAppDispatch } from '@/common/hooks/useAppDispatch.ts';
 import AppBar from '@mui/material/AppBar';
 import { LinearProgress, Toolbar } from '@mui/material';
-import Container from '@mui/material/Container';
 import IconButton from '@mui/material/IconButton';
 import { NavButton } from '@/common/components/NavButton/NavButton.ts';
 import Switch from '@mui/material/Switch';
 import MenuIcon from '@mui/icons-material/Menu';
-import { containerSX } from '@/common/styles/container.styles.ts';
 import {
   logoutTC,
   selectIsLoggedIn,
@@ -22,6 +19,7 @@ import {
 import { Path } from '@/common/routing';
 import { NavLink } from 'react-router';
 import { GITHUB_REPO_URL, PORTFOLIO_URL } from '@/common/config/links.ts';
+import styles from './Header.module.css';
 
 export const Header = () => {
   const themeMode = useAppSelector(selectThemeMode);
@@ -30,7 +28,6 @@ export const Header = () => {
   const dispatch = useAppDispatch();
   const name = useAppSelector(selectName)?.match(/^[^@]+/)?.[0] ?? '';
 
-  const theme = getTheme(themeMode);
   const changeMode = () => {
     dispatch(
       changeThemeModeAC({
@@ -38,59 +35,53 @@ export const Header = () => {
       }),
     );
   };
+
   const signOutHandler = () => {
     dispatch(logoutTC());
   };
+
   const backToPortfolioHandler = () => {
     window.location.assign(PORTFOLIO_URL);
   };
+
   const viewSourceHandler = () => {
     window.open(GITHUB_REPO_URL, '_blank', 'noopener,noreferrer');
   };
+
   return (
-    <AppBar
-      position="static"
-      sx={{
-        mb: '30px',
-        backgroundColor: 'var(--app-bar-bg)',
-        color: 'var(--app-bar-fg)',
-        fontFamily: 'var(--app-bar-font-family)',
-        fontSize: 'var(--app-bar-font-size)',
-        fontWeight: 'var(--app-bar-font-weight)',
-        letterSpacing: 'var(--app-bar-letter-spacing)',
-      }}
-    >
+    <AppBar position="static" className={styles.appBar}>
       <Toolbar>
-        <Container maxWidth="lg" sx={containerSX}>
-          <IconButton color="inherit">
-            <MenuIcon />
-          </IconButton>
-          <div>
+        <div className={`pageContainer ${styles.toolbar}`}>
+          <div className={styles.brand}>
+            <IconButton color="inherit" className={styles.menuButton}>
+              <MenuIcon />
+            </IconButton>
+            <span>TodoList</span>
+          </div>
+
+          <div className={styles.actions}>
             {isLoggedIn && (
               <>
-                <span>{name}</span>
+                <span className={styles.user}>{name}</span>
                 <NavButton onClick={signOutHandler}>Sign out</NavButton>
               </>
             )}
-            <NavButton
-              component={NavLink}
-              to={Path.Faq}
-              background={theme.palette.primary.dark}
-            >
-              Faq
+            <NavButton component={NavLink} to={Path.Faq}>
+              FAQ
             </NavButton>
-            <NavButton
-              onClick={backToPortfolioHandler}
-              background={theme.palette.primary.dark}
-            >
+            <NavButton onClick={backToPortfolioHandler}>
               List Projects
             </NavButton>
-            <NavButton onClick={viewSourceHandler}>
-              View source on GitHub
-            </NavButton>
-            <Switch color={'default'} onChange={changeMode} />
+            <NavButton onClick={viewSourceHandler}>View Source</NavButton>
+            <Switch
+              className={styles.themeSwitch}
+              color="default"
+              checked={themeMode === 'dark'}
+              onChange={changeMode}
+              inputProps={{ 'aria-label': 'Toggle dark mode' }}
+            />
           </div>
-        </Container>
+        </div>
       </Toolbar>
       {status === 'loading' && <LinearProgress />}
     </AppBar>

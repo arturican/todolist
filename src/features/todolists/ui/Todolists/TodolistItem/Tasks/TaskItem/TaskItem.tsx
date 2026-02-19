@@ -8,11 +8,11 @@ import { Checkbox } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import type { ChangeEvent } from 'react';
 import IconButton from '@mui/material/IconButton';
-import { getListItemSx } from '@/features/todolists/ui/Todolists/TodolistItem/Tasks/TaskItem/TaskItem.styles.ts';
 import { EditableSpan } from '@/common/components';
 import type { DomainTask } from '@/features/todolists/api/tasksApi.types.ts';
 import { TaskStatus } from '@/common/enums/enums.ts';
 import type { DomainTodolist } from '@/features/todolists/api/todolistsApi.types.ts';
+import styles from './TaskItem.module.css';
 
 type Props = {
   task: DomainTask;
@@ -22,9 +22,11 @@ type Props = {
 export const TaskItem = ({ task, todolist }: Props) => {
   const dispatch = useAppDispatch();
   const disabled = todolist.entityStatus === 'loading';
+
   const deleteTask = () => {
     dispatch(deleteTaskTC({ todolistId: todolist.id, taskId: task.id }));
   };
+
   const changeTaskStatus = (e: ChangeEvent<HTMLInputElement>) => {
     const newStatusValue = e.target.checked;
     dispatch(
@@ -37,6 +39,7 @@ export const TaskItem = ({ task, todolist }: Props) => {
       }),
     );
   };
+
   const changeTaskTitle = (title: string) => {
     dispatch(
       updateTaskTC({
@@ -46,24 +49,36 @@ export const TaskItem = ({ task, todolist }: Props) => {
       }),
     );
   };
+
   const isTaskCompleted = task.status === TaskStatus.Completed;
 
   return (
-    <ListItem sx={getListItemSx(isTaskCompleted)}>
-      <div>
+    <ListItem className={styles.row}>
+      <div className={styles.left}>
         <Checkbox
           checked={isTaskCompleted}
           onChange={changeTaskStatus}
           disabled={disabled}
         />
-        <EditableSpan
-          value={task.title}
-          onChange={changeTaskTitle}
-          entityStatus={todolist.entityStatus}
-        />
+        <span
+          className={`${styles.title} ${isTaskCompleted ? styles.completed : ''}`}
+        >
+          <EditableSpan
+            value={task.title}
+            onChange={changeTaskTitle}
+            entityStatus={todolist.entityStatus}
+          />
+        </span>
       </div>
-      <span>{new Date(task.addedDate).toLocaleDateString()}</span>
-      <IconButton onClick={deleteTask} disabled={disabled}>
+      <span className={styles.date}>
+        {new Date(task.addedDate).toLocaleDateString()}
+      </span>
+      <IconButton
+        className={styles.deleteButton}
+        onClick={deleteTask}
+        disabled={disabled}
+        aria-label="Delete task"
+      >
         <DeleteIcon />
       </IconButton>
     </ListItem>

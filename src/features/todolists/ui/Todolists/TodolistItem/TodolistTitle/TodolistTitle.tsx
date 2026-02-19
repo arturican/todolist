@@ -16,30 +16,32 @@ type Props = {
 export const TodolistTitle = ({ todolist }: Props) => {
   const { id, title, entityStatus } = todolist;
   const dispatch = useAppDispatch();
+
   const deleteTodolist = () => {
     dispatch(deleteTodolistTC(id));
   };
 
-  const changeTodolistTitle = (title: string) => {
-    dispatch(changeTodolistTitleTC({ id, title }));
+  const changeTodolistTitle = (newTitle: string) => {
+    dispatch(changeTodolistTitleTC({ id, title: newTitle }));
   };
+
   return (
-    <>
-      <div className={styles.container}>
-        <h3>
-          <EditableSpan
-            value={title}
-            onChange={changeTodolistTitle}
-            entityStatus={entityStatus}
-          />
-        </h3>
-        <IconButton
-          onClick={deleteTodolist}
-          disabled={entityStatus === 'loading'}
-        >
-          <DeleteIcon />
-        </IconButton>{' '}
-      </div>
-    </>
+    <div className={styles.container}>
+      <h3 className={styles.title}>
+        <EditableSpan
+          value={title}
+          onChange={changeTodolistTitle}
+          entityStatus={entityStatus}
+        />
+      </h3>
+      <IconButton
+        className={styles.iconButton}
+        onClick={deleteTodolist}
+        disabled={entityStatus === 'loading'}
+        aria-label="Delete todolist"
+      >
+        <DeleteIcon />
+      </IconButton>
+    </div>
   );
 };

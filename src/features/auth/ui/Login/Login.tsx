@@ -5,7 +5,6 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormGroup from '@mui/material/FormGroup';
 import FormLabel from '@mui/material/FormLabel';
 import TextField from '@mui/material/TextField';
-import Grid from '@mui/material/Grid';
 import { Controller, type SubmitHandler, useForm } from 'react-hook-form';
 import styles from './Login.module.css';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -24,22 +23,25 @@ export const Login = () => {
     resolver: zodResolver(loginSchema),
     defaultValues: { email: '', password: '', rememberMe: false },
   });
+
   const onSubmit: SubmitHandler<LoginInputs> = data => {
     dispatch(loginTC(data));
   };
 
   return (
-    <Grid container justifyContent={'center'}>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <FormControl>
+    <div className="pageContainer">
+      <form className={styles.wrapper} onSubmit={handleSubmit(onSubmit)}>
+        <FormControl fullWidth>
           <FormLabel>
-            <p>Use test account credentials:</p>
-            <p>
-              <b>Login:</b> admin
-            </p>
-            <p>
-              <b>Password:</b> admin
-            </p>
+            <p className={styles.info}>Use test account credentials:</p>
+            <div className={styles.credentials}>
+              <div>
+                <b>Login:</b> admin
+              </div>
+              <div>
+                <b>Password:</b> admin
+              </div>
+            </div>
           </FormLabel>
           <FormGroup>
             <TextField
@@ -57,6 +59,7 @@ export const Login = () => {
               type="password"
               label="Password"
               margin="normal"
+              error={!!errors.password}
               {...register('password')}
             />
             {errors.password && (
@@ -76,12 +79,18 @@ export const Login = () => {
                 />
               }
             />
-            <Button type="submit" variant="contained" color="primary">
+            <Button
+              className={styles.submit}
+              type="submit"
+              variant="contained"
+              color="primary"
+              fullWidth
+            >
               Login
             </Button>
           </FormGroup>
         </FormControl>
       </form>
-    </Grid>
+    </div>
   );
 };

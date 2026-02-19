@@ -1,0 +1,15 @@
+.main {
+  padding-bottom: var(--space6);
+}
+
+.createRow {
+  width: 100%;
+  max-width: 420px;
+  margin: 0 0 var(--space4);
+}
+
+@media (max-width: 640px) {
+  .createRow {
+    max-width: none;
+  }
+}

@@ -5,6 +5,7 @@ import { TodolistTitle } from '@/features/todolists/ui/Todolists/TodolistItem/To
 import { Tasks } from '@/features/todolists/ui/Todolists/TodolistItem/Tasks/Tasks.tsx';
 import { FilterButtons } from '@/features/todolists/ui/Todolists/TodolistItem/FilterButtons/FilterButtons.tsx';
 import type { DomainTodolist } from '@/features/todolists/api/todolistsApi.types.ts';
+import styles from './TodolistItem.module.css';
 
 type Props = {
   todolist: DomainTodolist;
@@ -12,11 +13,13 @@ type Props = {
 
 export const TodolistItem = ({ todolist }: Props) => {
   const dispatch = useAppDispatch();
+
   const createTask = (title: string) => {
     dispatch(createTaskTC({ todolistId: todolist.id, title }));
   };
+
   return (
-    <div>
+    <div className={styles.item}>
       <TodolistTitle todolist={todolist} />
       <CreateItemForm
         onCreateItem={createTask}

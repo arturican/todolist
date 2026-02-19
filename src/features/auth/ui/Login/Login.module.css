@@ -1,4 +1,38 @@
+.wrapper {
+  width: 100%;
+  max-width: 440px;
+  margin: var(--space7) auto 0;
+  padding: var(--space6);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radiusCard);
+  box-shadow: var(--shadow1), var(--shadow2);
+}
+
+.info {
+  margin: 0 0 var(--space4);
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.credentials {
+  margin-bottom: var(--space4);
+  color: var(--text);
+}
+
 .errorMessage {
-  color: red;
+  color: #ef4444;
   font-size: 14px;
+  margin-top: 2px;
+}
+
+.submit {
+  margin-top: var(--space2);
+}
+
+@media (max-width: 640px) {
+  .wrapper {
+    margin-top: var(--space5);
+    padding: var(--space5);
+  }
 }

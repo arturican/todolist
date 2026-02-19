@@ -1,0 +1,29 @@
+.row {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space3);
+  width: 100%;
+  min-width: 0;
+}
+
+.input {
+  flex: 1;
+  min-width: 0;
+}
+
+.button {
+  min-width: 132px;
+  min-height: 40px;
+  border-radius: var(--radiusControl) !important;
+  flex-shrink: 0;
+}
+
+@media (max-width: 640px) {
+  .row {
+    flex-direction: column;
+  }
+
+  .button {
+    width: 100%;
+  }
+}

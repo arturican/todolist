@@ -1,4 +1,23 @@
 .container {
   display: flex;
+  align-items: center;
   justify-content: space-between;
+  gap: var(--space2);
+}
+
+.title {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 650;
+  color: var(--text);
+}
+
+.iconButton {
+  border: 1px solid var(--border) !important;
+  color: var(--muted) !important;
+}
+
+.iconButton:hover {
+  color: #ef4444 !important;
+  background: rgba(239, 68, 68, 0.08) !important;
 }

@@ -16,20 +16,23 @@ export const App = () => {
   const themeMode = useAppSelector(selectThemeMode);
   const theme = getTheme(themeMode);
   const dispatch = useAppDispatch();
+
   useEffect(() => {
     dispatch(initializeAppTC()).finally(() => {
       setIsInitialized(true);
     });
   }, []);
+
   if (!isInitialized) {
     return (
       <div className="circularProgressContainer">
-        <CircularProgress size={150} thickness={3} />
+        <CircularProgress size={88} thickness={4} />
       </div>
     );
   }
+
   return (
-    <div className="app">
+    <div className="app" data-theme={themeMode}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <Header />

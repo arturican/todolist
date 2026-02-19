@@ -1,45 +1,44 @@
 import Button from '@mui/material/Button';
-import { Box } from '@mui/material';
 import { changeTodolistFilterAC } from '@/features/todolists/model/todolists-slice.ts';
 import { useAppDispatch } from '@/common/hooks/useAppDispatch.ts';
-import { containerSX } from '@/common/styles/container.styles.ts';
 import type {
   DomainTodolist,
   FilterValue,
 } from '@/features/todolists/api/todolistsApi.types.ts';
+import styles from './FilterButtons.module.css';
 
 type Props = {
   todolist: DomainTodolist;
 };
+
 export const FilterButtons = ({ todolist }: Props) => {
   const { id, filter } = todolist;
   const dispatch = useAppDispatch();
-  const changeFilter = (filter: FilterValue) => {
-    dispatch(changeTodolistFilterAC({ id, filter }));
+
+  const changeFilter = (nextFilter: FilterValue) => {
+    dispatch(changeTodolistFilterAC({ id, filter: nextFilter }));
   };
+
   return (
-    <Box sx={containerSX}>
+    <div className={styles.segmented}>
       <Button
-        variant={filter === 'all' ? 'outlined' : 'text'}
-        color={'inherit'}
+        className={`${styles.segmentButton} ${filter === 'all' ? styles.active : ''}`}
         onClick={() => changeFilter('all')}
       >
-        ALL
+        All
       </Button>
       <Button
-        variant={filter === 'active' ? 'outlined' : 'text'}
-        color={'primary'}
+        className={`${styles.segmentButton} ${filter === 'active' ? styles.active : ''}`}
         onClick={() => changeFilter('active')}
       >
-        ACTIVE
+        Active
       </Button>
       <Button
-        variant={filter === 'completed' ? 'outlined' : 'text'}
-        color={'secondary'}
+        className={`${styles.segmentButton} ${filter === 'completed' ? styles.active : ''}`}
         onClick={() => changeFilter('completed')}
       >
-        COMPLETED
+        Completed
       </Button>
-    </Box>
+    </div>
   );
 };

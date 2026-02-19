@@ -1,0 +1,58 @@
+.appBar {
+  margin-bottom: var(--space6);
+  background: var(--surface) !important;
+  color: var(--text) !important;
+  border-bottom: 1px solid var(--border);
+  box-shadow: none !important;
+}
+
+.toolbar {
+  min-height: 72px;
+  display: flex;
+  gap: var(--space4);
+  align-items: center;
+  justify-content: space-between;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space3);
+  font-weight: 600;
+  font-size: 1.05rem;
+}
+
+.menuButton {
+  border: 1px solid var(--border) !important;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: var(--space2);
+}
+
+.user {
+  color: var(--muted);
+  margin-right: var(--space2);
+}
+
+.themeSwitch {
+  margin-left: var(--space1);
+}
+
+@media (max-width: 900px) {
+  .toolbar {
+    align-items: flex-start;
+    flex-direction: column;
+    padding-top: var(--space3);
+    padding-bottom: var(--space3);
+  }
+
+  .actions {
+    width: 100%;
+    justify-content: flex-start;
+  }
+}

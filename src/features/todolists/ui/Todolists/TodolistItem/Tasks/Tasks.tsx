@@ -10,6 +10,7 @@ import type { DomainTask } from '@/features/todolists/api/tasksApi.types.ts';
 import { TaskStatus } from '@/common/enums/enums.ts';
 import { useAppDispatch } from '@/common/hooks/useAppDispatch.ts';
 import { useEffect } from 'react';
+import styles from './Tasks.module.css';
 
 type Props = {
   todolist: DomainTodolist;
@@ -19,6 +20,7 @@ export const Tasks = ({ todolist }: Props) => {
   const { id, filter } = todolist;
   const tasks = useAppSelector(selectTasks);
   const dispatch = useAppDispatch();
+
   useEffect(() => {
     dispatch(fetchTasksTC(id));
   }, []);
@@ -36,17 +38,15 @@ export const Tasks = ({ todolist }: Props) => {
     );
   }
 
+  if (filteredTasks.length === 0) {
+    return <span className={styles.empty}>Task list is empty</span>;
+  }
+
   return (
-    <>
-      {filteredTasks?.length === 0 ? (
-        <span>{'Список задач пуст'}</span>
-      ) : (
-        <List>
-          {filteredTasks?.map((task: DomainTask) => (
-            <TaskItem key={task.id} task={task} todolist={todolist} />
-          ))}
-        </List>
-      )}
-    </>
+    <List className={styles.list}>
+      {filteredTasks.map((task: DomainTask) => (
+        <TaskItem key={task.id} task={task} todolist={todolist} />
+      ))}
+    </List>
   );
 };
