@@ -5,7 +5,7 @@ import { useAppSelector } from '../common/hooks/useAppSelector.ts';
 import { Header } from '@/common/components/Header/Header.tsx';
 import { getTheme } from '@/common/theme/theme.ts';
 import { selectThemeMode } from '@/app/app-slice.ts';
-import { ErrorSnackbar } from '@/common/components';
+import { ErrorSnackbar, Footer } from '@/common/components';
 import { Routing } from '@/common/routing';
 import { useAppDispatch } from '@/common/hooks/useAppDispatch.ts';
 import { useEffect, useState } from 'react';
@@ -33,7 +33,10 @@ export const App = () => {
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <Header />
-        <Routing />
+        <main className="appMain">
+          <Routing />
+        </main>
+        <Footer />
         <ErrorSnackbar />
       </ThemeProvider>
     </div>

@@ -1,5 +1,11 @@
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  --app-bar-bg: #087ea4;
+  --app-bar-fg: #ffffff;
+  --app-bar-font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  --app-bar-font-size: 0.95rem;
+  --app-bar-font-weight: 500;
+  --app-bar-letter-spacing: 0.01em;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -8,8 +14,11 @@
 
 body {
   margin: 0;
-  display: flex;
   min-width: 320px;
+  min-height: 100vh;
+}
+
+#root {
   min-height: 100vh;
 }
 

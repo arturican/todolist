@@ -21,9 +21,7 @@ import {
 } from '@/features/auth/model/auth-slice.ts';
 import { Path } from '@/common/routing';
 import { NavLink } from 'react-router';
-
-const PORTFOLIO_URL =
-  import.meta.env.VITE_PORTFOLIO_URL || 'https://arturican.ru/';
+import { GITHUB_REPO_URL, PORTFOLIO_URL } from '@/common/config/links.ts';
 
 export const Header = () => {
   const themeMode = useAppSelector(selectThemeMode);
@@ -46,8 +44,22 @@ export const Header = () => {
   const backToPortfolioHandler = () => {
     window.location.assign(PORTFOLIO_URL);
   };
+  const viewSourceHandler = () => {
+    window.open(GITHUB_REPO_URL, '_blank', 'noopener,noreferrer');
+  };
   return (
-    <AppBar position="static" sx={{ mb: '30px' }}>
+    <AppBar
+      position="static"
+      sx={{
+        mb: '30px',
+        backgroundColor: 'var(--app-bar-bg)',
+        color: 'var(--app-bar-fg)',
+        fontFamily: 'var(--app-bar-font-family)',
+        fontSize: 'var(--app-bar-font-size)',
+        fontWeight: 'var(--app-bar-font-weight)',
+        letterSpacing: 'var(--app-bar-letter-spacing)',
+      }}
+    >
       <Toolbar>
         <Container maxWidth="lg" sx={containerSX}>
           <IconButton color="inherit">
@@ -72,6 +84,9 @@ export const Header = () => {
               background={theme.palette.primary.dark}
             >
               List Projects
+            </NavButton>
+            <NavButton onClick={viewSourceHandler}>
+              View source on GitHub
             </NavButton>
             <Switch color={'default'} onChange={changeMode} />
           </div>
