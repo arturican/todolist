@@ -25,7 +25,9 @@ export const TodolistItem = ({ todolist }: Props) => {
         onCreateItem={createTask}
         disabled={todolist.entityStatus === 'loading'}
       />
-      <Tasks todolist={todolist} />
+      <div className={styles.tasksSection}>
+        <Tasks todolist={todolist} />
+      </div>
       <FilterButtons todolist={todolist} />
     </div>
   );

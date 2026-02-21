@@ -19,7 +19,12 @@ export const Todolists = () => {
   return (
     <div className={styles.grid}>
       {todolists.map(todolist => (
-        <article key={todolist.id} className={styles.card}>
+        <article
+          key={todolist.id}
+          className={styles.card}
+          data-testid="todolist-card"
+          data-todolist-id={todolist.id}
+        >
           <TodolistItem todolist={todolist} />
         </article>
       ))}

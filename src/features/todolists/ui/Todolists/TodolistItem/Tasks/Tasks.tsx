@@ -39,14 +39,30 @@ export const Tasks = ({ todolist }: Props) => {
   }
 
   if (filteredTasks.length === 0) {
-    return <span className={styles.empty}>Task list is empty</span>;
+    return (
+      <div
+        className={styles.panel}
+        data-testid="task-list-panel"
+        data-todolist-id={id}
+        data-task-count={0}
+      >
+        <span className={styles.empty}>Task list is empty</span>
+      </div>
+    );
   }
 
   return (
-    <List className={styles.list}>
-      {filteredTasks.map((task: DomainTask) => (
-        <TaskItem key={task.id} task={task} todolist={todolist} />
-      ))}
-    </List>
+    <div
+      className={styles.panel}
+      data-testid="task-list-panel"
+      data-todolist-id={id}
+      data-task-count={filteredTasks.length}
+    >
+      <List className={styles.list}>
+        {filteredTasks.map((task: DomainTask) => (
+          <TaskItem key={task.id} task={task} todolist={todolist} />
+        ))}
+      </List>
+    </div>
   );
 };
