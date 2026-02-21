@@ -90,18 +90,40 @@
     column-gap: var(--space2);
     row-gap: var(--space1);
     align-items: flex-start;
+    padding-inline: var(--space2) !important;
   }
 
   .left {
     grid-column: 1;
     grid-row: 1;
+    column-gap: var(--space1);
+  }
+
+  .checkbox {
+    padding: 4px !important;
+  }
+
+  .checkbox :global(.MuiSvgIcon-root) {
+    font-size: 1.2rem;
+  }
+
+  .title {
+    min-height: auto;
+    align-content: flex-start;
+    padding-top: 2px;
+  }
+
+  .title > span {
+    text-align: left;
   }
 
   .date {
     grid-column: 1;
     grid-row: 2;
-    padding-left: calc(var(--tapMinSize) + var(--space2));
+    padding-left: calc(var(--tapMinSize) - 0.5rem + var(--space1));
     white-space: normal;
+    font-size: 0.78rem;
+    line-height: 1.2;
   }
 
   .deleteButton {
