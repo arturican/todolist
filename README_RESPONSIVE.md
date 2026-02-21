@@ -33,13 +33,19 @@ Install browsers once:
 pnpm exec playwright install chromium
 ```
 
-Run responsive smoke tests with screenshots:
+Run responsive stress tests with screenshots:
 
 ```bash
 pnpm run test:responsive
 ```
 
-Run smoke tests with optional 5K2K viewport:
+Run legacy smoke tests (lightweight):
+
+```bash
+pnpm run test:responsive:smoke
+```
+
+Run stress test with optional 5K2K viewport:
 
 ```bash
 INCLUDE_5K2K=true pnpm run test:responsive

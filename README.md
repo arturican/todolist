@@ -157,6 +157,12 @@ See `README_RESPONSIVE.md` for:
 - Storybook viewport workflow;
 - Lighthouse report generation and artifact paths.
 
+See `README_STRESS_RESPONSIVE.md` for:
+
+- stress seed datasets;
+- responsive stress screenshots on large data;
+- CI artifact expectations for stress layout checks.
+
 ### Troubleshooting Checklist
 
 1. Check GitHub Actions logs for missing secrets or SSH issues.
