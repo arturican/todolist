@@ -1,6 +1,6 @@
 import { expect, test, type Page, type Request } from '@playwright/test';
 import { mkdir, rm } from 'node:fs/promises';
-import path from 'node:path';
+import * as path from 'node:path';
 import {
   createStressFixture,
   type StressDatasetId,

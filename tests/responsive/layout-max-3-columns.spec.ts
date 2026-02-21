@@ -1,6 +1,6 @@
 import { expect, test, type Page } from '@playwright/test';
 import { mkdir } from 'node:fs/promises';
-import path from 'node:path';
+import * as path from 'node:path';
 import { createStressFixture } from './stressDataset';
 
 const artifactRoot = path.resolve('artifacts/responsive/layout-check');
