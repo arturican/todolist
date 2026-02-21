@@ -42,11 +42,6 @@
   word-break: break-word;
 }
 
-.title > span > span {
-  display: block;
-  line-height: inherit;
-}
-
 .title :global(.MuiFormControl-root) {
   width: 100%;
 }
@@ -55,12 +50,14 @@
   color: var(--muted);
 }
 
-.completed > span > span {
+.completed > span {
+  display: block;
+  line-height: inherit;
   text-decoration-line: line-through;
-  text-decoration-thickness: 0.08em;
+  text-decoration-thickness: 2px;
   text-decoration-style: solid;
   text-decoration-color: currentColor;
-  text-decoration-skip-ink: none;
+  text-decoration-skip-ink: auto;
 }
 
 .date {
