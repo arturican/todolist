@@ -39,8 +39,9 @@
   display: block;
   width: 100%;
   white-space: normal;
-  overflow-wrap: anywhere;
-  word-break: break-word;
+  overflow-wrap: break-word;
+  word-break: normal;
+  hyphens: auto;
 }
 
 .title :global(.MuiFormControl-root) {
@@ -80,6 +81,34 @@
 .deleteButton:hover {
   color: #ef4444 !important;
   background: rgba(239, 68, 68, 0.08) !important;
+}
+
+@media (max-width: 1024px) {
+  .row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    column-gap: var(--space2);
+    row-gap: var(--space1);
+    align-items: flex-start;
+  }
+
+  .left {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .date {
+    grid-column: 1;
+    grid-row: 2;
+    padding-left: calc(var(--tapMinSize) + var(--space2));
+    white-space: normal;
+  }
+
+  .deleteButton {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    align-self: flex-start;
+  }
 }
 
 @media (max-width: 640px) {
