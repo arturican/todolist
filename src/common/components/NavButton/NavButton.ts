@@ -8,13 +8,16 @@ type NavButtonProps = Omit<ButtonProps, 'component'> & {
 };
 
 export const NavButton = styled(Button)<NavButtonProps>(({ theme }) => ({
-  minHeight: 40,
+  minHeight: 'var(--tapMinSize)',
   borderRadius: 12,
-  padding: '8px 14px',
+  padding: '0.5rem 0.875rem',
   color: theme.palette.text.primary,
   backgroundColor: 'transparent',
   border: `1px solid ${theme.palette.divider}`,
-  whiteSpace: 'nowrap',
+  whiteSpace: 'normal',
+  textAlign: 'center',
+  lineHeight: 1.2,
+  overflowWrap: 'anywhere',
   '&:hover': {
     backgroundColor:
       theme.palette.mode === 'dark'

@@ -1,14 +1,16 @@
 .appBar {
-  margin-bottom: 44px;
+  margin-bottom: var(--space7);
   box-shadow: none !important;
 }
 
 .toolbar {
-  min-height: 72px;
+  min-height: clamp(4rem, 3.75rem + 0.8vw, 4.75rem);
   display: flex;
-  gap: var(--space4);
+  gap: var(--space3);
   align-items: center;
   justify-content: space-between;
+  padding-top: var(--space2);
+  padding-bottom: var(--space2);
 }
 
 .brand {
@@ -16,11 +18,14 @@
   align-items: center;
   gap: var(--space3);
   font-weight: 600;
-  font-size: 1.05rem;
+  font-size: clamp(1rem, 0.96rem + 0.2vw, 1.15rem);
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 .menuButton {
   border: 1px solid var(--border) !important;
+  flex-shrink: 0;
 }
 
 .actions {
@@ -29,18 +34,25 @@
   flex-wrap: wrap;
   justify-content: flex-end;
   gap: var(--space2);
+  min-width: min(100%, 40rem);
 }
 
 .metaRow {
   display: flex;
   align-items: center;
   gap: var(--space3);
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  min-width: 0;
 }
 
 .userGroup {
   display: flex;
   align-items: center;
   gap: var(--space2);
+  min-width: 0;
+  flex-wrap: wrap;
+  justify-content: flex-end;
 }
 
 .actionsGrid {
@@ -49,31 +61,35 @@
   justify-content: flex-end;
   flex-wrap: wrap;
   gap: var(--space3);
+  width: 100%;
 }
 
 .actionButton {
+  min-width: min(100%, 13.75rem);
   justify-content: center;
 }
 
 .user {
   color: var(--muted);
+  overflow-wrap: anywhere;
+  text-align: right;
+  min-width: 0;
 }
 
 .signOutInline {
-  min-height: 36px !important;
-  padding-inline: 12px !important;
+  min-height: calc(var(--tapMinSize) - 0.25rem) !important;
+  padding-inline: 0.75rem !important;
 }
 
 .themeSwitch {
   margin-left: 0;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1024px) {
   .toolbar {
     align-items: stretch;
     flex-direction: column;
-    padding-top: var(--space3);
-    padding-bottom: var(--space3);
+    gap: var(--space4);
   }
 
   .actions {
@@ -81,6 +97,7 @@
     flex-direction: column;
     align-items: stretch;
     gap: var(--space4);
+    min-width: 0;
   }
 
   .metaRow {
@@ -97,17 +114,43 @@
 
   .actionButton {
     width: 100%;
-    white-space: normal !important;
+    min-width: 0;
   }
 
   .user {
-    font-size: 1.05rem;
-    line-height: 1;
+    font-size: 1rem;
+    line-height: 1.2;
+    text-align: left;
   }
 
   .signOutInline {
     width: auto;
-    white-space: nowrap !important;
+    min-width: fit-content;
+  }
+}
+
+@media (max-width: 640px) {
+  .appBar {
+    margin-bottom: var(--space6);
+  }
+
+  .brand {
+    justify-content: center;
+  }
+
+  .metaRow {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: var(--space2);
+  }
+
+  .userGroup {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .themeSwitch {
+    margin-left: -0.25rem;
   }
 }
 

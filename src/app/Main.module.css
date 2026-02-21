@@ -1,16 +1,20 @@
 .main {
-  padding-top: var(--space2);
+  padding-top: var(--space3);
   padding-bottom: var(--space6);
 }
 
 .createRow {
   width: 100%;
-  max-width: 420px;
+  max-width: min(100%, 28rem);
   margin: 0 0 var(--space4);
 }
 
 @media (max-width: 640px) {
   .createRow {
     max-width: none;
+  }
+
+  .main {
+    padding-top: var(--space2);
   }
 }

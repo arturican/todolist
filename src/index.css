@@ -15,16 +15,21 @@
   --shadow1: 0 1px 2px rgba(0, 0, 0, 0.06);
   --shadow2: 0 10px 30px rgba(0, 0, 0, 0.08);
 
-  --radiusCard: 18px;
-  --radiusControl: 12px;
+  --radiusCard: 1rem;
+  --radiusControl: 0.75rem;
 
-  --space1: 4px;
-  --space2: 8px;
-  --space3: 12px;
-  --space4: 16px;
-  --space5: 20px;
-  --space6: 24px;
-  --space7: 32px;
+  --space1: clamp(0.25rem, 0.2rem + 0.2vw, 0.5rem);
+  --space2: clamp(0.5rem, 0.45rem + 0.25vw, 0.75rem);
+  --space3: clamp(0.75rem, 0.68rem + 0.35vw, 1rem);
+  --space4: clamp(1rem, 0.92rem + 0.45vw, 1.25rem);
+  --space5: clamp(1.125rem, 1.03rem + 0.6vw, 1.5rem);
+  --space6: clamp(1.375rem, 1.24rem + 0.75vw, 2rem);
+  --space7: clamp(1.75rem, 1.52rem + 1.2vw, 3rem);
+
+  --tapMinSize: 2.75rem;
+  --containerPadding: clamp(0.875rem, 1.2vw + 0.5rem, 2.5rem);
+  --containerMaxWidth: 90rem;
+  --contentMeasure: 72ch;
 
   font-family: var(--font-sans);
   font-synthesis: none;
@@ -55,14 +60,25 @@ html,
 body,
 #root {
   min-height: 100%;
+  width: 100%;
+}
+
+html {
+  overflow-x: clip;
+}
+
+body,
+#root,
+.app {
+  overflow-x: clip;
 }
 
 body {
   margin: 0;
   min-width: 320px;
   font-family: var(--font-sans);
-  font-size: 16px;
-  line-height: 1.45;
+  font-size: clamp(0.95rem, 0.9rem + 0.22vw, 1.05rem);
+  line-height: 1.5;
   color: var(--text);
   background: var(--bg);
 }
@@ -76,10 +92,25 @@ h6 {
   margin: 0;
   color: var(--text);
   line-height: 1.25;
+  text-wrap: balance;
 }
 
 a {
   color: inherit;
+}
+
+p {
+  margin: 0;
+  max-width: var(--contentMeasure);
+  overflow-wrap: anywhere;
+}
+
+img,
+svg,
+canvas,
+video {
+  max-width: 100%;
+  height: auto;
 }
 
 :focus-visible {
@@ -88,30 +119,29 @@ a {
 }
 
 .pageContainer {
-  width: 100%;
-  max-width: 1320px;
+  width: min(
+    calc(100% - (2 * var(--containerPadding))),
+    var(--containerMaxWidth)
+  );
   margin: 0 auto;
-  padding-left: var(--space4);
-  padding-right: var(--space4);
+  min-width: 0;
 }
 
-@media (min-width: 640px) {
-  .pageContainer {
-    padding-left: var(--space5);
-    padding-right: var(--space5);
+@media (min-width: 1600px) {
+  :root {
+    --containerMaxWidth: 96rem;
   }
 }
 
-@media (min-width: 1024px) {
-  .pageContainer {
-    padding-left: var(--space6);
-    padding-right: var(--space6);
+@media (min-width: 2400px) {
+  :root {
+    --containerMaxWidth: 104rem;
+    --containerPadding: clamp(1.25rem, 2vw + 0.5rem, 4rem);
   }
 }
 
-@media (min-width: 1280px) {
-  .pageContainer {
-    padding-left: var(--space7);
-    padding-right: var(--space7);
+@media (max-width: 480px) {
+  :root {
+    --tapMinSize: 2.875rem;
   }
 }

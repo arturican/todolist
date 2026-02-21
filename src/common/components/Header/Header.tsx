@@ -59,7 +59,7 @@ export const Header = () => {
         borderRadius: 0,
       }}
     >
-      <Toolbar>
+      <Toolbar disableGutters>
         <div className={`pageContainer ${styles.toolbar}`}>
           <div className={styles.brand}>
             <IconButton color="inherit" className={styles.menuButton}>

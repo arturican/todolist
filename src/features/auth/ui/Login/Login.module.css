@@ -1,6 +1,6 @@
 .wrapper {
   width: 100%;
-  max-width: 440px;
+  max-width: min(100%, 30rem);
   margin: var(--space7) auto 0;
   padding: var(--space6);
   background: var(--surface);
@@ -13,17 +13,22 @@
   margin: 0 0 var(--space4);
   color: var(--muted);
   font-size: 0.95rem;
+  line-height: 1.4;
 }
 
 .credentials {
   margin-bottom: var(--space4);
   color: var(--text);
+  display: grid;
+  gap: var(--space1);
+  overflow-wrap: anywhere;
 }
 
 .errorMessage {
   color: #ef4444;
-  font-size: 14px;
-  margin-top: 2px;
+  font-size: 0.875rem;
+  margin-top: var(--space1);
+  line-height: 1.4;
 }
 
 .submit {
@@ -34,5 +39,11 @@
   .wrapper {
     margin-top: var(--space5);
     padding: var(--space5);
+  }
+}
+
+@media (max-width: 380px) {
+  .wrapper {
+    padding: var(--space4);
   }
 }

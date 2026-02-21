@@ -28,10 +28,10 @@ export const authSlice = createAppSlice({
           if (res.data.resultCode === ResultCode.Success) {
             dispatch(setAppStatusAC({ status: 'succeeded' }));
             return { isLoggedIn: true, name: res.data.data.email };
-          } else {
-            handleServerAppError(res.data, dispatch);
-            return rejectWithValue(null);
           }
+
+          dispatch(setAppStatusAC({ status: 'succeeded' }));
+          return { isLoggedIn: false, name: '' };
         } catch (error: any) {
           handleServerNetworkError(dispatch, error);
           return rejectWithValue(null);

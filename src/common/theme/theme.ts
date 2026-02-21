@@ -5,6 +5,15 @@ export const getTheme = (themeMode: ThemeMode) => {
   const isDark = themeMode === 'dark';
 
   return createTheme({
+    breakpoints: {
+      values: {
+        xs: 0,
+        sm: 640,
+        md: 768,
+        lg: 1024,
+        xl: 1280,
+      },
+    },
     shape: {
       borderRadius: 12,
     },
@@ -29,14 +38,19 @@ export const getTheme = (themeMode: ThemeMode) => {
       fontFamily:
         '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, Arial, sans-serif',
       fontSize: 16,
+      body1: {
+        fontSize: 'clamp(0.95rem, 0.9rem + 0.22vw, 1.05rem)',
+        lineHeight: 1.5,
+      },
       h3: {
-        fontSize: '1.3rem',
+        fontSize: 'clamp(1.15rem, 1.05rem + 0.4vw, 1.45rem)',
         fontWeight: 600,
         lineHeight: 1.3,
       },
       button: {
         textTransform: 'none',
         fontWeight: 600,
+        lineHeight: 1.2,
       },
     },
     components: {
@@ -52,8 +66,10 @@ export const getTheme = (themeMode: ThemeMode) => {
         styleOverrides: {
           root: {
             borderRadius: 12,
-            minHeight: 40,
-            paddingInline: 16,
+            minHeight: 'var(--tapMinSize)',
+            paddingInline: 'clamp(0.75rem, 0.7rem + 0.3vw, 1rem)',
+            whiteSpace: 'normal',
+            overflowWrap: 'anywhere',
           },
         },
       },
@@ -84,6 +100,8 @@ export const getTheme = (themeMode: ThemeMode) => {
           root: {
             borderRadius: 12,
             color: isDark ? '#E6EDF3' : '#0F172A',
+            minHeight: 'var(--tapMinSize)',
+            minWidth: 'var(--tapMinSize)',
           },
         },
       },

@@ -1,6 +1,7 @@
 .row {
   display: flex;
   align-items: flex-start;
+  flex-wrap: wrap;
   gap: var(--space3);
   width: 100%;
   min-width: 0;
@@ -12,8 +13,8 @@
 }
 
 .button {
-  min-width: 132px;
-  min-height: 40px;
+  min-width: clamp(7rem, 5.5rem + 4vw, 8.5rem);
+  min-height: var(--tapMinSize);
   border-radius: var(--radiusControl) !important;
   flex-shrink: 0;
 }

@@ -6,10 +6,11 @@
   border: 1px solid var(--border);
   border-radius: 14px;
   background: var(--surfaceSoft);
+  min-width: 0;
 }
 
 .segmentButton {
-  min-height: 40px;
+  min-height: var(--tapMinSize);
   border-radius: 10px !important;
   border: 0 !important;
   color: var(--muted) !important;
@@ -22,4 +23,10 @@
 .active {
   color: var(--accent) !important;
   background: rgba(42, 171, 238, 0.16) !important;
+}
+
+@media (max-width: 400px) {
+  .segmented {
+    grid-template-columns: repeat(auto-fit, minmax(5.5rem, 1fr));
+  }
 }
