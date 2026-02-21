@@ -61,7 +61,7 @@ export const TaskItem = ({ task, todolist }: Props) => {
           onChange={changeTaskStatus}
           disabled={disabled}
         />
-        <span
+        <div
           className={`${styles.title} ${isTaskCompleted ? styles.completed : ''}`}
         >
           <EditableSpan
@@ -69,7 +69,7 @@ export const TaskItem = ({ task, todolist }: Props) => {
             onChange={changeTaskTitle}
             entityStatus={todolist.entityStatus}
           />
-        </span>
+        </div>
       </div>
       <span className={styles.date}>
         {new Date(task.addedDate).toLocaleDateString()}

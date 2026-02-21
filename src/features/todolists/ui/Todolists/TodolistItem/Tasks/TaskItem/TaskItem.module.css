@@ -22,15 +22,15 @@
 }
 
 .checkbox {
-  padding: 6px !important;
+  padding: 8px !important;
   align-self: flex-start;
 }
 
 .title {
   min-width: 0;
-  min-height: 36px;
-  display: flex;
-  align-items: center;
+  min-height: 40px;
+  display: grid;
+  align-content: center;
   line-height: 1.35;
 }
 
@@ -42,14 +42,25 @@
   word-break: break-word;
 }
 
+.title > span > span {
+  display: block;
+  line-height: inherit;
+}
+
 .title :global(.MuiFormControl-root) {
   width: 100%;
 }
 
 .completed {
   color: var(--muted);
-  text-decoration: line-through;
-  text-decoration-thickness: 1px;
+}
+
+.completed > span > span {
+  text-decoration-line: line-through;
+  text-decoration-thickness: 0.08em;
+  text-decoration-style: solid;
+  text-decoration-color: currentColor;
+  text-decoration-skip-ink: none;
 }
 
 .date {
