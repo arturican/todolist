@@ -270,7 +270,7 @@ test.describe('responsive-stress', () => {
         });
 
         await setupApiMocks(page, fixture);
-        await page.goto(`${baseURL}/?mock=stress&dataset=${datasetId}`, {
+        await page.goto(`${baseURL}/?stress=1&dataset=${datasetId}`, {
           waitUntil: 'networkidle',
         });
         await page.waitForTimeout(250);

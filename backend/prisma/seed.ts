@@ -29,16 +29,6 @@ const stressDatasetMode: StressDatasetMode = (() => {
   }
 })();
 
-const rangeValue = (
-  index: number,
-  min: number,
-  max: number,
-  salt = 11,
-): number => {
-  const span = max - min + 1;
-  return min + ((index * salt + 17) % span);
-};
-
 const buildTaskTitle = (taskIndex: number): string => {
   const id = taskIndex + 1;
   if (taskIndex % 3 === 0) {
@@ -58,8 +48,8 @@ const buildTaskDescription = (taskIndex: number): string | null => {
 const buildStressLists = (dataset: StressDatasetMode): StressListConfig[] => {
   const singleList: StressListConfig[] = [
     {
-      title: 'Stress: Single massive list (320 tasks)',
-      taskCount: 320,
+      title: 'Stress: Single massive list (300 tasks)',
+      taskCount: 300,
     },
   ];
 
@@ -67,15 +57,15 @@ const buildStressLists = (dataset: StressDatasetMode): StressListConfig[] => {
     { length: 10 },
     (_, index) => ({
       title: `Stress: Team queue #${index + 1}`,
-      taskCount: rangeValue(index, 50, 100, 19),
+      taskCount: 80,
     }),
   );
 
   const manyLists: StressListConfig[] = Array.from(
-    { length: 40 },
+    { length: 30 },
     (_, index) => ({
       title: `Stress: Compact board #${index + 1}`,
-      taskCount: rangeValue(index, 10, 30, 7),
+      taskCount: 30,
     }),
   );
 

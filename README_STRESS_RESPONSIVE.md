@@ -4,14 +4,16 @@
 
 This project has a stress mode for large ToDo datasets and automated screenshot checks to prevent layout regressions on different screens.
 
+For frontend screenshot tests, stress fixtures are loaded with query params (`?stress=1&dataset=<single-list|ten-lists|many-lists>`).
+
 ## Stress Datasets
 
 Backend stress seed supports these datasets:
 
-- `single`: 1 todolist with 320 tasks (heavy single-list case)
-- `ten`: 10 todolists with 50-100 tasks each
-- `many`: 40 todolists with 10-30 tasks each
-- `all`: combined profile (1 + 10 + 40 lists)
+- `single`: 1 todolist with 300 tasks (heavy single-list case)
+- `ten`: 10 todolists with 80 tasks each
+- `many`: 30 todolists with 30 tasks each
+- `all`: combined profile (`single` + `ten` + `many`)
 
 ## Generate Stress Data
 
@@ -48,6 +50,13 @@ Run all Playwright UI tests:
 
 ```bash
 pnpm run test:ui
+```
+
+Run only regression checks introduced for this issue:
+
+```bash
+pnpm exec playwright test -c playwright.config.ts tests/responsive/add-task-last-list.spec.ts
+pnpm run test:layout
 ```
 
 Run previous lightweight smoke (optional):

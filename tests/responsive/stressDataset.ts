@@ -49,24 +49,19 @@ const buildTaskTitle = (listIndex: number, taskIndex: number) => {
   }
 };
 
-const taskCountForTenLists = (index: number) => 50 + ((index * 17 + 13) % 51);
-const taskCountForManyLists = (index: number) => 10 + ((index * 9 + 5) % 21);
-
 const buildDatasetConfig = (datasetId: StressDatasetId): number[] => {
   if (datasetId === 'single-list') {
-    return [320];
+    return [300];
   }
   if (datasetId === 'ten-lists') {
-    return Array.from({ length: 10 }, (_, index) =>
-      taskCountForTenLists(index),
-    );
+    return Array.from({ length: 10 }, () => 80);
   }
-  return Array.from({ length: 40 }, (_, index) => taskCountForManyLists(index));
+  return Array.from({ length: 30 }, () => 30);
 };
 
 const buildListTitle = (datasetId: StressDatasetId, index: number) => {
   if (datasetId === 'single-list') {
-    return 'Stress dataset: one list with 320 tasks';
+    return 'Stress dataset: one list with 300 tasks';
   }
   if (datasetId === 'ten-lists') {
     return `Stress dataset: team list ${index + 1}`;
