@@ -1,18 +1,23 @@
 .container {
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(40px, 1fr) minmax(0, auto) minmax(40px, 1fr);
   align-items: center;
-  justify-content: space-between;
   gap: var(--space2);
 }
 
 .title {
+  grid-column: 2;
+  min-width: 0;
   margin: 0;
   font-size: 1.25rem;
   font-weight: 650;
   color: var(--text);
+  text-align: center;
 }
 
 .iconButton {
+  grid-column: 3;
+  justify-self: end;
   border: 1px solid var(--border) !important;
   color: var(--muted) !important;
 }

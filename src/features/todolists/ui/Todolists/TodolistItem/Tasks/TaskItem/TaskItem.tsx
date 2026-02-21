@@ -56,6 +56,7 @@ export const TaskItem = ({ task, todolist }: Props) => {
     <ListItem className={styles.row}>
       <div className={styles.left}>
         <Checkbox
+          className={styles.checkbox}
           checked={isTaskCompleted}
           onChange={changeTaskStatus}
           disabled={disabled}

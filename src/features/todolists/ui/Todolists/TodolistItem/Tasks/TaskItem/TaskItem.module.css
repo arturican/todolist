@@ -14,16 +14,36 @@
 
 .left {
   min-width: 0;
-  display: flex;
-  align-items: center;
-  gap: var(--space2);
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  column-gap: var(--space2);
+  align-items: flex-start;
   flex: 1;
 }
 
+.checkbox {
+  padding: 6px !important;
+  align-self: flex-start;
+}
+
 .title {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  min-width: 0;
+  min-height: 36px;
+  display: flex;
+  align-items: center;
+  line-height: 1.35;
+}
+
+.title > span {
+  display: block;
+  width: 100%;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.title :global(.MuiFormControl-root) {
+  width: 100%;
 }
 
 .completed {
@@ -36,11 +56,13 @@
   color: var(--muted);
   font-size: 0.85rem;
   white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .deleteButton {
   border: 1px solid var(--border) !important;
   color: var(--muted) !important;
+  flex-shrink: 0;
 }
 
 .deleteButton:hover {
@@ -51,6 +73,7 @@
 @media (max-width: 640px) {
   .row {
     align-items: flex-start;
+    gap: var(--space2);
   }
 
   .date {
