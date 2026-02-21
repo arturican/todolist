@@ -11,8 +11,8 @@
     "prisma:migrate": "prisma migrate dev",
     "prisma:deploy": "prisma migrate deploy",
     "prisma:seed": "prisma db seed",
-    "test": "vitest",
-    "test:run": "vitest run"
+    "test": "DATABASE_URL=file:./test.db pnpm prisma db push --skip-generate && vitest",
+    "test:run": "DATABASE_URL=file:./test.db pnpm prisma db push --skip-generate && vitest run"
   },
   "dependencies": {
     "@prisma/client": "^5.22.0",

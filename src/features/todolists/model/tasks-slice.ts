@@ -64,7 +64,9 @@ export const tasksSlice = createAppSlice({
       },
       {
         fulfilled: (state, action) => {
-          state[action.payload.task.todoListId].unshift(action.payload.task);
+          const todolistTasks = state[action.payload.task.todoListId] ?? [];
+          todolistTasks.unshift(action.payload.task);
+          state[action.payload.task.todoListId] = todolistTasks;
         },
       },
     ),
