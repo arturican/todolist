@@ -16,8 +16,6 @@ import {
   selectIsLoggedIn,
   selectName,
 } from '@/features/auth/model/auth-slice.ts';
-import { Path } from '@/common/routing';
-import { NavLink } from 'react-router';
 import { GITHUB_REPO_URL, PORTFOLIO_URL } from '@/common/config/links.ts';
 import styles from './Header.module.css';
 
@@ -49,7 +47,18 @@ export const Header = () => {
   };
 
   return (
-    <AppBar position="static" className={styles.appBar}>
+    <AppBar
+      position="static"
+      color="transparent"
+      elevation={0}
+      className={styles.appBar}
+      sx={{
+        backgroundColor: 'var(--surface)',
+        color: 'var(--text)',
+        borderBottom: '1px solid var(--border)',
+        borderRadius: 0,
+      }}
+    >
       <Toolbar>
         <div className={`pageContainer ${styles.toolbar}`}>
           <div className={styles.brand}>
@@ -60,26 +69,40 @@ export const Header = () => {
           </div>
 
           <div className={styles.actions}>
-            {isLoggedIn && (
-              <>
-                <span className={styles.user}>{name}</span>
-                <NavButton onClick={signOutHandler}>Sign out</NavButton>
-              </>
-            )}
-            <NavButton component={NavLink} to={Path.Faq}>
-              FAQ
-            </NavButton>
-            <NavButton onClick={backToPortfolioHandler}>
-              List Projects
-            </NavButton>
-            <NavButton onClick={viewSourceHandler}>View Source</NavButton>
-            <Switch
-              className={styles.themeSwitch}
-              color="default"
-              checked={themeMode === 'dark'}
-              onChange={changeMode}
-              inputProps={{ 'aria-label': 'Toggle dark mode' }}
-            />
+            <div className={styles.metaRow}>
+              {isLoggedIn && (
+                <div className={styles.userGroup}>
+                  <span className={styles.user}>{name}</span>
+                  <NavButton
+                    className={styles.signOutInline}
+                    onClick={signOutHandler}
+                  >
+                    Sign out
+                  </NavButton>
+                </div>
+              )}
+              <Switch
+                className={styles.themeSwitch}
+                color="default"
+                checked={themeMode === 'dark'}
+                onChange={changeMode}
+                inputProps={{ 'aria-label': 'Toggle dark mode' }}
+              />
+            </div>
+            <div className={styles.actionsGrid}>
+              <NavButton
+                className={styles.actionButton}
+                onClick={backToPortfolioHandler}
+              >
+                Back to Portfolio
+              </NavButton>
+              <NavButton
+                className={styles.actionButton}
+                onClick={viewSourceHandler}
+              >
+                Open Project on GitHub
+              </NavButton>
+            </div>
           </div>
         </div>
       </Toolbar>

@@ -1,8 +1,5 @@
 .appBar {
-  margin-bottom: var(--space6);
-  background: var(--surface) !important;
-  color: var(--text) !important;
-  border-bottom: 1px solid var(--border);
+  margin-bottom: 44px;
   box-shadow: none !important;
 }
 
@@ -29,23 +26,51 @@
 .actions {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--space2);
+}
+
+.metaRow {
+  display: flex;
+  align-items: center;
+  gap: var(--space3);
+}
+
+.userGroup {
+  display: flex;
+  align-items: center;
+  gap: var(--space2);
+}
+
+.actionsGrid {
+  display: flex;
+  align-items: center;
   justify-content: flex-end;
   flex-wrap: wrap;
-  gap: var(--space2);
+  gap: var(--space3);
+}
+
+.actionButton {
+  justify-content: center;
 }
 
 .user {
   color: var(--muted);
-  margin-right: var(--space2);
+}
+
+.signOutInline {
+  min-height: 36px !important;
+  padding-inline: 12px !important;
 }
 
 .themeSwitch {
-  margin-left: var(--space1);
+  margin-left: 0;
 }
 
 @media (max-width: 900px) {
   .toolbar {
-    align-items: flex-start;
+    align-items: stretch;
     flex-direction: column;
     padding-top: var(--space3);
     padding-bottom: var(--space3);
@@ -53,6 +78,41 @@
 
   .actions {
     width: 100%;
-    justify-content: flex-start;
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space4);
+  }
+
+  .metaRow {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .actionsGrid {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space3);
+  }
+
+  .actionButton {
+    width: 100%;
+    white-space: normal !important;
+  }
+
+  .user {
+    font-size: 1.05rem;
+    line-height: 1;
+  }
+
+  .signOutInline {
+    width: auto;
+    white-space: nowrap !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .actionsGrid {
+    grid-template-columns: 1fr;
   }
 }
