@@ -18,9 +18,11 @@
 @media (max-width: 640px) {
   .createRow {
     max-width: none;
+    margin-bottom: var(--space3);
   }
 
   .main {
     padding-top: var(--space2);
+    padding-bottom: var(--space5);
   }
 }

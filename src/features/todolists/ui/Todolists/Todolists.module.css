@@ -25,6 +25,16 @@
     0 14px 32px rgba(0, 0, 0, 0.1);
 }
 
+@media (max-width: 640px) {
+  .grid {
+    gap: var(--space4);
+  }
+
+  .card {
+    padding: var(--space4);
+  }
+}
+
 @media (min-width: 768px) and (max-width: 1279px) {
   .grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));

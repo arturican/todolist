@@ -25,6 +25,14 @@
   background: rgba(42, 171, 238, 0.16) !important;
 }
 
+@media (max-width: 640px) {
+  .segmentButton {
+    min-height: calc(var(--tapMinSize) - 0.125rem);
+    font-size: 0.86rem !important;
+    padding-inline: var(--space2) !important;
+  }
+}
+
 @media (max-width: 400px) {
   .segmented {
     grid-template-columns: repeat(auto-fit, minmax(5.5rem, 1fr));

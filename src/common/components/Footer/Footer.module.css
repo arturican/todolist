@@ -60,11 +60,15 @@
 }
 
 @media (max-width: 640px) {
+  .footer {
+    padding: var(--space4) 0;
+  }
+
   .list {
     display: flex;
     justify-content: flex-start;
     flex-wrap: wrap;
-    gap: var(--space2) var(--space3);
+    gap: var(--space1) var(--space2);
   }
 
   .item:nth-child(1),
@@ -81,5 +85,11 @@
   .item {
     width: 100%;
     justify-content: flex-start;
+  }
+
+  .link {
+    display: inline-flex;
+    align-items: center;
+    min-height: calc(var(--tapMinSize) - 0.25rem);
   }
 }

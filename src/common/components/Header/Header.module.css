@@ -131,31 +131,69 @@
 
 @media (max-width: 640px) {
   .appBar {
-    margin-bottom: var(--space6);
+    margin-bottom: var(--space5);
+  }
+
+  .toolbar {
+    gap: var(--space3);
   }
 
   .brand {
-    justify-content: center;
+    width: 100%;
+    justify-content: flex-start;
+    gap: var(--space2);
+    font-size: 1rem;
+  }
+
+  .menuButton {
+    display: none !important;
+  }
+
+  .actions {
+    gap: var(--space3);
   }
 
   .metaRow {
-    align-items: flex-start;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: start;
     gap: var(--space2);
+  }
+
+  .user {
+    font-size: 0.92rem;
   }
 
   .userGroup {
     width: 100%;
-    justify-content: space-between;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: var(--space1);
+  }
+
+  .signOutInline {
+    width: 100%;
+  }
+
+  .actionsGrid {
+    grid-template-columns: 1fr;
+    gap: var(--space2);
+  }
+
+  .actionButton {
+    width: 100%;
   }
 
   .themeSwitch {
-    margin-left: -0.25rem;
+    margin: -0.2rem -0.2rem 0 0;
+    justify-self: end;
   }
 }
 
 @media (max-width: 480px) {
-  .actionsGrid {
-    grid-template-columns: 1fr;
+  .toolbar {
+    padding-top: var(--space1);
+    padding-bottom: var(--space1);
   }
 }

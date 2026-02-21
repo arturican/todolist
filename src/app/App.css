@@ -41,7 +41,6 @@
 
 @media (max-width: 640px) {
   .appCtaRow {
-    padding-top: var(--space5);
-    padding-bottom: var(--space5);
+    display: none;
   }
 }
