@@ -9,6 +9,12 @@
   margin: 0 0 var(--space4);
 }
 
+@media (min-width: 768px) and (max-width: 1279px) {
+  .main {
+    --containerPadding: clamp(0.75rem, 1.4vw, 1.125rem);
+  }
+}
+
 @media (max-width: 640px) {
   .createRow {
     max-width: none;
