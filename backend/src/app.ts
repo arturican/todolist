@@ -36,6 +36,10 @@ export const createApp = () => {
     app.use(morgan('dev'));
   }
 
+  app.get('/', (_req, res) => {
+    res.status(200).json({ message: 'Todolist backend is running' });
+  });
+
   app.get('/health', (_req, res) => {
     res.status(200).json({ status: 'ok' });
   });
