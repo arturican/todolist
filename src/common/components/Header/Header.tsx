@@ -25,6 +25,7 @@ export const Header = () => {
   const isLoggedIn = useAppSelector(selectIsLoggedIn);
   const dispatch = useAppDispatch();
   const name = useAppSelector(selectName)?.match(/^[^@]+/)?.[0] ?? '';
+  const themeLabel = themeMode === 'dark' ? 'Theme: Dark' : 'Theme: Light';
 
   const changeMode = () => {
     dispatch(
@@ -81,13 +82,18 @@ export const Header = () => {
                   </NavButton>
                 </div>
               )}
-              <Switch
-                className={styles.themeSwitch}
-                color="default"
-                checked={themeMode === 'dark'}
-                onChange={changeMode}
-                inputProps={{ 'aria-label': 'Toggle dark mode' }}
-              />
+              <div className={styles.themeControl}>
+                <span className={styles.themeLabel}>{themeLabel}</span>
+                <Switch
+                  className={styles.themeSwitch}
+                  color="default"
+                  checked={themeMode === 'dark'}
+                  onChange={changeMode}
+                  inputProps={{
+                    'aria-label': 'Switch between light and dark theme',
+                  }}
+                />
+              </div>
             </div>
             <div className={styles.actionsGrid}>
               <NavButton

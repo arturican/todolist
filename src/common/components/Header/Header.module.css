@@ -81,8 +81,25 @@
   padding-inline: 0.75rem !important;
 }
 
+.themeControl {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space1);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 0.15rem 0.3rem 0.15rem 0.6rem;
+  background: var(--surfaceSoft);
+}
+
+.themeLabel {
+  color: var(--muted);
+  font-size: 0.82rem;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
 .themeSwitch {
-  margin-left: 0;
+  margin: 0;
 }
 
 @media (max-width: 1024px) {
@@ -162,18 +179,25 @@
 
   .user {
     font-size: 0.92rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .userGroup {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
     width: 100%;
-    justify-content: flex-start;
-    align-items: flex-start;
-    flex-direction: column;
-    gap: var(--space1);
+    align-items: center;
+    column-gap: var(--space2);
+    row-gap: 0;
   }
 
   .signOutInline {
-    width: 100%;
+    width: auto;
+    min-height: 2.25rem !important;
+    padding-inline: 0.62rem !important;
+    justify-self: end;
   }
 
   .actionsGrid {
@@ -185,9 +209,17 @@
     width: 100%;
   }
 
-  .themeSwitch {
-    margin: -0.2rem -0.2rem 0 0;
+  .themeControl {
     justify-self: end;
+    padding: 0.1rem 0.2rem 0.1rem 0.5rem;
+  }
+
+  .themeLabel {
+    font-size: 0.76rem;
+  }
+
+  .themeSwitch {
+    margin: -0.15rem -0.15rem -0.15rem 0;
   }
 }
 
@@ -195,5 +227,21 @@
   .toolbar {
     padding-top: var(--space1);
     padding-bottom: var(--space1);
+  }
+
+  .themeLabel {
+    font-size: 0.74rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .userGroup {
+    grid-template-columns: 1fr;
+    row-gap: var(--space1);
+  }
+
+  .signOutInline {
+    width: 100%;
+    justify-self: stretch;
   }
 }
