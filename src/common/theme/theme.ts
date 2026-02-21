@@ -16,7 +16,7 @@ export const getTheme = (themeMode: ThemeMode) => {
         contrastText: '#FFFFFF',
       },
       background: {
-        default: isDark ? '#0E1621' : '#F5F8FA',
+        default: isDark ? '#0B111A' : '#C4C7C8',
         paper: isDark ? '#17212B' : '#FFFFFF',
       },
       text: {
@@ -43,7 +43,7 @@ export const getTheme = (themeMode: ThemeMode) => {
       MuiCssBaseline: {
         styleOverrides: {
           body: {
-            backgroundColor: isDark ? '#0E1621' : '#F5F8FA',
+            backgroundColor: isDark ? '#0B111A' : '#C4C7C8',
             color: isDark ? '#E6EDF3' : '#0F172A',
           },
         },

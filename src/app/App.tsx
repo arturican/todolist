@@ -10,6 +10,8 @@ import { Routing } from '@/common/routing';
 import { useAppDispatch } from '@/common/hooks/useAppDispatch.ts';
 import { useEffect, useState } from 'react';
 import { initializeAppTC } from '@/features/auth/model/auth-slice.ts';
+import { NavButton } from '@/common/components/NavButton/NavButton.ts';
+import { PORTFOLIO_URL } from '@/common/config/links.ts';
 
 export const App = () => {
   const [isInitialized, setIsInitialized] = useState(false);
@@ -22,6 +24,10 @@ export const App = () => {
       setIsInitialized(true);
     });
   }, []);
+
+  const backToPortfolioHandler = () => {
+    window.location.assign(PORTFOLIO_URL);
+  };
 
   if (!isInitialized) {
     return (
@@ -39,6 +45,11 @@ export const App = () => {
         <main className="appMain">
           <Routing />
         </main>
+        <div className="pageContainer appCtaRow">
+          <NavButton className="appCtaButton" onClick={backToPortfolioHandler}>
+            Back to Portfolio
+          </NavButton>
+        </div>
         <Footer />
         <ErrorSnackbar />
       </ThemeProvider>
