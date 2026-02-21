@@ -148,6 +148,15 @@ sudo ln -sfn /opt/todolist-api/releases/<previous_sha> /opt/todolist-api/current
 sudo systemctl restart todolist-backend
 ```
 
+## Responsive QA
+
+See `README_RESPONSIVE.md` for:
+
+- supported viewport matrix;
+- Playwright responsive smoke command;
+- Storybook viewport workflow;
+- Lighthouse report generation and artifact paths.
+
 ### Troubleshooting Checklist
 
 1. Check GitHub Actions logs for missing secrets or SSH issues.

@@ -7,7 +7,17 @@ import { defineConfig } from 'eslint/config';
 
 export default defineConfig([
   {
-    ignores: ['node_modules', 'dist', 'build', '.turbo', '.next'],
+    ignores: [
+      'node_modules',
+      'dist',
+      'build',
+      '.turbo',
+      '.next',
+      'storybook-static',
+      'artifacts',
+      '.playwright',
+      '.config',
+    ],
   },
   {
     files: ['**/*.{js,jsx,ts,tsx}'],
@@ -44,6 +54,17 @@ export default defineConfig([
   },
   {
     files: ['backend/**/*.{js,jsx,ts,tsx}'],
+    languageOptions: {
+      globals: globals.node,
+    },
+  },
+  {
+    files: [
+      'vite.config.ts',
+      'playwright.config.ts',
+      'scripts/**/*.{js,mjs,cjs,ts}',
+      '.storybook/**/*.{js,mjs,cjs,ts,tsx}',
+    ],
     languageOptions: {
       globals: globals.node,
     },
