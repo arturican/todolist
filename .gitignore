@@ -22,6 +22,7 @@ C:\\Users\\user\\AppData\\Local\\lighthouse.*
 .idea
 .config
 .playwright
+.storybook/settings.json
 .DS_Store
 *.suo
 *.ntvs*
