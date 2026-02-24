@@ -12,6 +12,40 @@
   min-width: 0;
 }
 
+.input :global(.MuiOutlinedInput-root) {
+  box-sizing: border-box;
+  min-height: var(--tapMinSize);
+  height: var(--tapMinSize);
+  transition:
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.input :global(.MuiOutlinedInput-notchedOutline),
+.input :global(.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline),
+.input
+  :global(.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline) {
+  border-width: 1px;
+  box-shadow: none;
+}
+
+.input :global(.MuiOutlinedInput-root.Mui-focused) {
+  box-shadow: 0 0 0 3px var(--focusRing);
+}
+
+.input :global(.MuiInputBase-input) {
+  box-sizing: border-box;
+  height: 100%;
+  line-height: 1.4;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-inline: clamp(0.75rem, 0.68rem + 0.3vw, 0.95rem);
+}
+
+.input :global(.MuiInputBase-input::placeholder) {
+  opacity: 1;
+}
+
 .button {
   min-width: clamp(7rem, 5.5rem + 4vw, 8.5rem);
   min-height: var(--tapMinSize);
