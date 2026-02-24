@@ -15,6 +15,8 @@
 }
 
 .input :global(.MuiOutlinedInput-root) {
+  position: relative;
+  overflow: visible;
   box-sizing: border-box;
   min-height: var(--tapMinSize);
   height: var(--tapMinSize);
@@ -39,11 +41,18 @@
   position: absolute;
   z-index: 2;
   line-height: 1;
+  pointer-events: none;
+  transform-origin: left top;
+  max-width: calc(100% - 24px);
 }
 
 .input :global(.MuiInputLabel-root.MuiInputLabel-shrink) {
   background-color: var(--surfaceSoft);
+  border-radius: 4px;
+  padding-block: 1px;
   padding-inline: 6px;
+  margin-inline: -6px;
+  transform: translate(14px, -8px) scale(0.75);
 }
 
 .input :global(.MuiInputBase-input) {
