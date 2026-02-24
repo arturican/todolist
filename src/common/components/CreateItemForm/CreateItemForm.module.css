@@ -42,10 +42,6 @@
   padding-inline: clamp(0.75rem, 0.68rem + 0.3vw, 0.95rem);
 }
 
-.input :global(.MuiInputBase-input::placeholder) {
-  opacity: 1;
-}
-
 .button {
   min-width: clamp(7rem, 5.5rem + 4vw, 8.5rem);
   min-height: var(--tapMinSize);

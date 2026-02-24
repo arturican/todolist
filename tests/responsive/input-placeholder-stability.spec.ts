@@ -151,7 +151,7 @@ const expectBoxStable = (baseline: Box, next: Box, epsilon = 0.5) => {
 };
 
 test.describe('create item input placeholder stability', () => {
-  test('keeps placeholder inside input and preserves geometry on hover/focus', async ({
+  test('keeps floating label visible and preserves geometry on hover/focus', async ({
     page,
     baseURL,
   }) => {
@@ -165,47 +165,53 @@ test.describe('create item input placeholder stability', () => {
 
     const input = page.getByLabel('Enter a title').first();
     const inputRoot = page.locator('.MuiOutlinedInput-root').first();
+    const label = page
+      .locator('.MuiInputLabel-root', { hasText: 'Enter a title' })
+      .first();
     const addButton = page.getByRole('button', { name: /^Add$/ }).first();
 
-    await expect(input).toHaveAttribute('placeholder', 'Enter a title');
     await expect(input).toHaveValue('');
-    await expect(
-      page.locator('.MuiInputLabel-root', { hasText: 'Enter a title' }),
-    ).toHaveCount(0);
+    await expect(input).not.toHaveAttribute('placeholder', 'Enter a title');
+    await expect(label).toBeVisible();
+    await expect
+      .poll(() =>
+        label.evaluate(element => {
+          const styles = getComputedStyle(element);
+          return (
+            styles.opacity !== '0' &&
+            styles.visibility !== 'hidden' &&
+            styles.color !== 'rgba(0, 0, 0, 0)'
+          );
+        }),
+      )
+      .toBeTruthy();
 
     const baseInputBox = await getBox(input);
     const baseInputRootBox = await getBox(inputRoot);
     const baseButtonBox = await getBox(addButton);
 
     await input.hover();
+    await expect(label).toBeVisible();
     expectBoxStable(baseInputBox, await getBox(input));
     expectBoxStable(baseInputRootBox, await getBox(inputRoot));
     expectBoxStable(baseButtonBox, await getBox(addButton));
 
     await input.click();
-    await expect
-      .poll(() =>
-        input.evaluate(element => element.matches(':placeholder-shown')),
-      )
-      .toBeTruthy();
-
+    await expect(label).toBeVisible();
     expectBoxStable(baseInputBox, await getBox(input));
     expectBoxStable(baseInputRootBox, await getBox(inputRoot));
     expectBoxStable(baseButtonBox, await getBox(addButton));
 
     await input.fill('Layout stays stable');
+    await expect(label).toBeVisible();
     expectBoxStable(baseInputBox, await getBox(input));
     expectBoxStable(baseInputRootBox, await getBox(inputRoot));
     expectBoxStable(baseButtonBox, await getBox(addButton));
 
     await input.clear();
-    await expect
-      .poll(() =>
-        input.evaluate(element => element.matches(':placeholder-shown')),
-      )
-      .toBeTruthy();
-
+    await expect(label).toBeVisible();
     await page.keyboard.press('Tab');
+    await expect(label).toBeVisible();
     expectBoxStable(baseInputBox, await getBox(input));
     expectBoxStable(baseInputRootBox, await getBox(inputRoot));
     expectBoxStable(baseButtonBox, await getBox(addButton));

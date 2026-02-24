@@ -37,14 +37,13 @@ export const CreateItemForm = ({ onCreateItem, disabled }: Props) => {
   return (
     <div className={styles.row}>
       <TextField
-        placeholder="Enter a title"
+        label="Enter a title"
         variant="outlined"
         className={styles.input}
         value={title}
         error={!!error}
         helperText={error}
         disabled={disabled}
-        slotProps={{ htmlInput: { 'aria-label': 'Enter a title' } }}
         onChange={changeTitleHandler}
         onKeyDown={createOnEnterHandler}
       />
