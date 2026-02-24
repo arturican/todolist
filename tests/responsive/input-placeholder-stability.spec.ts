@@ -164,6 +164,7 @@ test.describe('create item input placeholder stability', () => {
     await page.waitForTimeout(250);
 
     const input = page.getByLabel('Enter a title').first();
+    const inputContainer = page.locator('.MuiFormControl-root').first();
     const inputRoot = page.locator('.MuiOutlinedInput-root').first();
     const label = page
       .locator('.MuiInputLabel-root', { hasText: 'Enter a title' })
@@ -198,6 +199,14 @@ test.describe('create item input placeholder stability', () => {
 
     await input.click();
     await expect(label).toBeVisible();
+    await expect(inputContainer).toHaveScreenshot(
+      'create-item-input-focus.png',
+      {
+        animations: 'disabled',
+        caret: 'hide',
+        maxDiffPixelRatio: 0.01,
+      },
+    );
     expectBoxStable(baseInputBox, await getBox(input));
     expectBoxStable(baseInputRootBox, await getBox(inputRoot));
     expectBoxStable(baseButtonBox, await getBox(addButton));

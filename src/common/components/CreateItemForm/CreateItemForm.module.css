@@ -10,6 +10,8 @@
 .input {
   flex: 1;
   min-width: 0;
+  position: relative;
+  overflow: visible;
 }
 
 .input :global(.MuiOutlinedInput-root) {
@@ -31,6 +33,17 @@
 
 .input :global(.MuiOutlinedInput-root.Mui-focused) {
   box-shadow: 0 0 0 3px var(--focusRing);
+}
+
+.input :global(.MuiInputLabel-root) {
+  position: absolute;
+  z-index: 2;
+  line-height: 1;
+}
+
+.input :global(.MuiInputLabel-root.MuiInputLabel-shrink) {
+  background-color: var(--surfaceSoft);
+  padding-inline: 6px;
 }
 
 .input :global(.MuiInputBase-input) {
