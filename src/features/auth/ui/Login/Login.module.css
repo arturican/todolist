@@ -1,8 +1,16 @@
+.page {
+  min-height: min(100%, calc(100vh - 12rem));
+  display: grid;
+  align-content: start;
+  padding-top: var(--space3);
+  padding-bottom: var(--space6);
+}
+
 .wrapper {
   width: 100%;
   max-width: min(100%, 30rem);
-  margin: var(--space7) auto 0;
-  padding: var(--space6);
+  margin: clamp(var(--space4), 7vh, var(--space7)) auto 0;
+  padding: clamp(var(--space4), 1rem + 1.2vw, var(--space6));
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radiusCard);
@@ -35,10 +43,17 @@
   margin-top: var(--space2);
 }
 
+@media (max-width: 768px) {
+  .page {
+    min-height: auto;
+    padding-top: var(--space2);
+    padding-bottom: var(--space5);
+  }
+}
+
 @media (max-width: 640px) {
   .wrapper {
-    margin-top: var(--space5);
-    padding: var(--space5);
+    margin-top: var(--space4);
   }
 }
 

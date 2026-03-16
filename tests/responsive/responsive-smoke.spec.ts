@@ -22,6 +22,7 @@ const artifactRoot = path.resolve('artifacts/responsive');
 
 const viewports: ViewportPreset[] = [
   { name: 'iphone-se', width: 320, height: 568, group: 'mobile' },
+  { name: 'iphone-12-mini', width: 360, height: 780, group: 'mobile' },
   { name: 'iphone-x', width: 375, height: 812, group: 'mobile' },
   { name: 'iphone-12-14', width: 390, height: 844, group: 'mobile' },
   { name: 'iphone-plus-max', width: 414, height: 896, group: 'mobile' },

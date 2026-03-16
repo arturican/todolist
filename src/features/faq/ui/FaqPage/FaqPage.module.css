@@ -16,6 +16,7 @@
     ),
     linear-gradient(180deg, var(--surface), var(--surfaceSoft));
   box-shadow: var(--shadow2);
+  min-width: 0;
 }
 
 .eyebrow {
@@ -52,6 +53,7 @@
   border-radius: var(--radiusCard);
   background: rgba(255, 255, 255, 0.62);
   backdrop-filter: blur(8px);
+  min-width: 0;
 }
 
 .heroCardTitle {
@@ -84,6 +86,7 @@
   background: var(--surface);
   box-shadow: var(--shadow1);
   overflow: hidden;
+  min-width: 0;
 }
 
 .faqItem[open] {
@@ -104,6 +107,7 @@
 .answer {
   padding: 0 var(--space4) var(--space4);
   color: var(--muted);
+  overflow-wrap: anywhere;
 }
 
 .sidePanel {
@@ -119,6 +123,7 @@
   border-radius: var(--radiusCard);
   background: var(--surface);
   box-shadow: var(--shadow1);
+  min-width: 0;
 }
 
 .panelTitle {
@@ -143,6 +148,10 @@
   margin-top: var(--space2);
 }
 
+.actions > * {
+  flex: 1 1 11rem;
+}
+
 @media (max-width: 900px) {
   .heroGrid,
   .layout {
@@ -155,6 +164,11 @@
 }
 
 @media (max-width: 640px) {
+  .page {
+    padding-top: var(--space4);
+    padding-bottom: var(--space5);
+  }
+
   .hero {
     padding: var(--space5);
   }
@@ -164,5 +178,19 @@
   .panelCard {
     padding-left: var(--space3);
     padding-right: var(--space3);
+  }
+}
+
+@media (max-width: 420px) {
+  .hero {
+    padding: var(--space4);
+  }
+
+  .heroGrid {
+    gap: var(--space2);
+  }
+
+  .actions > * {
+    flex-basis: 100%;
   }
 }

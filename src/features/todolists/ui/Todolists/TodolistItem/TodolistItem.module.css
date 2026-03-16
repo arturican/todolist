@@ -10,3 +10,9 @@
   flex: 1;
   min-height: 0;
 }
+
+@media (max-width: 640px) {
+  .item {
+    gap: var(--space3);
+  }
+}

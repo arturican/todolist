@@ -1,7 +1,7 @@
 .row {
-  display: flex;
-  align-items: flex-start;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
   gap: var(--space3);
   width: 100%;
   min-width: 0;
@@ -68,12 +68,12 @@
   min-width: clamp(7rem, 5.5rem + 4vw, 8.5rem);
   min-height: var(--tapMinSize);
   border-radius: var(--radiusControl) !important;
-  flex-shrink: 0;
+  align-self: start;
 }
 
 @media (max-width: 640px) {
   .row {
-    flex-direction: column;
+    grid-template-columns: 1fr;
     gap: var(--space2);
   }
 

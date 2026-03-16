@@ -16,8 +16,8 @@
   border: 1px solid var(--border);
   border-radius: var(--radiusCard);
   box-shadow: var(--shadow1), var(--shadow2);
-  padding: clamp(1rem, 0.95rem + 0.45vw, 1.5rem);
-  min-height: clamp(20rem, 38vh, 26rem);
+  padding: clamp(1rem, 0.92rem + 0.5vw, 1.4rem);
+  min-height: clamp(18rem, 36vh, 24rem);
   transition:
     border-color 150ms ease,
     box-shadow 150ms ease;
@@ -30,9 +30,9 @@
     0 8px 20px rgba(0, 0, 0, 0.08);
 }
 
-@media (max-width: 640px) {
+@media (max-width: 899px) {
   .grid {
-    gap: var(--space4);
+    gap: var(--space3);
   }
 
   .card {
@@ -41,14 +41,14 @@
   }
 }
 
-@media (min-width: 768px) and (max-width: 1279px) {
+@media (min-width: 900px) and (max-width: 1439px) {
   .grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: var(--space4);
   }
 }
 
-@media (min-width: 1280px) {
+@media (min-width: 1440px) {
   .grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }

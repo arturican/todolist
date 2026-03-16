@@ -8,6 +8,8 @@
   background: var(--surfaceSoft);
   padding: var(--space2);
   scrollbar-gutter: stable;
+  min-width: 0;
+  scrollbar-width: thin;
 }
 
 .list {

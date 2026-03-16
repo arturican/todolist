@@ -29,7 +29,7 @@ export const Login = () => {
   };
 
   return (
-    <div className="pageContainer">
+    <section className={`pageContainer ${styles.page}`}>
       <form className={styles.wrapper} onSubmit={handleSubmit(onSubmit)}>
         <FormControl fullWidth>
           <FormLabel>
@@ -93,6 +93,6 @@ export const Login = () => {
           </FormGroup>
         </FormControl>
       </form>
-    </div>
+    </section>
   );
 };

@@ -7,13 +7,15 @@ type ViewportPreset = {
 
 const viewports: ViewportPreset[] = [
   { width: 320, height: 568 },
+  { width: 360, height: 780 },
   { width: 375, height: 812 },
   { width: 390, height: 844 },
-  { width: 480, height: 932 },
+  { width: 414, height: 896 },
   { width: 768, height: 1024 },
   { width: 1024, height: 768 },
   { width: 1280, height: 720 },
   { width: 1440, height: 900 },
+  { width: 1920, height: 1080 },
 ];
 
 const todolists = [
