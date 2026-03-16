@@ -1,11 +1,22 @@
 import type { RequestStatus } from '@/common/types/types.ts';
 import { createAppSlice } from '@/common/utils';
+
 export type ThemeMode = 'dark' | 'light';
+export const THEME_MODE_STORAGE_KEY = 'todolist-theme-mode';
+
+const getInitialThemeMode = (): ThemeMode => {
+  if (typeof window === 'undefined') {
+    return 'light';
+  }
+
+  const storedThemeMode = window.localStorage.getItem(THEME_MODE_STORAGE_KEY);
+  return storedThemeMode === 'dark' ? 'dark' : 'light';
+};
 
 export const appSlice = createAppSlice({
   name: 'app',
   initialState: {
-    themeMode: 'light' as ThemeMode,
+    themeMode: getInitialThemeMode(),
     status: 'idle' as RequestStatus,
     error: null as string | null,
   },

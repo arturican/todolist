@@ -6,11 +6,11 @@ import FormGroup from '@mui/material/FormGroup';
 import FormLabel from '@mui/material/FormLabel';
 import TextField from '@mui/material/TextField';
 import { Controller, type SubmitHandler, useForm } from 'react-hook-form';
-import styles from './Login.module.css';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useAppDispatch } from '@/common/hooks/useAppDispatch.ts';
 import { type LoginInputs, loginSchema } from '@/features/auth/lib';
 import { loginTC } from '@/features/auth/model/auth-slice.ts';
-import { useAppDispatch } from '@/common/hooks/useAppDispatch.ts';
+import styles from './Login.module.css';
 
 export const Login = () => {
   const dispatch = useAppDispatch();
@@ -21,7 +21,7 @@ export const Login = () => {
     formState: { errors },
   } = useForm<LoginInputs>({
     resolver: zodResolver(loginSchema),
-    defaultValues: { email: '', password: '', rememberMe: false },
+    defaultValues: { username: '', password: '', rememberMe: false },
   });
 
   const onSubmit: SubmitHandler<LoginInputs> = data => {
@@ -33,10 +33,10 @@ export const Login = () => {
       <form className={styles.wrapper} onSubmit={handleSubmit(onSubmit)}>
         <FormControl fullWidth>
           <FormLabel>
-            <p className={styles.info}>Use test account credentials:</p>
+            <p className={styles.info}>Use the demo account to sign in:</p>
             <div className={styles.credentials}>
               <div>
-                <b>Login:</b> admin
+                <b>Username:</b> admin
               </div>
               <div>
                 <b>Password:</b> admin
@@ -45,14 +45,15 @@ export const Login = () => {
           </FormLabel>
           <FormGroup>
             <TextField
-              label="Login"
+              label="Username"
               margin="normal"
-              error={!!errors.email}
-              {...register('email')}
+              error={!!errors.username}
+              autoComplete="username"
+              {...register('username')}
             />
-            {errors.email && (
+            {errors.username && (
               <span className={styles.errorMessage}>
-                {errors.email.message}
+                {errors.username.message}
               </span>
             )}
             <TextField
@@ -60,6 +61,7 @@ export const Login = () => {
               label="Password"
               margin="normal"
               error={!!errors.password}
+              autoComplete="current-password"
               {...register('password')}
             />
             {errors.password && (
@@ -86,7 +88,7 @@ export const Login = () => {
               color="primary"
               fullWidth
             >
-              Login
+              Sign in
             </Button>
           </FormGroup>
         </FormControl>

@@ -3,6 +3,7 @@ import { beforeEach, expect, test } from 'vitest';
 import {
   createTaskTC,
   deleteTaskTC,
+  fetchTasksTC,
   tasksReducer,
   type TasksState,
   updateTaskTC,
@@ -265,6 +266,14 @@ test('property with todolistId should be deleted', () => {
 
   expect(keys.length).toBe(1);
   expect(endState['todolistId2']).not.toBeDefined();
-  // or
   expect(endState['todolistId2']).toBeUndefined();
+});
+
+test('failed task fetch should stop the initial loading state', () => {
+  const endState = tasksReducer(
+    {},
+    fetchTasksTC.rejected(null, 'requestId', 'todolistId4'),
+  );
+
+  expect(endState['todolistId4']).toEqual([]);
 });

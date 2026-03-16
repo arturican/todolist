@@ -17,6 +17,14 @@
   gap: var(--space1);
 }
 
+.status {
+  display: flex;
+  align-items: center;
+  gap: var(--space2);
+  min-height: 100%;
+  padding: var(--space2);
+}
+
 .empty {
   display: block;
   padding: var(--space2);

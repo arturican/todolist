@@ -7,7 +7,6 @@ import {
 import { useAppDispatch } from '@/common/hooks/useAppDispatch.ts';
 import AppBar from '@mui/material/AppBar';
 import { LinearProgress, Toolbar } from '@mui/material';
-import IconButton from '@mui/material/IconButton';
 import { NavButton } from '@/common/components/NavButton/NavButton.ts';
 import Switch from '@mui/material/Switch';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -63,9 +62,9 @@ export const Header = () => {
       <Toolbar disableGutters>
         <div className={`pageContainer ${styles.toolbar}`}>
           <div className={styles.brand}>
-            <IconButton color="inherit" className={styles.menuButton}>
+            <span className={styles.brandIcon} aria-hidden="true">
               <MenuIcon />
-            </IconButton>
+            </span>
             <span>TodoList</span>
           </div>
 

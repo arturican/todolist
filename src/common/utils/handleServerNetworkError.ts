@@ -1,6 +1,6 @@
+import type { Dispatch } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { z } from 'zod/v4';
-import type { Dispatch } from '@reduxjs/toolkit';
 import { setAppErrorAC, setAppStatusAC } from '@/app/app-slice.ts';
 
 export const handleServerNetworkError = (
@@ -16,7 +16,7 @@ export const handleServerNetworkError = (
 
     case error instanceof z.ZodError:
       console.table(error.issues);
-      errorMessage = 'Zod error. Смотри консоль';
+      errorMessage = 'Validation error. Check the console for details.';
       break;
 
     case error instanceof Error:

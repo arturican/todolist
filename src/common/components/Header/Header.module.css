@@ -23,9 +23,16 @@
   overflow-wrap: anywhere;
 }
 
-.menuButton {
-  border: 1px solid var(--border) !important;
+.brandIcon {
+  width: calc(var(--tapMinSize) - 0.25rem);
+  height: calc(var(--tapMinSize) - 0.25rem);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border);
+  border-radius: 12px;
   flex-shrink: 0;
+  color: var(--muted);
 }
 
 .actions {
@@ -162,7 +169,7 @@
     font-size: 1rem;
   }
 
-  .menuButton {
+  .brandIcon {
     display: none !important;
   }
 

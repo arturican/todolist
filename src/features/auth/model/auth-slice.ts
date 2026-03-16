@@ -27,7 +27,10 @@ export const authSlice = createAppSlice({
           const res = await authApi.me();
           if (res.data.resultCode === ResultCode.Success) {
             dispatch(setAppStatusAC({ status: 'succeeded' }));
-            return { isLoggedIn: true, name: res.data.data.email };
+            return {
+              isLoggedIn: true,
+              name: res.data.data.login || res.data.data.email,
+            };
           }
 
           dispatch(setAppStatusAC({ status: 'succeeded' }));
@@ -91,6 +94,7 @@ export const authSlice = createAppSlice({
       {
         fulfilled: (state, action) => {
           state.isLoggedIn = action.payload.isLoggedIn;
+          state.name = '';
         },
       },
     ),

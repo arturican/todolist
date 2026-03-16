@@ -14,33 +14,9 @@
   width: 100%;
 }
 
-.appCtaRow {
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  padding-top: var(--space6);
-  padding-bottom: var(--space6);
-}
-
-.appCtaButton {
-  background: #fff !important;
-  color: #0f172a !important;
-  width: min(100%, 18rem);
-}
-
-.appCtaButton:hover {
-  background: #fff !important;
-}
-
 .circularProgressContainer {
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-@media (max-width: 640px) {
-  .appCtaRow {
-    display: none;
-  }
 }

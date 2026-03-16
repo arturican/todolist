@@ -40,6 +40,9 @@ export const tasksSlice = createAppSlice({
         fulfilled: (state, action) => {
           state[action.payload.todolistId] = action.payload.tasks;
         },
+        rejected: (state, action) => {
+          state[action.meta.arg] ??= [];
+        },
       },
     ),
     createTaskTC: create.asyncThunk(

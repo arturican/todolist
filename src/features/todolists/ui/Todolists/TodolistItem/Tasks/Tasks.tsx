@@ -1,15 +1,16 @@
-import { useAppSelector } from '@/common/hooks/useAppSelector.ts';
-import { TaskItem } from '@/features/todolists/ui/Todolists/TodolistItem/Tasks/TaskItem/TaskItem.tsx';
+import CircularProgress from '@mui/material/CircularProgress';
 import List from '@mui/material/List';
+import { useEffect } from 'react';
+import { useAppDispatch } from '@/common/hooks/useAppDispatch.ts';
+import { useAppSelector } from '@/common/hooks/useAppSelector.ts';
+import { TaskStatus } from '@/common/enums/enums.ts';
+import type { DomainTodolist } from '@/features/todolists/api/todolistsApi.types.ts';
+import type { DomainTask } from '@/features/todolists/api/tasksApi.types.ts';
 import {
   fetchTasksTC,
   selectTasks,
 } from '@/features/todolists/model/tasks-slice.ts';
-import type { DomainTodolist } from '@/features/todolists/api/todolistsApi.types.ts';
-import type { DomainTask } from '@/features/todolists/api/tasksApi.types.ts';
-import { TaskStatus } from '@/common/enums/enums.ts';
-import { useAppDispatch } from '@/common/hooks/useAppDispatch.ts';
-import { useEffect } from 'react';
+import { TaskItem } from '@/features/todolists/ui/Todolists/TodolistItem/Tasks/TaskItem/TaskItem.tsx';
 import styles from './Tasks.module.css';
 
 type Props = {
@@ -23,18 +24,35 @@ export const Tasks = ({ todolist }: Props) => {
 
   useEffect(() => {
     dispatch(fetchTasksTC(id));
-  }, []);
+  }, [dispatch, id]);
 
-  const todolistTasks = tasks[id] ?? [];
-  let filteredTasks = todolistTasks;
+  const todolistTasks = tasks[id];
+  const isLoading = todolistTasks === undefined;
+  const resolvedTasks = todolistTasks ?? [];
+
+  let filteredTasks = resolvedTasks;
   if (filter === 'active') {
-    filteredTasks = todolistTasks.filter(
-      task => task.status === TaskStatus.New,
-    );
+    filteredTasks = resolvedTasks.filter(task => task.status === TaskStatus.New);
   }
   if (filter === 'completed') {
-    filteredTasks = todolistTasks.filter(
+    filteredTasks = resolvedTasks.filter(
       task => task.status === TaskStatus.Completed,
+    );
+  }
+
+  if (isLoading) {
+    return (
+      <div
+        className={styles.panel}
+        data-testid="task-list-panel"
+        data-todolist-id={id}
+        data-task-count={0}
+      >
+        <div className={styles.status}>
+          <CircularProgress size={22} thickness={4} />
+          <span className={styles.empty}>Loading tasks...</span>
+        </div>
+      </div>
     );
   }
 

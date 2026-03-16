@@ -1,10 +1,10 @@
 import Button from '@mui/material/Button';
-import { changeTodolistFilterAC } from '@/features/todolists/model/todolists-slice.ts';
 import { useAppDispatch } from '@/common/hooks/useAppDispatch.ts';
 import type {
   DomainTodolist,
   FilterValue,
 } from '@/features/todolists/api/todolistsApi.types.ts';
+import { changeTodolistFilterAC } from '@/features/todolists/model/todolists-slice.ts';
 import styles from './FilterButtons.module.css';
 
 type Props = {
@@ -20,22 +20,25 @@ export const FilterButtons = ({ todolist }: Props) => {
   };
 
   return (
-    <div className={styles.segmented}>
+    <div className={styles.segmented} role="group" aria-label="Task filter">
       <Button
         className={`${styles.segmentButton} ${filter === 'all' ? styles.active : ''}`}
         onClick={() => changeFilter('all')}
+        aria-pressed={filter === 'all'}
       >
         All
       </Button>
       <Button
         className={`${styles.segmentButton} ${filter === 'active' ? styles.active : ''}`}
         onClick={() => changeFilter('active')}
+        aria-pressed={filter === 'active'}
       >
         Active
       </Button>
       <Button
         className={`${styles.segmentButton} ${filter === 'completed' ? styles.active : ''}`}
         onClick={() => changeFilter('completed')}
+        aria-pressed={filter === 'completed'}
       >
         Completed
       </Button>

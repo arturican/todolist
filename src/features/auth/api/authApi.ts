@@ -6,7 +6,12 @@ export const authApi = {
   login(payload: LoginInputs) {
     return instance.post<BaseResponse<{ userId: number; token: string }>>(
       '/auth/login',
-      payload,
+      {
+        email: payload.username,
+        password: payload.password,
+        rememberMe: payload.rememberMe,
+        captcha: payload.captcha,
+      },
     );
   },
   logout() {
