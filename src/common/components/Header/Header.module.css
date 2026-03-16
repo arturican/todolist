@@ -3,12 +3,16 @@
   box-shadow: none !important;
 }
 
+.headerShell {
+  width: 100%;
+}
+
 .toolbar {
   min-height: clamp(4rem, 3.75rem + 0.8vw, 4.75rem);
-  display: flex;
-  gap: var(--space3);
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
   align-items: center;
-  justify-content: space-between;
+  gap: var(--space4);
   padding-top: var(--space2);
   padding-bottom: var(--space2);
 }
@@ -17,37 +21,57 @@
   display: flex;
   align-items: center;
   gap: var(--space2);
-  font-weight: 600;
-  font-size: clamp(1rem, 0.96rem + 0.2vw, 1.15rem);
   min-width: 0;
+  font-size: clamp(1rem, 0.96rem + 0.2vw, 1.15rem);
+  font-weight: 600;
   overflow-wrap: anywhere;
+}
+
+.brandMark {
+  width: calc(var(--tapMinSize) - 0.25rem);
+  height: calc(var(--tapMinSize) - 0.25rem);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  flex-shrink: 0;
+  color: var(--accent);
+  background:
+    linear-gradient(135deg, rgba(42, 171, 238, 0.16), rgba(42, 171, 238, 0.04)),
+    var(--surfaceSoft);
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
 }
 
 .burgerButton {
   width: calc(var(--tapMinSize) - 0.25rem);
   height: calc(var(--tapMinSize) - 0.25rem);
+  margin-left: auto;
+  display: none !important;
+  align-items: center;
+  justify-content: center;
   border: 1px solid var(--border);
   border-radius: 12px !important;
   flex-shrink: 0;
   color: var(--muted);
   background: var(--surfaceSoft) !important;
-  display: none !important;
 }
 
 .actions {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  justify-content: flex-end;
+  min-width: 0;
+  display: grid;
+  justify-items: end;
   gap: var(--space2);
-  min-width: min(100%, 40rem);
 }
 
 .metaRow {
+  width: 100%;
   display: flex;
   align-items: center;
-  gap: var(--space3);
   justify-content: flex-end;
+  gap: var(--space3);
   flex-wrap: wrap;
   min-width: 0;
 }
@@ -55,42 +79,17 @@
 .userGroup {
   display: flex;
   align-items: center;
+  justify-content: flex-end;
   gap: var(--space2);
+  flex-wrap: wrap;
   min-width: 0;
-  flex-wrap: wrap;
-  justify-content: flex-end;
-}
-
-.actionsGrid {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  flex-wrap: wrap;
-  gap: var(--space3);
-  width: 100%;
-}
-
-.mobileMenu {
-  display: none;
-  padding-bottom: var(--space4);
-}
-
-.mobileMenuGrid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--space2);
-}
-
-.actionButton {
-  min-width: min(100%, 13.75rem);
-  justify-content: center;
 }
 
 .user {
-  color: var(--muted);
-  overflow-wrap: anywhere;
-  text-align: right;
   min-width: 0;
+  color: var(--muted);
+  text-align: right;
+  overflow-wrap: anywhere;
 }
 
 .signOutInline {
@@ -119,67 +118,81 @@
   margin: 0;
 }
 
-@media (max-width: 1024px) {
+.actionsGrid {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(10rem, 13.75rem));
+  justify-content: end;
+  gap: var(--space2);
+}
+
+.actionButton {
+  width: 100%;
+  min-width: 0;
+  justify-content: center;
+}
+
+.mobileMenuWrapper {
+  padding-bottom: var(--space4);
+}
+
+.mobileMenu {
+  display: grid;
+  gap: var(--space2);
+  padding: var(--space3);
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radiusCard) * 1.05);
+  background:
+    radial-gradient(
+      circle at top right,
+      rgba(42, 171, 238, 0.12),
+      transparent 40%
+    ),
+    var(--surface);
+  box-shadow: var(--shadow2);
+}
+
+.mobileMenuGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space2);
+}
+
+@media (max-width: 1279px) {
+  .actionsGrid {
+    grid-template-columns: repeat(3, minmax(9rem, 1fr));
+  }
+}
+
+@media (max-width: 1023px) {
   .toolbar {
+    grid-template-columns: 1fr;
     align-items: stretch;
-    flex-direction: column;
-    gap: var(--space4);
+    gap: var(--space3);
+  }
+
+  .brand {
+    justify-content: flex-start;
   }
 
   .actions {
-    width: 100%;
-    flex-direction: column;
-    align-items: stretch;
-    gap: var(--space4);
-    min-width: 0;
+    justify-items: stretch;
   }
 
   .metaRow {
-    width: 100%;
     justify-content: space-between;
   }
 
   .actionsGrid {
-    width: 100%;
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: var(--space3);
-  }
-
-  .actionButton {
-    width: 100%;
-    min-width: 0;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
   .user {
-    font-size: 1rem;
-    line-height: 1.2;
     text-align: left;
-  }
-
-  .signOutInline {
-    width: auto;
-    min-width: fit-content;
   }
 }
 
 @media (max-width: 767px) {
-  .actionsGrid {
-    display: none;
-  }
-
-  .burgerButton {
-    display: inline-flex !important;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .mobileMenu {
-    display: block;
-  }
-}
-
-@media (max-width: 640px) {
   .appBar {
     margin-bottom: var(--space5);
   }
@@ -189,14 +202,15 @@
   }
 
   .brand {
-    width: 100%;
     justify-content: space-between;
-    gap: var(--space2);
-    font-size: 1rem;
   }
 
-  .actions {
-    gap: var(--space3);
+  .burgerButton {
+    display: inline-flex !important;
+  }
+
+  .actionsGrid {
+    display: none;
   }
 
   .metaRow {
@@ -204,13 +218,6 @@
     grid-template-columns: minmax(0, 1fr) auto;
     align-items: start;
     gap: var(--space2);
-  }
-
-  .user {
-    font-size: 0.92rem;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
   }
 
   .userGroup {
@@ -222,19 +229,41 @@
     row-gap: 0;
   }
 
+  .user {
+    font-size: 0.92rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
   .signOutInline {
-    width: auto;
     min-height: 2.25rem !important;
     padding-inline: 0.62rem !important;
     justify-self: end;
   }
+}
 
-  .actionButton {
-    width: 100%;
+@media (max-width: 480px) {
+  .toolbar {
+    padding-top: var(--space1);
+    padding-bottom: var(--space1);
+  }
+
+  .brand {
+    font-size: 1rem;
+  }
+
+  .brandMark {
+    width: 2.5rem;
+    height: 2.5rem;
+    font-size: 0.82rem;
+  }
+
+  .mobileMenu {
+    padding: var(--space2);
   }
 
   .themeControl {
-    justify-self: end;
     padding: 0.1rem 0.2rem 0.1rem 0.5rem;
   }
 
@@ -247,18 +276,15 @@
   }
 }
 
-@media (max-width: 480px) {
-  .toolbar {
-    padding-top: var(--space1);
-    padding-bottom: var(--space1);
-  }
-
-  .themeLabel {
-    font-size: 0.74rem;
-  }
-}
-
 @media (max-width: 360px) {
+  .metaRow {
+    grid-template-columns: 1fr;
+  }
+
+  .themeControl {
+    justify-self: start;
+  }
+
   .userGroup {
     grid-template-columns: 1fr;
     row-gap: var(--space1);
