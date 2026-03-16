@@ -16,23 +16,22 @@
 .brand {
   display: flex;
   align-items: center;
-  gap: var(--space3);
+  gap: var(--space2);
   font-weight: 600;
   font-size: clamp(1rem, 0.96rem + 0.2vw, 1.15rem);
   min-width: 0;
   overflow-wrap: anywhere;
 }
 
-.brandIcon {
+.burgerButton {
   width: calc(var(--tapMinSize) - 0.25rem);
   height: calc(var(--tapMinSize) - 0.25rem);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: 12px !important;
   flex-shrink: 0;
   color: var(--muted);
+  background: var(--surfaceSoft) !important;
+  display: none !important;
 }
 
 .actions {
@@ -69,6 +68,17 @@
   flex-wrap: wrap;
   gap: var(--space3);
   width: 100%;
+}
+
+.mobileMenu {
+  display: none;
+  padding-bottom: var(--space4);
+}
+
+.mobileMenuGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space2);
 }
 
 .actionButton {
@@ -153,6 +163,22 @@
   }
 }
 
+@media (max-width: 767px) {
+  .actionsGrid {
+    display: none;
+  }
+
+  .burgerButton {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .mobileMenu {
+    display: block;
+  }
+}
+
 @media (max-width: 640px) {
   .appBar {
     margin-bottom: var(--space5);
@@ -164,13 +190,9 @@
 
   .brand {
     width: 100%;
-    justify-content: flex-start;
+    justify-content: space-between;
     gap: var(--space2);
     font-size: 1rem;
-  }
-
-  .brandIcon {
-    display: none !important;
   }
 
   .actions {
@@ -205,11 +227,6 @@
     min-height: 2.25rem !important;
     padding-inline: 0.62rem !important;
     justify-self: end;
-  }
-
-  .actionsGrid {
-    grid-template-columns: 1fr;
-    gap: var(--space2);
   }
 
   .actionButton {
