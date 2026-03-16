@@ -6,11 +6,13 @@ import {
 } from '@/app/app-slice.ts';
 import { useAppDispatch } from '@/common/hooks/useAppDispatch.ts';
 import AppBar from '@mui/material/AppBar';
-import { LinearProgress, Toolbar } from '@mui/material';
+import { Collapse, IconButton, LinearProgress, Toolbar } from '@mui/material';
 import { NavButton } from '@/common/components/NavButton/NavButton.ts';
 import Switch from '@mui/material/Switch';
 import MenuIcon from '@mui/icons-material/Menu';
-import { Link } from 'react-router';
+import CloseIcon from '@mui/icons-material/Close';
+import { useEffect, useState } from 'react';
+import { Link, useLocation } from 'react-router';
 import {
   logoutTC,
   selectIsLoggedIn,
@@ -25,8 +27,14 @@ export const Header = () => {
   const isAppLoading = useAppSelector(selectIsAppLoading);
   const isLoggedIn = useAppSelector(selectIsLoggedIn);
   const dispatch = useAppDispatch();
+  const { pathname } = useLocation();
   const name = useAppSelector(selectName)?.match(/^[^@]+/)?.[0] ?? '';
   const themeLabel = themeMode === 'dark' ? 'Theme: Dark' : 'Theme: Light';
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  useEffect(() => {
+    setIsMenuOpen(false);
+  }, [pathname]);
 
   const changeMode = () => {
     dispatch(
@@ -37,15 +45,26 @@ export const Header = () => {
   };
 
   const signOutHandler = () => {
+    setIsMenuOpen(false);
     dispatch(logoutTC());
   };
 
   const backToPortfolioHandler = () => {
+    setIsMenuOpen(false);
     window.location.assign(PORTFOLIO_URL);
   };
 
   const viewSourceHandler = () => {
+    setIsMenuOpen(false);
     window.open(GITHUB_REPO_URL, '_blank', 'noopener,noreferrer');
+  };
+
+  const toggleMenu = () => {
+    setIsMenuOpen(current => !current);
+  };
+
+  const closeMenu = () => {
+    setIsMenuOpen(false);
   };
 
   return (
@@ -64,9 +83,19 @@ export const Header = () => {
       <Toolbar disableGutters>
         <div className={`pageContainer ${styles.toolbar}`}>
           <div className={styles.brand}>
-            <span className={styles.brandIcon} aria-hidden="true">
-              <MenuIcon />
-            </span>
+            <IconButton
+              className={`${styles.brandIconButton} ${isMenuOpen ? styles.brandIconButtonActive : ''}`}
+              onClick={toggleMenu}
+              aria-label={
+                isMenuOpen
+                  ? 'Close quick actions menu'
+                  : 'Open quick actions menu'
+              }
+              aria-controls="header-quick-actions"
+              aria-expanded={isMenuOpen}
+            >
+              {isMenuOpen ? <CloseIcon /> : <MenuIcon />}
+            </IconButton>
             <span>TodoList</span>
           </div>
 
@@ -96,30 +125,44 @@ export const Header = () => {
                 />
               </div>
             </div>
-            <div className={styles.actionsGrid}>
-              <NavButton
-                className={styles.actionButton}
-                component={Link}
-                to={Path.Faq}
-              >
-                FAQ
-              </NavButton>
-              <NavButton
-                className={styles.actionButton}
-                onClick={backToPortfolioHandler}
-              >
-                Back to Portfolio
-              </NavButton>
-              <NavButton
-                className={styles.actionButton}
-                onClick={viewSourceHandler}
-              >
-                Open Project on GitHub
-              </NavButton>
-            </div>
           </div>
         </div>
       </Toolbar>
+      <Collapse in={isMenuOpen} timeout={220} unmountOnExit>
+        <div
+          id="header-quick-actions"
+          className={`pageContainer ${styles.menuPanel}`}
+        >
+          <div className={styles.menuHeader}>
+            <span className={styles.menuEyebrow}>Quick actions</span>
+            <span className={styles.menuText}>
+              Hidden header actions are collected here.
+            </span>
+          </div>
+          <div className={styles.actionsGrid}>
+            <NavButton
+              className={styles.actionButton}
+              component={Link}
+              to={Path.Faq}
+              onClick={closeMenu}
+            >
+              FAQ
+            </NavButton>
+            <NavButton
+              className={styles.actionButton}
+              onClick={backToPortfolioHandler}
+            >
+              Back to Portfolio
+            </NavButton>
+            <NavButton
+              className={styles.actionButton}
+              onClick={viewSourceHandler}
+            >
+              Open Project on GitHub
+            </NavButton>
+          </div>
+        </div>
+      </Collapse>
       {isAppLoading && <LinearProgress />}
     </AppBar>
   );

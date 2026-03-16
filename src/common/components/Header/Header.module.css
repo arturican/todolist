@@ -23,16 +23,20 @@
   overflow-wrap: anywhere;
 }
 
-.brandIcon {
+.brandIconButton {
   width: calc(var(--tapMinSize) - 0.25rem);
   height: calc(var(--tapMinSize) - 0.25rem);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: 12px !important;
   flex-shrink: 0;
   color: var(--muted);
+  background: var(--surfaceSoft) !important;
+}
+
+.brandIconButtonActive {
+  color: var(--accent);
+  border-color: var(--accent);
+  background: rgba(42, 171, 238, 0.1) !important;
 }
 
 .actions {
@@ -42,6 +46,33 @@
   justify-content: flex-end;
   gap: var(--space2);
   min-width: min(100%, 40rem);
+}
+
+.menuPanel {
+  display: grid;
+  gap: var(--space3);
+  padding-bottom: var(--space4);
+}
+
+.menuHeader {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space2);
+  flex-wrap: wrap;
+}
+
+.menuEyebrow {
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--accent);
+  text-transform: uppercase;
+}
+
+.menuText {
+  color: var(--muted);
+  font-size: 0.9rem;
 }
 
 .metaRow {
@@ -169,10 +200,6 @@
     font-size: 1rem;
   }
 
-  .brandIcon {
-    display: none !important;
-  }
-
   .actions {
     gap: var(--space3);
   }
@@ -227,6 +254,11 @@
 
   .themeSwitch {
     margin: -0.15rem -0.15rem -0.15rem 0;
+  }
+
+  .menuHeader {
+    align-items: flex-start;
+    flex-direction: column;
   }
 }
 
