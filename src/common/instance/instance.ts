@@ -1,8 +1,7 @@
 import axios from 'axios';
 import { getAuthToken } from '@/common/utils';
 
-const baseURL =
-  import.meta.env.VITE_API_URL || import.meta.env.VITE_BASE_URL || '/api';
+const baseURL = import.meta.env.VITE_API_URL || '/api';
 
 export const instance = axios.create({
   baseURL: baseURL,

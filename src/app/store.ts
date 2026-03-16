@@ -23,5 +23,12 @@ export type RootState = ReturnType<typeof store.getState>;
 
 export type AppDispatch = typeof store.dispatch;
 
-// @ts-ignore
-window.store = store;
+declare global {
+  interface Window {
+    store?: typeof store;
+  }
+}
+
+if (import.meta.env.DEV && typeof window !== 'undefined') {
+  window.store = store;
+}
