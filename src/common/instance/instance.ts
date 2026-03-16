@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { getAuthToken } from '@/common/utils';
 
 const baseURL =
   import.meta.env.VITE_API_URL || import.meta.env.VITE_BASE_URL || '/api';
@@ -8,7 +9,7 @@ export const instance = axios.create({
 });
 
 instance.interceptors.request.use(function (config) {
-  const token = localStorage.getItem('token');
+  const token = getAuthToken();
   const headers = config.headers ?? {};
 
   if (token) {

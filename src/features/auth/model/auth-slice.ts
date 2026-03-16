@@ -1,20 +1,26 @@
+import { clearDataAC } from '@/common/actions';
+import { ResultCode } from '@/common/enums/enums.ts';
 import {
+  clearAuthToken,
+  clearClientSession,
   createAppSlice,
   handleServerAppError,
   handleServerNetworkError,
+  isUnauthorizedResponse,
+  setAuthToken,
 } from '@/common/utils';
-import { type LoginInputs } from '@/features/auth/lib';
 import { setAppStatusAC } from '@/app/app-slice.ts';
 import { authApi } from '@/features/auth/api/authApi.ts';
-import { ResultCode } from '@/common/enums/enums.ts';
-import { clearDataAC } from '@/common/actions';
+import { type LoginInputs } from '@/features/auth/lib';
+
+const initialState = {
+  name: '',
+  isLoggedIn: false,
+};
 
 export const authSlice = createAppSlice({
   name: 'auth',
-  initialState: {
-    name: '',
-    isLoggedIn: false,
-  },
+  initialState,
   selectors: {
     selectIsLoggedIn: state => state.isLoggedIn,
     selectName: state => state.name,
@@ -31,6 +37,10 @@ export const authSlice = createAppSlice({
               isLoggedIn: true,
               name: res.data.data.login || res.data.data.email,
             };
+          }
+
+          if (isUnauthorizedResponse(res.data)) {
+            clearClientSession(dispatch);
           }
 
           dispatch(setAppStatusAC({ status: 'succeeded' }));
@@ -53,7 +63,7 @@ export const authSlice = createAppSlice({
           dispatch(setAppStatusAC({ status: 'loading' }));
           const res = await authApi.login(data);
           if (res.data.resultCode === ResultCode.Success) {
-            localStorage.setItem('token', res.data.data.token);
+            setAuthToken(res.data.data.token);
             dispatch(initializeAppTC());
             dispatch(setAppStatusAC({ status: 'succeeded' }));
             return { isLoggedIn: true };
@@ -79,7 +89,7 @@ export const authSlice = createAppSlice({
           const res = await authApi.logout();
           if (res.data.resultCode === ResultCode.Success) {
             dispatch(setAppStatusAC({ status: 'succeeded' }));
-            localStorage.removeItem('token');
+            clearAuthToken();
             dispatch(clearDataAC());
             return { isLoggedIn: false };
           } else {
@@ -99,6 +109,9 @@ export const authSlice = createAppSlice({
       },
     ),
   }),
+  extraReducers: builder => {
+    builder.addCase(clearDataAC, () => ({ ...initialState }));
+  },
 });
 
 export const { selectIsLoggedIn, selectName } = authSlice.selectors;
