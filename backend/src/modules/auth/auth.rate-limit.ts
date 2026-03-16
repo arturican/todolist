@@ -6,7 +6,6 @@ export const loginRateLimiter = rateLimit({
   max: 10,
   standardHeaders: true,
   legacyHeaders: false,
-  skipSuccessfulRequests: true,
   handler: (_req, res) => {
     return res
       .status(429)
