@@ -15,7 +15,7 @@ This backend replaces the external API currently used by the frontend and matche
 1. Install dependencies:
 
 ```bash
-pnpm --dir backend install
+corepack pnpm --dir backend install
 ```
 
 2. Create env file:
@@ -27,15 +27,17 @@ cp backend/.env.example backend/.env
 3. Generate Prisma client + run migration:
 
 ```bash
-pnpm --dir backend prisma:generate
-pnpm --dir backend prisma:migrate
+corepack pnpm --dir backend prisma:generate
+corepack pnpm --dir backend prisma:migrate
 ```
 
 4. Seed demo data:
 
 ```bash
-pnpm --dir backend prisma:seed
+corepack pnpm --dir backend prisma:seed
 ```
+
+The default seed now creates 4 demo lists and 15 tasks so the UI is populated immediately after startup.
 
 Demo login:
 
@@ -45,7 +47,7 @@ Demo login:
 ## Run in dev (nodemon)
 
 ```bash
-pnpm --dir backend dev
+corepack pnpm --dir backend dev
 ```
 
 Backend runs on `http://127.0.0.1:3001` by default.
@@ -54,7 +56,7 @@ Host/port are controlled by `HOST` and `PORT` in `backend/.env`.
 ## Run tests
 
 ```bash
-pnpm --dir backend test:run
+corepack pnpm --dir backend test:run
 ```
 
 ## Frontend integration
@@ -67,9 +69,17 @@ Frontend should call `/api` and use Vite proxy:
 Then run in two terminals:
 
 ```bash
-pnpm backend:dev
-pnpm dev
+corepack pnpm backend:dev
+corepack pnpm dev
 ```
+
+## Security notes
+
+- `DELETE /api/auth/login` revokes the current JWT by rotating the user token version.
+- Every response includes `X-Request-Id`; send your own header to trace a request end-to-end.
+- `FRONTEND_ORIGIN` accepts a comma-separated allowlist.
+- `TRUST_PROXY=true` is interpreted as trusting one proxy hop by default.
+- `REQUEST_BODY_LIMIT` defines the maximum accepted JSON body size.
 
 ## API surface implemented
 

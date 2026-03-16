@@ -8,19 +8,19 @@ Backend is in `backend/` (TypeScript Express + Prisma, runtime entry -> `dist/sr
 Frontend:
 
 ```bash
-pnpm install
-pnpm dev
+corepack pnpm install
+corepack pnpm dev
 ```
 
 Backend:
 
 ```bash
-pnpm --dir backend install
+corepack pnpm --dir backend install
 cp backend/.env.example backend/.env
-pnpm --dir backend prisma:generate
-pnpm --dir backend prisma:migrate
-pnpm --dir backend prisma:seed
-pnpm backend:dev
+corepack pnpm --dir backend prisma:generate
+corepack pnpm --dir backend prisma:migrate
+corepack pnpm --dir backend prisma:seed
+corepack pnpm backend:dev
 ```
 
 ## Deployment
@@ -68,6 +68,8 @@ NODE_ENV=production
 HOST=127.0.0.1
 PORT=3001
 FRONTEND_ORIGIN=https://your-domain.com
+TRUST_PROXY=1
+REQUEST_BODY_LIMIT=32kb
 DATABASE_URL=file:/opt/todolist-api/shared/prod.db
 JWT_SECRET=change_me
 JWT_EXPIRES_IN=7d
