@@ -2,6 +2,7 @@ import {
   createTodolistTC,
   deleteTodolistTC,
 } from '@/features/todolists/model/todolists-slice.ts';
+import { finishAppLoadingAC, startAppLoadingAC } from '@/app/app-slice.ts';
 import {
   createAppSlice,
   handleServerAppError,
@@ -15,7 +16,6 @@ import {
 } from '@/features/todolists/api/tasksApi.types.ts';
 
 import type { RootState } from '@/app/store.ts';
-import { setAppStatusAC } from '@/app/app-slice.ts';
 import { ResultCode } from '@/common/enums/enums.ts';
 import { clearDataAC } from '@/common/actions';
 
@@ -26,10 +26,10 @@ export const tasksSlice = createAppSlice({
     fetchTasksTC: create.asyncThunk(
       async (todolistId: string, { dispatch, rejectWithValue }) => {
         try {
-          dispatch(setAppStatusAC({ status: 'loading' }));
+          dispatch(startAppLoadingAC());
           const res = await tasksApi.getTasks(todolistId);
           const tasks = domainTaskSchema.array().parse(res.data.items);
-          dispatch(setAppStatusAC({ status: 'succeeded' }));
+          dispatch(finishAppLoadingAC());
           return { todolistId, tasks };
         } catch (error: any) {
           handleServerNetworkError(dispatch, error);
@@ -51,10 +51,10 @@ export const tasksSlice = createAppSlice({
         { dispatch, rejectWithValue },
       ) => {
         try {
-          dispatch(setAppStatusAC({ status: 'loading' }));
+          dispatch(startAppLoadingAC());
           const res = await tasksApi.createTask(payload);
           if (res.data.resultCode === ResultCode.Success) {
-            dispatch(setAppStatusAC({ status: 'succeeded' }));
+            dispatch(finishAppLoadingAC());
             return { task: res.data.data.item };
           } else {
             handleServerAppError(res.data, dispatch);
@@ -73,16 +73,16 @@ export const tasksSlice = createAppSlice({
         },
       },
     ),
-
     deleteTaskTC: create.asyncThunk(
       async (
         payload: { todolistId: string; taskId: string },
         { dispatch, rejectWithValue },
       ) => {
         try {
+          dispatch(startAppLoadingAC());
           const res = await tasksApi.deleteTask(payload);
           if (res.data.resultCode === ResultCode.Success) {
-            dispatch(setAppStatusAC({ status: 'succeeded' }));
+            dispatch(finishAppLoadingAC());
             return payload;
           } else {
             handleServerAppError(res.data, dispatch);
@@ -136,10 +136,10 @@ export const tasksSlice = createAppSlice({
         };
 
         try {
-          dispatch(setAppStatusAC({ status: 'loading' }));
+          dispatch(startAppLoadingAC());
           const res = await tasksApi.updateTask({ todolistId, taskId, model });
           if (res.data.resultCode === ResultCode.Success) {
-            dispatch(setAppStatusAC({ status: 'succeeded' }));
+            dispatch(finishAppLoadingAC());
             return { task: res.data.data.item };
           } else {
             handleServerAppError(res.data, dispatch);

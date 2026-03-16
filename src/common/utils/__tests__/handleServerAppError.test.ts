@@ -1,6 +1,10 @@
 import { afterEach, expect, test, vi } from 'vitest';
 import { clearDataAC } from '@/common/actions';
-import { setAppErrorAC, setAppStatusAC } from '@/app/app-slice.ts';
+import {
+  finishAppLoadingAC,
+  setAppErrorAC,
+  setAppStatusAC,
+} from '@/app/app-slice.ts';
 import { ResultCode } from '@/common/enums/enums.ts';
 import { handleServerAppError } from '../handleServerAppError.ts';
 
@@ -50,4 +54,5 @@ test('unauthorized server response should clear session and show auth message', 
     3,
     setAppStatusAC({ status: 'failed' }),
   );
+  expect(dispatch).toHaveBeenNthCalledWith(4, finishAppLoadingAC());
 });

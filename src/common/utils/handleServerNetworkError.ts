@@ -1,7 +1,11 @@
 import type { Dispatch } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { z } from 'zod/v4';
-import { setAppErrorAC, setAppStatusAC } from '@/app/app-slice.ts';
+import {
+  finishAppLoadingAC,
+  setAppErrorAC,
+  setAppStatusAC,
+} from '@/app/app-slice.ts';
 
 export const handleServerNetworkError = (
   dispatch: Dispatch,
@@ -29,4 +33,5 @@ export const handleServerNetworkError = (
 
   dispatch(setAppErrorAC({ error: errorMessage }));
   dispatch(setAppStatusAC({ status: 'failed' }));
+  dispatch(finishAppLoadingAC());
 };

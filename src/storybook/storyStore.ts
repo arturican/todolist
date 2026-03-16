@@ -54,6 +54,7 @@ export const createStoryStore = () =>
         themeMode: 'light' as const,
         status: 'idle' as const,
         error: null,
+        requestsInFlight: 0,
       },
       auth: {
         name: 'storybook@example.com',

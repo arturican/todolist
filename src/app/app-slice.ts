@@ -19,6 +19,7 @@ export const appSlice = createAppSlice({
     themeMode: getInitialThemeMode(),
     status: 'idle' as RequestStatus,
     error: null as string | null,
+    requestsInFlight: 0,
   },
   reducers: create => ({
     changeThemeModeAC: create.reducer<{ themeMode: ThemeMode }>(
@@ -26,6 +27,19 @@ export const appSlice = createAppSlice({
         state.themeMode = action.payload.themeMode;
       },
     ),
+    startAppLoadingAC: create.reducer(state => {
+      state.requestsInFlight += 1;
+      state.status = 'loading';
+    }),
+    finishAppLoadingAC: create.reducer(state => {
+      if (state.requestsInFlight > 0) {
+        state.requestsInFlight -= 1;
+      }
+
+      if (state.requestsInFlight === 0 && state.status === 'loading') {
+        state.status = 'succeeded';
+      }
+    }),
     setAppStatusAC: create.reducer<{ status: RequestStatus }>(
       (state, action) => {
         state.status = action.payload.status;
@@ -39,11 +53,21 @@ export const appSlice = createAppSlice({
     selectThemeMode: state => state.themeMode,
     selectStatus: state => state.status,
     selectAppError: state => state.error,
+    selectIsAppLoading: state => state.requestsInFlight > 0,
   },
 });
 
-export const { changeThemeModeAC, setAppStatusAC, setAppErrorAC } =
-  appSlice.actions;
+export const {
+  changeThemeModeAC,
+  startAppLoadingAC,
+  finishAppLoadingAC,
+  setAppStatusAC,
+  setAppErrorAC,
+} = appSlice.actions;
 export const appReducer = appSlice.reducer;
-export const { selectThemeMode, selectStatus, selectAppError } =
-  appSlice.selectors;
+export const {
+  selectThemeMode,
+  selectStatus,
+  selectAppError,
+  selectIsAppLoading,
+} = appSlice.selectors;

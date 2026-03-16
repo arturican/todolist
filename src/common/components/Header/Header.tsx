@@ -1,7 +1,7 @@
 import { useAppSelector } from '@/common/hooks/useAppSelector.ts';
 import {
   changeThemeModeAC,
-  selectStatus,
+  selectIsAppLoading,
   selectThemeMode,
 } from '@/app/app-slice.ts';
 import { useAppDispatch } from '@/common/hooks/useAppDispatch.ts';
@@ -20,7 +20,7 @@ import styles from './Header.module.css';
 
 export const Header = () => {
   const themeMode = useAppSelector(selectThemeMode);
-  const status = useAppSelector(selectStatus);
+  const isAppLoading = useAppSelector(selectIsAppLoading);
   const isLoggedIn = useAppSelector(selectIsLoggedIn);
   const dispatch = useAppDispatch();
   const name = useAppSelector(selectName)?.match(/^[^@]+/)?.[0] ?? '';
@@ -111,7 +111,7 @@ export const Header = () => {
           </div>
         </div>
       </Toolbar>
-      {status === 'loading' && <LinearProgress />}
+      {isAppLoading && <LinearProgress />}
     </AppBar>
   );
 };

@@ -1,5 +1,9 @@
 import type { Dispatch } from '@reduxjs/toolkit';
-import { setAppErrorAC, setAppStatusAC } from '@/app/app-slice';
+import {
+  finishAppLoadingAC,
+  setAppErrorAC,
+  setAppStatusAC,
+} from '@/app/app-slice';
 import type { BaseResponse } from '@/common/types/types.ts';
 import {
   clearClientSession,
@@ -23,4 +27,5 @@ export const handleServerAppError = <T>(
   }
 
   dispatch(setAppStatusAC({ status: 'failed' }));
+  dispatch(finishAppLoadingAC());
 };
