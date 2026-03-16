@@ -8,6 +8,8 @@ const envSchema = z.object({
   HOST: z.string().default('127.0.0.1'),
   PORT: z.coerce.number().int().positive().default(3001),
   FRONTEND_ORIGIN: z.string().default('http://localhost:3000'),
+  TRUST_PROXY: z.coerce.boolean().default(false),
+  REQUEST_BODY_LIMIT: z.string().default('32kb'),
   DATABASE_URL: z.string().min(1),
   JWT_SECRET: z.string().min(12),
   JWT_EXPIRES_IN: z.string().default('7d'),
@@ -22,3 +24,7 @@ if (!parsedEnv.success) {
 }
 
 export const env = parsedEnv.data;
+
+export const frontendOrigins = env.FRONTEND_ORIGIN.split(',')
+  .map(origin => origin.trim())
+  .filter(Boolean);

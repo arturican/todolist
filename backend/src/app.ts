@@ -3,7 +3,7 @@ import express from 'express';
 import rateLimit from 'express-rate-limit';
 import helmet from 'helmet';
 import morgan from 'morgan';
-import { env } from './config/env.js';
+import { env, frontendOrigins } from './config/env.js';
 import { apiRouter } from './routes/index.js';
 import { notFoundHandler } from './middleware/not-found.js';
 import { errorHandler } from './middleware/error-handler.js';
@@ -12,13 +12,23 @@ import { requestIdMiddleware } from './middleware/request-id.js';
 export const createApp = () => {
   const app = express();
 
+  app.disable('x-powered-by');
+  app.set('trust proxy', env.TRUST_PROXY);
   morgan.token('request-id', req => req.requestId ?? 'n/a');
 
   app.use(requestIdMiddleware);
   app.use(helmet());
   app.use(
     cors({
-      origin: env.FRONTEND_ORIGIN,
+      origin: (origin, callback) => {
+        if (!origin || frontendOrigins.includes(origin)) {
+          return callback(null, true);
+        }
+
+        return callback(null, false);
+      },
+      methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+      optionsSuccessStatus: 204,
     }),
   );
 
@@ -34,7 +44,12 @@ export const createApp = () => {
     }),
   );
 
-  app.use(express.json());
+  app.use(
+    express.json({
+      limit: env.REQUEST_BODY_LIMIT,
+      strict: true,
+    }),
+  );
 
   if (env.NODE_ENV !== 'test') {
     app.use(
