@@ -21,9 +21,8 @@ const PageNotFound = lazy(async () => {
 });
 
 const FaqPage = lazy(async () => {
-  return {
-    default: () => <h2>Faq</h2>,
-  };
+  const module = await import('@/features/faq/ui/FaqPage/FaqPage.tsx');
+  return { default: module.FaqPage };
 });
 
 const RouteLoader = () => (

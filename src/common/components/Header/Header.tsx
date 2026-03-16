@@ -10,12 +10,14 @@ import { LinearProgress, Toolbar } from '@mui/material';
 import { NavButton } from '@/common/components/NavButton/NavButton.ts';
 import Switch from '@mui/material/Switch';
 import MenuIcon from '@mui/icons-material/Menu';
+import { Link } from 'react-router';
 import {
   logoutTC,
   selectIsLoggedIn,
   selectName,
 } from '@/features/auth/model/auth-slice.ts';
 import { GITHUB_REPO_URL, PORTFOLIO_URL } from '@/common/config/links.ts';
+import { Path } from '@/common/routing';
 import styles from './Header.module.css';
 
 export const Header = () => {
@@ -95,6 +97,13 @@ export const Header = () => {
               </div>
             </div>
             <div className={styles.actionsGrid}>
+              <NavButton
+                className={styles.actionButton}
+                component={Link}
+                to={Path.Faq}
+              >
+                FAQ
+              </NavButton>
               <NavButton
                 className={styles.actionButton}
                 onClick={backToPortfolioHandler}
