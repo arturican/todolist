@@ -96,7 +96,6 @@ export const todolistsSlice = createAppSlice({
       async (id: string, { dispatch, rejectWithValue }) => {
         try {
           dispatch(startAppLoadingAC());
-          dispatch(changeTodolistStatusAC({ id, entityStatus: 'loading' }));
           const res = await todolistsApi.deleteTodolist(id);
           if (res.data.resultCode === ResultCode.Success) {
             dispatch(finishAppLoadingAC());
@@ -111,12 +110,24 @@ export const todolistsSlice = createAppSlice({
         }
       },
       {
+        pending: (state, action) => {
+          const todolist = state.find(item => item.id === action.meta.arg);
+          if (todolist) {
+            todolist.entityStatus = 'loading';
+          }
+        },
         fulfilled: (state, action) => {
           const index = state.findIndex(
             todolist => todolist.id === action.payload.id,
           );
           if (index !== -1) {
             state.splice(index, 1);
+          }
+        },
+        rejected: (state, action) => {
+          const todolist = state.find(item => item.id === action.meta.arg);
+          if (todolist) {
+            todolist.entityStatus = 'idle';
           }
         },
       },
@@ -142,12 +153,25 @@ export const todolistsSlice = createAppSlice({
         }
       },
       {
+        pending: (state, action) => {
+          const todolist = state.find(item => item.id === action.meta.arg.id);
+          if (todolist) {
+            todolist.entityStatus = 'loading';
+          }
+        },
         fulfilled: (state, action) => {
           const index = state.findIndex(
             todolist => todolist.id === action.payload.id,
           );
           if (index !== -1) {
             state[index].title = action.payload.title;
+            state[index].entityStatus = 'idle';
+          }
+        },
+        rejected: (state, action) => {
+          const todolist = state.find(item => item.id === action.meta.arg.id);
+          if (todolist) {
+            todolist.entityStatus = 'idle';
           }
         },
       },

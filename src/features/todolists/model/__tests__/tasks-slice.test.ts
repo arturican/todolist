@@ -20,6 +20,7 @@ const taskDefaultValues = {
   startDate: '',
   priority: TaskPriority.Low,
   order: 0,
+  entityStatus: 'idle' as const,
 };
 
 beforeEach(() => {
@@ -99,6 +100,7 @@ test('correct task should be deleted', () => {
         priority: TaskPriority.Low,
         order: 0,
         todoListId: 'todolistId1',
+        entityStatus: 'idle',
       },
       {
         id: '2',
@@ -111,6 +113,7 @@ test('correct task should be deleted', () => {
         priority: TaskPriority.Low,
         order: 0,
         todoListId: 'todolistId1',
+        entityStatus: 'idle',
       },
       {
         id: '3',
@@ -123,6 +126,7 @@ test('correct task should be deleted', () => {
         priority: TaskPriority.Low,
         order: 0,
         todoListId: 'todolistId1',
+        entityStatus: 'idle',
       },
     ],
     todolistId2: [
@@ -137,6 +141,7 @@ test('correct task should be deleted', () => {
         priority: TaskPriority.Low,
         order: 0,
         todoListId: 'todolistId2',
+        entityStatus: 'idle',
       },
       {
         id: '3',
@@ -149,6 +154,7 @@ test('correct task should be deleted', () => {
         priority: TaskPriority.Low,
         order: 0,
         todoListId: 'todolistId2',
+        entityStatus: 'idle',
       },
     ],
   });
@@ -166,6 +172,7 @@ test('correct task should be created at correct array', () => {
     priority: TaskPriority.Low,
     order: 0,
     todoListId: 'todolistId2',
+    entityStatus: 'idle' as const,
   };
   const endState = tasksReducer(
     startState,
@@ -180,6 +187,7 @@ test('correct task should be created at correct array', () => {
   expect(endState.todolistId2[0].id).toBeDefined();
   expect(endState.todolistId2[0].title).toBe('juice');
   expect(endState.todolistId2[0].status).toBe(TaskStatus.New);
+  expect(endState.todolistId2[0].entityStatus).toBe('idle');
 });
 
 test('correct task should change its status', () => {
@@ -206,6 +214,7 @@ test('correct task should change its status', () => {
 
   expect(endState.todolistId2[1].status).toBe(TaskStatus.New);
   expect(endState.todolistId1[1].status).toBe(TaskStatus.Completed);
+  expect(endState.todolistId2[1].entityStatus).toBe('idle');
 });
 
 test('correct task should change its title', () => {
@@ -232,6 +241,7 @@ test('correct task should change its title', () => {
 
   expect(endState.todolistId2[1].title).toBe('coffee');
   expect(endState.todolistId1[1].title).toBe('JS');
+  expect(endState.todolistId2[1].entityStatus).toBe('idle');
 });
 
 test('array should be created for new todolist', () => {
@@ -276,4 +286,41 @@ test('failed task fetch should stop the initial loading state', () => {
   );
 
   expect(endState['todolistId4']).toEqual([]);
+});
+
+test('pending task update should block only the target task', () => {
+  const endState = tasksReducer(
+    startState,
+    updateTaskTC.pending('requestId', {
+      todolistId: 'todolistId2',
+      taskId: '2',
+      domainModel: { title: 'coffee' },
+    }),
+  );
+
+  expect(endState.todolistId2[1].entityStatus).toBe('loading');
+  expect(endState.todolistId2[0].entityStatus).toBe('idle');
+  expect(endState.todolistId1[1].entityStatus).toBe('idle');
+});
+
+test('rejected task update should restore task interaction', () => {
+  const pendingState = tasksReducer(
+    startState,
+    updateTaskTC.pending('requestId', {
+      todolistId: 'todolistId2',
+      taskId: '2',
+      domainModel: { title: 'coffee' },
+    }),
+  );
+
+  const endState = tasksReducer(
+    pendingState,
+    updateTaskTC.rejected(null, 'requestId', {
+      todolistId: 'todolistId2',
+      taskId: '2',
+      domainModel: { title: 'coffee' },
+    }),
+  );
+
+  expect(endState.todolistId2[1].entityStatus).toBe('idle');
 });

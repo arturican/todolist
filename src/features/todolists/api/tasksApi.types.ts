@@ -1,5 +1,6 @@
 import { z } from 'zod/v4';
 import { TaskPriority, TaskStatus } from '@/common/enums/enums.ts';
+import type { RequestStatus } from '@/common/types/types.ts';
 /*
 export type DomainTask = {
   description: string;
@@ -34,7 +35,9 @@ export const domainTaskSchema = z.object({
   addedDate: z.iso.datetime({ local: true }),
 });
 
-export type DomainTask = z.infer<typeof domainTaskSchema>;
+export type DomainTask = z.infer<typeof domainTaskSchema> & {
+  entityStatus?: RequestStatus;
+};
 
 export type UpdateTaskModel = {
   description: string | null;

@@ -71,6 +71,7 @@ test('correct todolist should change its title', () => {
 
   expect(endState[0].title).toBe('What to learn');
   expect(endState[1].title).toBe(title);
+  expect(endState[1].entityStatus).toBe('idle');
 });
 
 test('correct todolist should change its filter', () => {
@@ -82,4 +83,36 @@ test('correct todolist should change its filter', () => {
 
   expect(endState[0].filter).toBe('all');
   expect(endState[1].filter).toBe(filter);
+});
+
+test('todolist should enter loading state while its title is updating', () => {
+  const endState = todolistsReducer(
+    startState,
+    changeTodolistTitleTC.pending('requestId', {
+      id: todolistId2,
+      title: 'New title',
+    }),
+  );
+
+  expect(endState[0].entityStatus).toBe('idle');
+  expect(endState[1].entityStatus).toBe('loading');
+});
+
+test('failed todolist update should restore list interaction', () => {
+  const pendingState = todolistsReducer(
+    startState,
+    changeTodolistTitleTC.pending('requestId', {
+      id: todolistId2,
+      title: 'New title',
+    }),
+  );
+  const endState = todolistsReducer(
+    pendingState,
+    changeTodolistTitleTC.rejected(null, 'requestId', {
+      id: todolistId2,
+      title: 'New title',
+    }),
+  );
+
+  expect(endState[1].entityStatus).toBe('idle');
 });

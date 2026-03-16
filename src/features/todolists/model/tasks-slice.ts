@@ -1,5 +1,6 @@
 import {
   createTodolistTC,
+  changeTodolistStatusAC,
   deleteTodolistTC,
 } from '@/features/todolists/model/todolists-slice.ts';
 import { finishAppLoadingAC, startAppLoadingAC } from '@/app/app-slice.ts';
@@ -18,6 +19,25 @@ import {
 import type { RootState } from '@/app/store.ts';
 import { ResultCode } from '@/common/enums/enums.ts';
 import { clearDataAC } from '@/common/actions';
+import type { RequestStatus } from '@/common/types/types.ts';
+
+const toDomainTask = (task: DomainTask): DomainTask => ({
+  ...task,
+  entityStatus: 'idle',
+});
+
+const setTaskEntityStatus = (
+  state: TasksState,
+  payload: { todolistId: string; taskId: string },
+  entityStatus: RequestStatus,
+) => {
+  const task = state[payload.todolistId]?.find(
+    item => item.id === payload.taskId,
+  );
+  if (task) {
+    task.entityStatus = entityStatus;
+  }
+};
 
 export const tasksSlice = createAppSlice({
   name: 'tasks',
@@ -38,7 +58,8 @@ export const tasksSlice = createAppSlice({
       },
       {
         fulfilled: (state, action) => {
-          state[action.payload.todolistId] = action.payload.tasks;
+          state[action.payload.todolistId] =
+            action.payload.tasks.map(toDomainTask);
         },
         rejected: (state, action) => {
           state[action.meta.arg] ??= [];
@@ -52,16 +73,40 @@ export const tasksSlice = createAppSlice({
       ) => {
         try {
           dispatch(startAppLoadingAC());
+          dispatch(
+            changeTodolistStatusAC({
+              id: payload.todolistId,
+              entityStatus: 'loading',
+            }),
+          );
           const res = await tasksApi.createTask(payload);
           if (res.data.resultCode === ResultCode.Success) {
+            dispatch(
+              changeTodolistStatusAC({
+                id: payload.todolistId,
+                entityStatus: 'idle',
+              }),
+            );
             dispatch(finishAppLoadingAC());
-            return { task: res.data.data.item };
+            return { task: toDomainTask(res.data.data.item) };
           } else {
             handleServerAppError(res.data, dispatch);
+            dispatch(
+              changeTodolistStatusAC({
+                id: payload.todolistId,
+                entityStatus: 'idle',
+              }),
+            );
             return rejectWithValue(null);
           }
         } catch (error: any) {
           handleServerNetworkError(dispatch, error);
+          dispatch(
+            changeTodolistStatusAC({
+              id: payload.todolistId,
+              entityStatus: 'idle',
+            }),
+          );
           return rejectWithValue(null);
         }
       },
@@ -94,14 +139,24 @@ export const tasksSlice = createAppSlice({
         }
       },
       {
+        pending: (state, action) => {
+          setTaskEntityStatus(state, action.meta.arg, 'loading');
+        },
         fulfilled: (state, action) => {
           const tasks = state[action.payload.todolistId];
+          if (!tasks) {
+            return;
+          }
+
           const index = tasks.findIndex(
             task => task.id === action.payload.taskId,
           );
           if (index !== -1) {
             tasks.splice(index, 1);
           }
+        },
+        rejected: (state, action) => {
+          setTaskEntityStatus(state, action.meta.arg, 'idle');
         },
       },
     ),
@@ -116,9 +171,8 @@ export const tasksSlice = createAppSlice({
       ) => {
         const { todolistId, taskId, domainModel } = payload;
 
-        const allTodolistTasks = (getState() as RootState).tasks[
-          payload.todolistId
-        ];
+        const allTodolistTasks =
+          (getState() as RootState).tasks[payload.todolistId] ?? [];
         const task = allTodolistTasks.find(task => task.id === payload.taskId);
 
         if (!task) {
@@ -151,14 +205,24 @@ export const tasksSlice = createAppSlice({
         }
       },
       {
+        pending: (state, action) => {
+          setTaskEntityStatus(state, action.meta.arg, 'loading');
+        },
         fulfilled: (state, action) => {
           const allTodolistTasks = state[action.payload.task.todoListId];
+          if (!allTodolistTasks) {
+            return;
+          }
+
           const taskIndex = allTodolistTasks.findIndex(
             task => task.id === action.payload.task.id,
           );
           if (taskIndex !== -1) {
-            allTodolistTasks[taskIndex] = action.payload.task;
+            allTodolistTasks[taskIndex] = toDomainTask(action.payload.task);
           }
+        },
+        rejected: (state, action) => {
+          setTaskEntityStatus(state, action.meta.arg, 'idle');
         },
       },
     ),

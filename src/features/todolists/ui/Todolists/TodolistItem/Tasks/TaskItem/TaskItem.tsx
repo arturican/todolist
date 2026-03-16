@@ -21,7 +21,8 @@ type Props = {
 
 export const TaskItem = ({ task, todolist }: Props) => {
   const dispatch = useAppDispatch();
-  const disabled = todolist.entityStatus === 'loading';
+  const disabled =
+    todolist.entityStatus === 'loading' || task.entityStatus === 'loading';
 
   const deleteTask = () => {
     dispatch(deleteTaskTC({ todolistId: todolist.id, taskId: task.id }));
@@ -67,7 +68,7 @@ export const TaskItem = ({ task, todolist }: Props) => {
           <EditableSpan
             value={task.title}
             onChange={changeTaskTitle}
-            entityStatus={todolist.entityStatus}
+            entityStatus={disabled ? 'loading' : 'idle'}
           />
         </div>
       </div>

@@ -14,6 +14,7 @@ type Props = {
 export const FilterButtons = ({ todolist }: Props) => {
   const { id, filter } = todolist;
   const dispatch = useAppDispatch();
+  const disabled = todolist.entityStatus === 'loading';
 
   const changeFilter = (nextFilter: FilterValue) => {
     dispatch(changeTodolistFilterAC({ id, filter: nextFilter }));
@@ -25,6 +26,7 @@ export const FilterButtons = ({ todolist }: Props) => {
         className={`${styles.segmentButton} ${filter === 'all' ? styles.active : ''}`}
         onClick={() => changeFilter('all')}
         aria-pressed={filter === 'all'}
+        disabled={disabled}
       >
         All
       </Button>
@@ -32,6 +34,7 @@ export const FilterButtons = ({ todolist }: Props) => {
         className={`${styles.segmentButton} ${filter === 'active' ? styles.active : ''}`}
         onClick={() => changeFilter('active')}
         aria-pressed={filter === 'active'}
+        disabled={disabled}
       >
         Active
       </Button>
@@ -39,6 +42,7 @@ export const FilterButtons = ({ todolist }: Props) => {
         className={`${styles.segmentButton} ${filter === 'completed' ? styles.active : ''}`}
         onClick={() => changeFilter('completed')}
         aria-pressed={filter === 'completed'}
+        disabled={disabled}
       >
         Completed
       </Button>

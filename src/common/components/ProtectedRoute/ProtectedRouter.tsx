@@ -14,7 +14,7 @@ export const ProtectedRouter = ({
   redirectPath = Path.Login,
 }: Props) => {
   if (!isAllowed) {
-    return <Navigate to={redirectPath} />;
+    return <Navigate to={redirectPath} replace />;
   }
   return children ? children : <Outlet />;
 };
