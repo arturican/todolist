@@ -5,12 +5,14 @@ import { env } from '../../config/env.js';
 
 export type AuthTokenPayload = {
   userId: number;
+  tokenVersion: number;
 };
 
 type AuthUser = {
   id: number;
   email: string;
   login: string;
+  tokenVersion: number;
 };
 
 export const findUserByEmail = async (email: string) => {
@@ -36,7 +38,11 @@ export const createAuthToken = (
     ? '30d'
     : (env.JWT_EXPIRES_IN as SignOptions['expiresIn']);
 
-  return jwt.sign({ userId: user.id }, env.JWT_SECRET, { expiresIn });
+  return jwt.sign(
+    { userId: user.id, tokenVersion: user.tokenVersion },
+    env.JWT_SECRET,
+    { expiresIn },
+  );
 };
 
 export const verifyAuthToken = (token: string): AuthTokenPayload | null => {
@@ -45,4 +51,37 @@ export const verifyAuthToken = (token: string): AuthTokenPayload | null => {
   } catch {
     return null;
   }
+};
+
+export const findAuthenticatedUserByToken = async (
+  token: string,
+): Promise<AuthUser | null> => {
+  const payload = verifyAuthToken(token);
+
+  if (!payload) {
+    return null;
+  }
+
+  const user = await findUserById(payload.userId);
+  if (!user || user.tokenVersion !== payload.tokenVersion) {
+    return null;
+  }
+
+  return {
+    id: user.id,
+    email: user.email,
+    login: user.login,
+    tokenVersion: user.tokenVersion,
+  };
+};
+
+export const revokeUserTokens = async (userId: number) => {
+  return prisma.user.update({
+    where: { id: userId },
+    data: {
+      tokenVersion: {
+        increment: 1,
+      },
+    },
+  });
 };

@@ -2,9 +2,9 @@ import { type Request, type Response } from 'express';
 import { loginSchema } from './auth.schemas.js';
 import {
   createAuthToken,
+  findAuthenticatedUserByToken,
   findUserByEmail,
-  findUserById,
-  verifyAuthToken,
+  revokeUserTokens,
   verifyPassword,
 } from './auth.service.js';
 import {
@@ -58,7 +58,16 @@ export const login = async (req: Request, res: Response) => {
   );
 };
 
-export const logout = (_req: Request, res: Response) => {
+export const logout = async (req: Request, res: Response) => {
+  const token = getBearerToken(req.headers.authorization);
+
+  if (token) {
+    const user = await findAuthenticatedUserByToken(token);
+    if (user) {
+      await revokeUserTokens(user.id);
+    }
+  }
+
   return res.status(200).json(createEmptySuccessResponse());
 };
 
@@ -68,12 +77,7 @@ export const me = async (req: Request, res: Response) => {
     return res.status(200).json(createErrorResponse('You are not authorized'));
   }
 
-  const payload = verifyAuthToken(token);
-  if (!payload) {
-    return res.status(200).json(createErrorResponse('You are not authorized'));
-  }
-
-  const user = await findUserById(payload.userId);
+  const user = await findAuthenticatedUserByToken(token);
   if (!user) {
     return res.status(200).json(createErrorResponse('You are not authorized'));
   }

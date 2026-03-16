@@ -1,6 +1,6 @@
 import { type NextFunction, type Request, type Response } from 'express';
 import { createErrorResponse } from '../lib/response.js';
-import { verifyAuthToken } from '../modules/auth/auth.service.js';
+import { findAuthenticatedUserByToken } from '../modules/auth/auth.service.js';
 
 const getBearerToken = (headerValue?: string): string | null => {
   if (!headerValue || !headerValue.startsWith('Bearer ')) {
@@ -19,11 +19,16 @@ export const requireAuth = (
     return res.status(200).json(createErrorResponse('You are not authorized'));
   }
 
-  const payload = verifyAuthToken(token);
-  if (!payload) {
-    return res.status(200).json(createErrorResponse('You are not authorized'));
-  }
+  void findAuthenticatedUserByToken(token)
+    .then(user => {
+      if (!user) {
+        return res
+          .status(200)
+          .json(createErrorResponse('You are not authorized'));
+      }
 
-  req.userId = payload.userId;
-  return next();
+      req.userId = user.id;
+      return next();
+    })
+    .catch(next);
 };

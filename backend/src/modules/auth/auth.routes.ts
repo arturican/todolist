@@ -5,5 +5,5 @@ import { asyncHandler } from '../../middleware/async-handler.js';
 export const authRoutes = Router();
 
 authRoutes.post('/login', asyncHandler(login));
-authRoutes.delete('/login', logout);
+authRoutes.delete('/login', asyncHandler(logout));
 authRoutes.get('/me', asyncHandler(me));
