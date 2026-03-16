@@ -12,6 +12,7 @@ import {
   createErrorResponse,
   createSuccessResponse,
 } from '../../lib/response.js';
+import { logInfo, logWarn } from '../../lib/logger.js';
 import { zodIssuesToFieldErrors } from '../../lib/validation.js';
 
 const getBearerToken = (headerValue?: string): string | null => {
@@ -37,6 +38,13 @@ export const login = async (req: Request, res: Response) => {
   const { email, password, rememberMe } = parsedBody.data;
   const user = await findUserByEmail(email);
   if (!user) {
+    logWarn('auth.login.failed', {
+      requestId: req.requestId,
+      email,
+      reason: 'user_not_found',
+      ip: req.ip,
+    });
+
     return res
       .status(200)
       .json(createErrorResponse('Invalid email or password'));
@@ -44,12 +52,27 @@ export const login = async (req: Request, res: Response) => {
 
   const isPasswordCorrect = await verifyPassword(password, user.passwordHash);
   if (!isPasswordCorrect) {
+    logWarn('auth.login.failed', {
+      requestId: req.requestId,
+      email,
+      reason: 'invalid_password',
+      ip: req.ip,
+    });
+
     return res
       .status(200)
       .json(createErrorResponse('Invalid email or password'));
   }
 
   const token = createAuthToken(user, rememberMe);
+
+  logInfo('auth.login.succeeded', {
+    requestId: req.requestId,
+    userId: user.id,
+    rememberMe: Boolean(rememberMe),
+    ip: req.ip,
+  });
+
   return res.status(200).json(
     createSuccessResponse({
       userId: user.id,
@@ -65,6 +88,12 @@ export const logout = async (req: Request, res: Response) => {
     const user = await findAuthenticatedUserByToken(token);
     if (user) {
       await revokeUserTokens(user.id);
+
+      logInfo('auth.logout.succeeded', {
+        requestId: req.requestId,
+        userId: user.id,
+        ip: req.ip,
+      });
     }
   }
 

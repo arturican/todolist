@@ -7,10 +7,14 @@ import { env } from './config/env.js';
 import { apiRouter } from './routes/index.js';
 import { notFoundHandler } from './middleware/not-found.js';
 import { errorHandler } from './middleware/error-handler.js';
+import { requestIdMiddleware } from './middleware/request-id.js';
 
 export const createApp = () => {
   const app = express();
 
+  morgan.token('request-id', req => req.requestId ?? 'n/a');
+
+  app.use(requestIdMiddleware);
   app.use(helmet());
   app.use(
     cors({
@@ -33,7 +37,9 @@ export const createApp = () => {
   app.use(express.json());
 
   if (env.NODE_ENV !== 'test') {
-    app.use(morgan('dev'));
+    app.use(
+      morgan(':method :url :status :response-time ms req_id=:request-id'),
+    );
   }
 
   app.get('/', (_req, res) => {
