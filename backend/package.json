@@ -11,6 +11,7 @@
     "prisma:migrate": "prisma migrate dev",
     "prisma:deploy": "prisma migrate deploy",
     "prisma:seed": "prisma db push --skip-generate && prisma db seed",
+    "verify": "prisma generate && tsc -p tsconfig.json && DATABASE_URL=file:./test.db prisma db push --skip-generate && vitest run",
     "test": "DATABASE_URL=file:./test.db prisma db push --skip-generate && vitest",
     "test:run": "DATABASE_URL=file:./test.db prisma db push --skip-generate && vitest run"
   },

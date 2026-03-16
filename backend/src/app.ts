@@ -1,5 +1,5 @@
 import cors from 'cors';
-import express from 'express';
+import express, { type Request as ExpressRequest } from 'express';
 import rateLimit from 'express-rate-limit';
 import helmet from 'helmet';
 import morgan from 'morgan';
@@ -14,7 +14,9 @@ export const createApp = () => {
 
   app.disable('x-powered-by');
   app.set('trust proxy', env.TRUST_PROXY);
-  morgan.token('request-id', req => req.requestId ?? 'n/a');
+  morgan.token('request-id', req => {
+    return (req as ExpressRequest).requestId ?? 'n/a';
+  });
 
   app.use(requestIdMiddleware);
   app.use(helmet());
