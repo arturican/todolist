@@ -5,7 +5,10 @@ import {
   createSuccessResponse,
 } from '../../lib/response.js';
 import { zodIssuesToFieldErrors } from '../../lib/validation.js';
-import { todolistTitleSchema } from './todolists.schemas.js';
+import {
+  todolistIdParamsSchema,
+  todolistTitleSchema,
+} from './todolists.schemas.js';
 import {
   createUserTodolist,
   deleteUserTodolist,
@@ -49,8 +52,20 @@ export const createTodolist = async (req: Request, res: Response) => {
 };
 
 export const deleteTodolist = async (req: Request, res: Response) => {
+  const parsedParams = todolistIdParamsSchema.safeParse(req.params);
+  if (!parsedParams.success) {
+    return res
+      .status(200)
+      .json(
+        createErrorResponse(
+          'Incorrect data',
+          zodIssuesToFieldErrors(parsedParams.error),
+        ),
+      );
+  }
+
   const userId = getAuthorizedUserId(req);
-  const isDeleted = await deleteUserTodolist(userId, req.params.id);
+  const isDeleted = await deleteUserTodolist(userId, parsedParams.data.id);
   if (!isDeleted) {
     return res.status(200).json(createErrorResponse('Todolist not found'));
   }
@@ -59,6 +74,18 @@ export const deleteTodolist = async (req: Request, res: Response) => {
 };
 
 export const updateTodolistTitle = async (req: Request, res: Response) => {
+  const parsedParams = todolistIdParamsSchema.safeParse(req.params);
+  if (!parsedParams.success) {
+    return res
+      .status(200)
+      .json(
+        createErrorResponse(
+          'Incorrect data',
+          zodIssuesToFieldErrors(parsedParams.error),
+        ),
+      );
+  }
+
   const parsedBody = todolistTitleSchema.safeParse(req.body);
   if (!parsedBody.success) {
     return res
@@ -74,7 +101,7 @@ export const updateTodolistTitle = async (req: Request, res: Response) => {
   const userId = getAuthorizedUserId(req);
   const updatedTodolist = await updateUserTodolistTitle(
     userId,
-    req.params.id,
+    parsedParams.data.id,
     parsedBody.data.title,
   );
 

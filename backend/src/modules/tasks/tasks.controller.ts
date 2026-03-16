@@ -14,13 +14,30 @@ import {
   toApiTask,
   updateTaskInTodolist,
 } from './tasks.service.js';
-import { taskTitleSchema, updateTaskSchema } from './tasks.schemas.js';
+import {
+  taskListParamsSchema,
+  taskParamsSchema,
+  taskTitleSchema,
+  updateTaskSchema,
+} from './tasks.schemas.js';
 
 const getAuthorizedUserId = (req: Request): number => req.userId as number;
 
 export const getTasks = async (req: Request, res: Response) => {
+  const parsedParams = taskListParamsSchema.safeParse(req.params);
+  if (!parsedParams.success) {
+    return res
+      .status(200)
+      .json(
+        createErrorResponse(
+          'Incorrect data',
+          zodIssuesToFieldErrors(parsedParams.error),
+        ),
+      );
+  }
+
   const userId = getAuthorizedUserId(req);
-  const { todolistId } = req.params;
+  const { todolistId } = parsedParams.data;
 
   const todolist = await findOwnedTodolist(userId, todolistId);
   if (!todolist) {
@@ -40,6 +57,18 @@ export const getTasks = async (req: Request, res: Response) => {
 };
 
 export const createTask = async (req: Request, res: Response) => {
+  const parsedParams = taskListParamsSchema.safeParse(req.params);
+  if (!parsedParams.success) {
+    return res
+      .status(200)
+      .json(
+        createErrorResponse(
+          'Incorrect data',
+          zodIssuesToFieldErrors(parsedParams.error),
+        ),
+      );
+  }
+
   const parsedBody = taskTitleSchema.safeParse(req.body);
   if (!parsedBody.success) {
     return res
@@ -53,7 +82,7 @@ export const createTask = async (req: Request, res: Response) => {
   }
 
   const userId = getAuthorizedUserId(req);
-  const { todolistId } = req.params;
+  const { todolistId } = parsedParams.data;
   const todolist = await findOwnedTodolist(userId, todolistId);
   if (!todolist) {
     return res.status(200).json(createErrorResponse('Todolist not found'));
@@ -68,6 +97,18 @@ export const createTask = async (req: Request, res: Response) => {
 };
 
 export const updateTask = async (req: Request, res: Response) => {
+  const parsedParams = taskParamsSchema.safeParse(req.params);
+  if (!parsedParams.success) {
+    return res
+      .status(200)
+      .json(
+        createErrorResponse(
+          'Incorrect data',
+          zodIssuesToFieldErrors(parsedParams.error),
+        ),
+      );
+  }
+
   const parsedBody = updateTaskSchema.safeParse(req.body);
   if (!parsedBody.success) {
     return res
@@ -81,7 +122,7 @@ export const updateTask = async (req: Request, res: Response) => {
   }
 
   const userId = getAuthorizedUserId(req);
-  const { todolistId, taskId } = req.params;
+  const { todolistId, taskId } = parsedParams.data;
   const todolist = await findOwnedTodolist(userId, todolistId);
   if (!todolist) {
     return res.status(200).json(createErrorResponse('Todolist not found'));
@@ -101,8 +142,20 @@ export const updateTask = async (req: Request, res: Response) => {
 };
 
 export const deleteTask = async (req: Request, res: Response) => {
+  const parsedParams = taskParamsSchema.safeParse(req.params);
+  if (!parsedParams.success) {
+    return res
+      .status(200)
+      .json(
+        createErrorResponse(
+          'Incorrect data',
+          zodIssuesToFieldErrors(parsedParams.error),
+        ),
+      );
+  }
+
   const userId = getAuthorizedUserId(req);
-  const { todolistId, taskId } = req.params;
+  const { todolistId, taskId } = parsedParams.data;
 
   const todolist = await findOwnedTodolist(userId, todolistId);
   if (!todolist) {
