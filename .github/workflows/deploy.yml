@@ -1,0 +1,113 @@
+name: Deploy Frontend + Backend to VPS
+
+on:
+  push:
+    branches:
+      - dev
+
+concurrency:
+  group: deploy-dev
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      VPS_HOST: ${{ secrets.VPS_HOST }}
+      VPS_USER: ${{ secrets.VPS_USER }}
+      VPS_PORT: ${{ secrets.VPS_PORT }}
+      VPS_SSH_KEY: ${{ secrets.VPS_SSH_KEY }}
+      VPS_SSH_KNOWN_HOSTS: ${{ secrets.VPS_SSH_KNOWN_HOSTS }}
+      FRONTEND_PATH: ${{ secrets.FRONTEND_PATH }}
+      BACKEND_PATH: ${{ secrets.BACKEND_PATH }}
+      BACKEND_PORT: ${{ secrets.BACKEND_PORT }}
+      BACKEND_SERVICE_NAME: todolist-backend
+      BACKEND_ENV_FILE: /etc/todolist/todolist-backend.env
+      FRONTEND_BUILD_DIR: dist
+      KEEP_RELEASES: 3
+      RELEASE_SHA: ${{ github.sha }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate required deploy secrets
+        run: |
+          set -euo pipefail
+          required=(VPS_HOST VPS_USER VPS_SSH_KEY FRONTEND_PATH BACKEND_PATH BACKEND_PORT)
+          missing=()
+          for key in "${required[@]}"; do
+            if [[ -z "${!key:-}" ]]; then
+              missing+=("$key")
+            fi
+          done
+
+          if (( ${#missing[@]} > 0 )); then
+            echo "::error::Missing required secrets: ${missing[*]}"
+            exit 1
+          fi
+
+      - name: Setup Node.js 20 LTS
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          run_install: false
+
+      - name: Install frontend dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build frontend
+        env:
+          VITE_PUBLIC_BASE: /todolist/
+          VITE_API_URL: /api
+        run: pnpm run build
+
+      - name: Ensure frontend build exists
+        run: |
+          set -euo pipefail
+          if [[ ! -d "${FRONTEND_BUILD_DIR}" ]]; then
+            echo "::error::Frontend build directory '${FRONTEND_BUILD_DIR}' does not exist"
+            exit 1
+          fi
+
+      - name: Setup SSH
+        run: |
+          set -euo pipefail
+          PORT="${VPS_PORT:-22}"
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          printf '%s\n' "${VPS_SSH_KEY}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+
+          if [[ -n "${VPS_SSH_KNOWN_HOSTS:-}" ]]; then
+            printf '%s\n' "${VPS_SSH_KNOWN_HOSTS}" > ~/.ssh/known_hosts
+          else
+            ssh-keyscan -p "${PORT}" -H "${VPS_HOST}" >> ~/.ssh/known_hosts
+          fi
+          chmod 644 ~/.ssh/known_hosts
+
+      - name: Make deploy scripts executable
+        run: chmod +x scripts/deploy_frontend.sh scripts/deploy_backend.sh
+
+      - name: Deploy frontend (atomic symlink release)
+        run: scripts/deploy_frontend.sh
+
+      - name: Deploy backend (atomic symlink release + restart service)
+        run: scripts/deploy_backend.sh
+
+      - name: Validate backend health and reload nginx
+        run: |
+          set -euo pipefail
+          PORT="${VPS_PORT:-22}"
+          ssh -p "${PORT}" "${VPS_USER}@${VPS_HOST}" "set -euo pipefail
+            curl -fsS 'http://127.0.0.1:${BACKEND_PORT}/api/health' > /dev/null
+            sudo nginx -t
+            sudo systemctl reload nginx
+          "

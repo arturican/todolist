@@ -1,0 +1,50 @@
+.panel {
+  max-height: clamp(13rem, 42vh, 24rem);
+  min-height: 7rem;
+  overflow: auto;
+  overscroll-behavior: contain;
+  border: 1px solid var(--border);
+  border-radius: var(--radiusControl);
+  background: var(--surfaceSoft);
+  padding: var(--space2);
+  scrollbar-gutter: stable;
+  min-width: 0;
+  scrollbar-width: thin;
+}
+
+.list {
+  padding: 0 !important;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space1);
+}
+
+.status {
+  display: flex;
+  align-items: center;
+  gap: var(--space2);
+  min-height: 100%;
+  padding: var(--space2);
+}
+
+.empty {
+  display: block;
+  padding: var(--space2);
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+@media (min-width: 1280px) {
+  .panel {
+    max-height: clamp(14rem, 45vh, 28rem);
+  }
+}
+
+@media (max-width: 640px) {
+  .panel {
+    max-height: clamp(12rem, 40vh, 18.5rem);
+    padding: var(--space1);
+  }
+}

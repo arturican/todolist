@@ -1,0 +1,83 @@
+.row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+  gap: var(--space3);
+  width: 100%;
+  min-width: 0;
+}
+
+.input {
+  flex: 1;
+  min-width: 0;
+  position: relative;
+  overflow: visible;
+}
+
+.input :global(.MuiOutlinedInput-root) {
+  position: relative;
+  overflow: visible;
+  box-sizing: border-box;
+  min-height: var(--tapMinSize);
+  height: var(--tapMinSize);
+  transition:
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.input :global(.MuiOutlinedInput-notchedOutline),
+.input :global(.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline),
+.input
+  :global(.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline) {
+  border-width: 1px;
+  box-shadow: none;
+}
+
+.input :global(.MuiOutlinedInput-root.Mui-focused) {
+  box-shadow: 0 0 0 3px var(--focusRing);
+}
+
+.input :global(.MuiInputLabel-root) {
+  position: absolute;
+  z-index: 2;
+  line-height: 1;
+  pointer-events: none;
+  transform-origin: left top;
+  max-width: calc(100% - 24px);
+}
+
+.input :global(.MuiInputLabel-root.MuiInputLabel-shrink) {
+  background-color: var(--surfaceSoft);
+  border-radius: 4px;
+  padding-block: 1px;
+  padding-inline: 6px;
+  margin-inline: -6px;
+  transform: translate(14px, -8px) scale(0.75);
+}
+
+.input :global(.MuiInputBase-input) {
+  box-sizing: border-box;
+  height: 100%;
+  line-height: 1.4;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-inline: clamp(0.75rem, 0.68rem + 0.3vw, 0.95rem);
+}
+
+.button {
+  min-width: clamp(7rem, 5.5rem + 4vw, 8.5rem);
+  min-height: var(--tapMinSize);
+  border-radius: var(--radiusControl) !important;
+  align-self: start;
+}
+
+@media (max-width: 640px) {
+  .row {
+    grid-template-columns: 1fr;
+    gap: var(--space2);
+  }
+
+  .button {
+    width: 100%;
+  }
+}

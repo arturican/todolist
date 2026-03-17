@@ -1,0 +1,10 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+if command -v pnpm >/dev/null 2>&1; then
+  pnpm lint-staged
+elif command -v corepack >/dev/null 2>&1; then
+  corepack pnpm lint-staged
+else
+  npm exec lint-staged
+fi

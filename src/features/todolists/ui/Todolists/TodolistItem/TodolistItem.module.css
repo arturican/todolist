@@ -1,0 +1,18 @@
+.item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space4);
+  flex: 1;
+  min-height: 0;
+}
+
+.tasksSection {
+  flex: 1;
+  min-height: 0;
+}
+
+@media (max-width: 640px) {
+  .item {
+    gap: var(--space3);
+  }
+}
